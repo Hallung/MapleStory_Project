@@ -1,0 +1,11 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "d2d",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "directxtex",
+            "features": [ "dx11" ]
+        }
+    ]
+}
