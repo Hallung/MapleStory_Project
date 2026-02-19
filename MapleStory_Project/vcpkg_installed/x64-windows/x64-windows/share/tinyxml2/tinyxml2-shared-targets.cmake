@@ -3,11 +3,11 @@
 if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.8)
    message(FATAL_ERROR "CMake >= 2.8.0 required")
 endif()
-if(CMAKE_VERSION VERSION_LESS "3.0.0")
-   message(FATAL_ERROR "CMake >= 3.0.0 required")
+if(CMAKE_VERSION VERSION_LESS "2.8.3")
+   message(FATAL_ERROR "CMake >= 2.8.3 required")
 endif()
 cmake_policy(PUSH)
-cmake_policy(VERSION 3.0.0...3.28)
+cmake_policy(VERSION 2.8.3...3.28)
 #----------------------------------------------------------------
 # Generated CMake target import file.
 #----------------------------------------------------------------
@@ -19,7 +19,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_cmake_targets_defined "")
 set(_cmake_targets_not_defined "")
 set(_cmake_expected_targets "")
-foreach(_cmake_expected_target IN ITEMS Microsoft::DirectXMath)
+foreach(_cmake_expected_target IN ITEMS tinyxml2::tinyxml2)
   list(APPEND _cmake_expected_targets "${_cmake_expected_target}")
   if(TARGET "${_cmake_expected_target}")
     list(APPEND _cmake_targets_defined "${_cmake_expected_target}")
@@ -54,16 +54,16 @@ if(_IMPORT_PREFIX STREQUAL "/")
   set(_IMPORT_PREFIX "")
 endif()
 
-# Create imported target Microsoft::DirectXMath
-add_library(Microsoft::DirectXMath INTERFACE IMPORTED)
+# Create imported target tinyxml2::tinyxml2
+add_library(tinyxml2::tinyxml2 SHARED IMPORTED)
 
-set_target_properties(Microsoft::DirectXMath PROPERTIES
-  INTERFACE_COMPILE_FEATURES "cxx_std_11"
+set_target_properties(tinyxml2::tinyxml2 PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "\$<\$<CONFIG:Debug>:TINYXML2_DEBUG>;\$<\$<BOOL:ON>:TINYXML2_IMPORT>;_FILE_OFFSET_BITS=64"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
 )
 
 # Load information for each installed configuration.
-file(GLOB _cmake_config_files "${CMAKE_CURRENT_LIST_DIR}/DirectXMath-targets-*.cmake")
+file(GLOB _cmake_config_files "${CMAKE_CURRENT_LIST_DIR}/tinyxml2-shared-targets-*.cmake")
 foreach(_cmake_config_file IN LISTS _cmake_config_files)
   include("${_cmake_config_file}")
 endforeach()
