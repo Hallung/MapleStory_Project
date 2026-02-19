@@ -92,6 +92,21 @@ void Graphics::Initialize()
     hr = device->CreateBlendState(&blendDesc, &blendState);
     CHECK(hr);
 
+    // 셈플러 설정
+    CD3D11_SAMPLER_DESC samplerDesc(D3D11_DEFAULT);
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    hr = device->CreateSamplerState(&samplerDesc, &samplerLinear);
+    CHECK(hr);
+
+    // 포인터로 변경하여 samplerPoint로 저장
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    hr = device->CreateSamplerState(&samplerDesc, &samplerPoint);
+    CHECK(hr);
+
+    deviceContext->PSSetSamplers(0, 1, samplerLinear.GetAddressOf());
+
     CreateBackBuffer();
 }
 
