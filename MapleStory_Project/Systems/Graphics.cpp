@@ -76,10 +76,19 @@ void Graphics::Initialize()
         &deviceContext
     );
     CHECK(hr);                      // 성공 했는지 안했는지 확인 작업
+
+    // 스케일에 변화에 따라 그림 뒤집기가 가능하도록 설정
+    CD3D11_RASTERIZER_DESC rsDesc(D3D11_DEFAULT);
+    rsDesc.CullMode = D3D11_CULL_NONE; // 앞, 뒷면을 모두 그리도록 설정
+    hr = device->CreateRasterizerState(&rsDesc, &raterizerState);
+    CHECK(hr);
+    deviceContext->RSSetState(raterizerState.Get());
+
+    CreateBackBuffer();
 }
 
 // 실재 필요한 도화지를 만드는 역할
-void Graphics::CreatBackBuffer()
+void Graphics::CreateBackBuffer()
 {
     ComPtr<ID3D11Texture2D> backBuffer;
 
