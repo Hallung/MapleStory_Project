@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 
 // 싱글턴 기반 시간 관리 클래스
 // 프레임 시간 (deltaTime) 계산
@@ -38,7 +39,7 @@ public:
 	void Update();
 
 	// 이전 프레임에 소요된 시간 (초)
-	float GetDeltation() const { return static_cast<float>(deltaTime); }
+	float GetDeltaTime() const { return static_cast<float>(deltaTime); }
 	// 게임 시작 이후 누적 시간 (초)
 	double GetWorldTime() const { return worldTime; }
 	// 1초 동안의 프레임 수

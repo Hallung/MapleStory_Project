@@ -5,11 +5,17 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Systems\Graphics.cpp" />
+    <ClCompile Include="Managers\InputManager.cpp" />
+    <ClCompile Include="Managers\TimeManager.cpp" />
+    <ClCompile Include="Managers\Physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Window.h" />
     <ClInclude Include="Systems\Graphics.h" />
+    <ClInclude Include="Managers\InputManager.h" />
+    <ClInclude Include="Managers\TimeManager.h" />
+    <ClInclude Include="Managers\Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">
