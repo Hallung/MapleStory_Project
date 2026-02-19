@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/directxmath-x64-windows-2025-04-03-65d8a3fd-b6b9-4c95-ae74-a53ab3a47162",
-  "name": "directxmath:x64-windows@2025-04-03 72c79a7eb9deff08485a1d5b322067380e4e65653a2b02aa15fe37fcd58b8c2d",
+  "documentNamespace": "https://spdx.org/spdxdocs/box2d-x64-windows-3.1.1-c88c26ab-67cf-457b-9a94-fc0683b82851",
+  "name": "box2d:x64-windows@3.1.1 ff7545ff4cd2ab3dcf1b0b94615188156b577b241492781c293446abe559527a",
   "creationInfo": {
     "creators": [
       "Tool: vcpkg-2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3"
     ],
-    "created": "2025-12-03T03:37:57Z"
+    "created": "2026-01-21T04:31:08Z"
   },
   "relationships": [
     {
@@ -38,17 +38,7 @@
       "relatedSpdxElement": "SPDXRef-port-file-3"
     },
     {
-      "spdxElementId": "SPDXRef-port",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-port-file-4"
-    },
-    {
-      "spdxElementId": "SPDXRef-port",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-port-file-5"
-    },
-    {
-      "spdxElementId": "SPDXRef-port-file-5",
+      "spdxElementId": "SPDXRef-port-file-3",
       "relationshipType": "DEPENDENCY_MANIFEST_OF",
       "relatedSpdxElement": "SPDXRef-port"
     },
@@ -141,81 +131,59 @@
       "spdxElementId": "SPDXRef-binary",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-binary-file-17"
+    },
+    {
+      "spdxElementId": "SPDXRef-binary",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-binary-file-18"
     }
   ],
   "packages": [
     {
-      "name": "directxmath",
+      "name": "box2d",
       "SPDXID": "SPDXRef-port",
-      "versionInfo": "2025-04-03",
-      "downloadLocation": "git+https://github.com/Microsoft/vcpkg#ports/directxmath",
-      "homepage": "https://github.com/Microsoft/DirectXMath",
-      "licenseConcluded": "MIT",
+      "versionInfo": "3.1.1",
+      "downloadLocation": "git+https://github.com/Microsoft/vcpkg#ports/box2d",
+      "homepage": "https://box2d.org",
+      "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
-      "description": "DirectXMath SIMD C++ math library",
+      "description": "An open source C++ engine for simulating rigid bodies in 2D",
       "comment": "This is the port (recipe) consumed by vcpkg."
     },
     {
-      "name": "directxmath:x64-windows",
+      "name": "box2d:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "72c79a7eb9deff08485a1d5b322067380e4e65653a2b02aa15fe37fcd58b8c2d",
+      "versionInfo": "ff7545ff4cd2ab3dcf1b0b94615188156b577b241492781c293446abe559527a",
       "downloadLocation": "NONE",
-      "licenseConcluded": "MIT",
+      "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "comment": "This is a binary package built by vcpkg."
     },
     {
       "SPDXID": "SPDXRef-resource-0",
-      "name": "Microsoft/DirectXMath",
-      "downloadLocation": "git+https://github.com/Microsoft/DirectXMath@apr2025",
+      "name": "erincatto/Box2D",
+      "downloadLocation": "git+https://github.com/erincatto/Box2D@v3.1.1",
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "c7d3b107180b269c5c4e823fa51d96a316dc35cace3cb13f030022d9096c9465e8a770559419176692b047574fd67c96d8527abd8817998264a149eee0b88c9d"
-        }
-      ]
-    },
-    {
-      "SPDXID": "SPDXRef-resource-1",
-      "name": "sal.h",
-      "packageFileName": "sal.h",
-      "downloadLocation": "https://raw.githubusercontent.com/dotnet/runtime/v9.0.2/src/coreclr/pal/inc/rt/sal.h",
-      "licenseConcluded": "NOASSERTION",
-      "licenseDeclared": "NOASSERTION",
-      "copyrightText": "NOASSERTION",
-      "checksums": [
-        {
-          "algorithm": "SHA512",
-          "checksumValue": "8085f67bfa4ce01ae89461cadf72454a9552fde3f08b2dcc3de36b9830e29ce7a6192800f8a5cb2a66af9637be0017e85719826a4cfdade508ae97f319e0ee8e"
+          "checksumValue": "7367640e7f2ff395b8ca48766c71f57c96e08c298627c996eba76899a149ee28b0e3ecacfa4a224fdb5d160c7e25c6069bb8414fd1575787727d796097aa347b"
         }
       ]
     }
   ],
   "files": [
     {
-      "fileName": "./Linux-SHMath-SAL.patch",
+      "fileName": "./libm.diff",
       "SPDXID": "SPDXRef-port-file-0",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "16032bc1bf50f695922c242e1ca2c3a9aa4160d81808eab54cd4c7fbbe86ca10"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./MinGW-fix.patch",
-      "SPDXID": "SPDXRef-port-file-1",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "cbacb91ceefad2fac32f6310d83c99a5e426c463364ce7c7f91f032a5216a0ab"
+          "checksumValue": "b502b0e55c76149d6563399fe089a8b11047c7799e2d7539ccd687b1ccb23db4"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -223,23 +191,11 @@
     },
     {
       "fileName": "./portfile.cmake",
-      "SPDXID": "SPDXRef-port-file-2",
+      "SPDXID": "SPDXRef-port-file-1",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "583b6154abf7caa31154fc85585a2db8f5edede728eaf29f5aadbf30a5fd3be0"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./shmathusage",
-      "SPDXID": "SPDXRef-port-file-3",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "cca5652f8777e277d1c9fd47fdd49b134c289964bfbb74ad41111dfc76fd0a4f"
+          "checksumValue": "4727270824f6dd5aa17a2adf8b67763f46835cf0d6605a93aaa03e6e34f4236e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -247,11 +203,11 @@
     },
     {
       "fileName": "./usage",
-      "SPDXID": "SPDXRef-port-file-4",
+      "SPDXID": "SPDXRef-port-file-2",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "5c4fc359847a72a252b8dabb06a398fd83dd19764b52fb08a2bf5f72bb9784cd"
+          "checksumValue": "ae32a08c80bbba2186a0861b9dc4f955de1d119c44e7446fdf882d4b60679cd3"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -259,11 +215,35 @@
     },
     {
       "fileName": "./vcpkg.json",
-      "SPDXID": "SPDXRef-port-file-5",
+      "SPDXID": "SPDXRef-port-file-3",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ba2e133d7e4f3a7b25f6e18608d948dabe84fb6fd6b7b5ce52bf6136e8259ca4"
+          "checksumValue": "ee8f8408b4e99ec90eca3610dd00661951e401ca6f4903a59e98a62349fabf60"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/box2d.dll",
+      "SPDXID": "SPDXRef-binary-file-0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4eed8a2784a904c426bca8efa499bccdb92ac4e99ab06a98b870555332c47473"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/box2d.pdb",
+      "SPDXID": "SPDXRef-binary-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "05d7c245ad27df474d956a12d829d7fa41b533a31dd298ee25001ee65f851fd3"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -271,7 +251,7 @@
     },
     {
       "fileName": "./BUILD_INFO",
-      "SPDXID": "SPDXRef-binary-file-0",
+      "SPDXID": "SPDXRef-binary-file-2",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -282,204 +262,192 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXCollision.h",
-      "SPDXID": "SPDXRef-binary-file-1",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "979c6a2396768c8f5d36ae62c63b0c07d22945633677ef660256b15b5d04d46c"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./include/DirectXCollision.inl",
-      "SPDXID": "SPDXRef-binary-file-2",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "100c840b77875f87b9a900558899167712c8bd0e47771a752d02343572acad2c"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./include/DirectXColors.h",
+      "fileName": "./debug/bin/box2dd.dll",
       "SPDXID": "SPDXRef-binary-file-3",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d333f0a20ef585ae8d8aa594411f3c2b8710c3d7ec278adb5bc6ec37189cd9fe"
+          "checksumValue": "328a431a43123c9127e1b3d856eb3d9be2adcf9239a606bd725a465a60dde75b"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXMath.h",
+      "fileName": "./debug/bin/box2dd.pdb",
       "SPDXID": "SPDXRef-binary-file-4",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "67cf7cd9e1dd53af2147b7107d1074af16eac3291364a2380dcd9a6041fbc849"
+          "checksumValue": "461302f1ba799689a111742e17cc1cf8774c1715f9cd77add468bab7d8cf44d7"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXMathConvert.inl",
+      "fileName": "./debug/lib/box2dd.lib",
       "SPDXID": "SPDXRef-binary-file-5",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "aec241bb47ba9a6458bc048c0913c3e9f5223d5defd462b2b637a2035001f1ad"
+          "checksumValue": "68778c5f7fe323a786f5038b316442375c4f3c35867974efed5f082bb339aabb"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXMathMatrix.inl",
+      "fileName": "./include/box2d/base.h",
       "SPDXID": "SPDXRef-binary-file-6",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ec8f1ce63fa906c5121c023296e281d18935bc197a399e9039b1f850da04fbeb"
+          "checksumValue": "2e4403cdf5da2fd58a0fc7f1e41c8ea17a1a4f2cd2cb8607cde39ad3f16f69b1"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXMathMisc.inl",
+      "fileName": "./include/box2d/box2d.h",
       "SPDXID": "SPDXRef-binary-file-7",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "469ca3b1c8b2ad78e58ff3a9cf095125965c11c594f3e102ee8d72bf39dae91d"
+          "checksumValue": "f84e07c7a7dd049acd734c9cb355f9d91e5eccca39aebfd4510b13dc7b48eb6f"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXMathVector.inl",
+      "fileName": "./include/box2d/collision.h",
       "SPDXID": "SPDXRef-binary-file-8",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "70fe825b3aa5019b0df0adb713e17b70b23e1c452b7dac6c4665805781d3339e"
+          "checksumValue": "ee1995ff2460e036c7dabedddd028d6d2f40b8fe3976b4405d611aa6c6ca8cc9"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXPackedVector.h",
+      "fileName": "./include/box2d/id.h",
       "SPDXID": "SPDXRef-binary-file-9",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "0dc0f00d9f9484ba24fe65f5cf9e1da65a7386096f6dc9c184769dbcfc4a95e3"
+          "checksumValue": "19ae35f2b248951bc40e0bb56e23e0768063930d3a74bbfb4d433d219a0c1b27"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/DirectXPackedVector.inl",
+      "fileName": "./include/box2d/math_functions.h",
       "SPDXID": "SPDXRef-binary-file-10",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "5d05b4145048ab82540e96ddc6fbd127e53c749aae5c9d4cc4607cc9c8453b7a"
+          "checksumValue": "334eab5cd04b8e7bcdb6d4d2575aa17f5e07bee63fd92084e9759d57b6bcae89"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./lib/pkgconfig/DirectXMath.pc",
+      "fileName": "./include/box2d/types.h",
       "SPDXID": "SPDXRef-binary-file-11",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "be9116a1f9755b7f5c6f9ac94195dd58e15aa9b95cc3a7ca5bfbf5e80484f3f0"
+          "checksumValue": "ea3da532cb49978123dca81bb3c76d66d912f89486ba1fca9ac9c9d54d28cf60"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/directxmath/copyright",
+      "fileName": "./lib/box2d.lib",
       "SPDXID": "SPDXRef-binary-file-12",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+          "checksumValue": "f4f27ca64a704b1fbf71ef845f613ff6de5c8800819a65aac88b645ec85957e7"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/directxmath/directxmath-config-version.cmake",
+      "fileName": "./share/box2d/box2dConfig-debug.cmake",
       "SPDXID": "SPDXRef-binary-file-13",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "2dac1e41b0c82cbdf69eb1cdb2c9c08cdb7d161e3cae00d4cdcf64a696a6dac3"
+          "checksumValue": "9b1f50e67ab5477fceacfb4e447f97621324a404ace2871930a724f32c154c4b"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/directxmath/directxmath-config.cmake",
+      "fileName": "./share/box2d/box2dConfig-release.cmake",
       "SPDXID": "SPDXRef-binary-file-14",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "5f5eb40c2d0ddeef73a94183dc03f994088fbbd1ec0594d6dc8ab83aa7db8461"
+          "checksumValue": "a4cc710003d71de138607519194bd2c8c8225f21063840d221b009277605a5c5"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/directxmath/DirectXMath-targets.cmake",
+      "fileName": "./share/box2d/box2dConfig.cmake",
       "SPDXID": "SPDXRef-binary-file-15",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "270e1cd1e983a18267e16601da009509dfdd145936cc8d0d57152ab4531ce5a5"
+          "checksumValue": "f3baf1bd88bfc94e095df28bac6d6d91bf1f5297757395b63bc9e68947b1d1ee"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/directxmath/usage",
+      "fileName": "./share/box2d/box2dConfigVersion.cmake",
       "SPDXID": "SPDXRef-binary-file-16",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "5c4fc359847a72a252b8dabb06a398fd83dd19764b52fb08a2bf5f72bb9784cd"
+          "checksumValue": "2254e337125056ee4fa9dada6b9d9bf2af7ded928aeb40e361ed8bf539e6f194"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./share/pkgconfig/DirectXMath.pc",
+      "fileName": "./share/box2d/copyright",
       "SPDXID": "SPDXRef-binary-file-17",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "be9116a1f9755b7f5c6f9ac94195dd58e15aa9b95cc3a7ca5bfbf5e80484f3f0"
+          "checksumValue": "68a3e676d7e94093b102d5cba0d4e04af812040d6f230c3db67a6664574e43d2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./share/box2d/usage",
+      "SPDXID": "SPDXRef-binary-file-18",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ae32a08c80bbba2186a0861b9dc4f955de1d119c44e7446fdf882d4b60679cd3"
         }
       ],
       "licenseConcluded": "NOASSERTION",

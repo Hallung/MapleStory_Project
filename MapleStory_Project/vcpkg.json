@@ -3,9 +3,11 @@
     "name": "d2d",
     "version": "0.0.1",
     "dependencies": [
-        {
-            "name": "directxtex",
-            "features": [ "dx11" ]
-        }
+      {
+        "name": "directxtex",
+        "features": [ "dx11" ]
+      },
+      "box2d",
+      "tinyxml2"
     ]
 }
