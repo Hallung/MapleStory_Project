@@ -84,6 +84,14 @@ void Graphics::Initialize()
     CHECK(hr);
     deviceContext->RSSetState(raterizerState.Get());
 
+    // 알파값 적용
+    CD3D11_BLEND_DESC blendDesc(D3D11_DEFAULT);
+    blendDesc.RenderTarget[0].BlendEnable = true;
+    blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    hr = device->CreateBlendState(&blendDesc, &blendState);
+    CHECK(hr);
+
     CreateBackBuffer();
 }
 
