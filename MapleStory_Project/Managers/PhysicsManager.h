@@ -5,23 +5,23 @@
 // Box2D 월드 생성/파괴 관리
 // 고정 시간 기반 물리 시뮬레이션 업데이트
 
-class Physics
+class PhysicsManager
 {
 private:
-	Physics();
-	~Physics() = default;
+	PhysicsManager();
+	~PhysicsManager() = default;
 
 public:
 	// 싱글턴 복사/이동 금지
-	Physics(const Physics& other) = delete;
-	Physics& operator=(const Physics& other) = delete;
-	Physics(Physics&& other) = delete;
-	Physics& operator=(Physics&& other) = delete;
+	PhysicsManager(const PhysicsManager& other) = delete;
+	PhysicsManager& operator=(const PhysicsManager& other) = delete;
+	PhysicsManager(PhysicsManager&& other) = delete;
+	PhysicsManager& operator=(PhysicsManager&& other) = delete;
 
 	// 싱글턴 인스턴스 반환
-	static Physics& GetInstance()
+	static PhysicsManager& GetInstance()
 	{
-		static Physics instance;
+		static PhysicsManager instance;
 		return instance;
 	}
 

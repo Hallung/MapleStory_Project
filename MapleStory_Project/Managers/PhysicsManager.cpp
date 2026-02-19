@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Physics.h"
+#include "PhysicsManager.h"
 #include "TimeManager.h"
 
 namespace
@@ -8,9 +8,9 @@ namespace
 constexpr float fixedTime = 1.0f / 60.0f;
 }
 
-Physics::Physics() {}
+PhysicsManager::PhysicsManager() {}
 
-void Physics::Init()
+void PhysicsManager::Init()
 {
 	// 기존 월드가 존재하면 먼저 파괴
 	if (b2World_IsValid(worldId)) Destroy();
@@ -23,7 +23,7 @@ void Physics::Init()
 	worldId = b2CreateWorld(&worldDef);
 }
 
-void Physics::Destroy()
+void PhysicsManager::Destroy()
 {
 	// 유효한 월드가 있을 경우 파괴
 	if (b2World_IsValid(worldId))
@@ -33,7 +33,7 @@ void Physics::Destroy()
 	}
 }
 
-void Physics::Update()
+void PhysicsManager::Update()
 {
 	// 프레임 deltaTime 가져오기
 	float deltaTime = TimeManager::GetInstance().GetDeltaTime();
