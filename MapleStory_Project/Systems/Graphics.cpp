@@ -92,7 +92,7 @@ void Graphics::Initialize()
     hr = device->CreateBlendState(&blendDesc, &blendState);
     CHECK(hr);
 
-    // ¼ÀÇÃ·¯ ¼³Á¤
+    // »ùÇÃ·¯ ¼³Á¤
     CD3D11_SAMPLER_DESC samplerDesc(D3D11_DEFAULT);
     samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
