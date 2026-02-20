@@ -3,6 +3,63 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Systems\Graphics.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Window.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\IA\InputLayout.cpp">
+      <Filter>Renders\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\IA\VertexBuffer.cpp">
+      <Filter>Renders\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\IA\IndexBuffer.cpp">
+      <Filter>Renders\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\Shaders\VertexShader.cpp">
+      <Filter>Renders\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\Shaders\Shader.cpp">
+      <Filter>Renders\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\Shaders\PixelShader.cpp">
+      <Filter>Renders\Shaders</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Systems\Graphics.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Window.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\IA\InputLayout.h">
+      <Filter>Renders\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\IA\VertexBuffer.h">
+      <Filter>Renders\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\IA\IndexBuffer.h">
+      <Filter>Renders\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h">
+      <Filter>Renders\ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h">
+      <Filter>Renders\ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\Shaders\VertexShader.h">
+      <Filter>Renders\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\Shaders\PixelShader.h">
+      <Filter>Renders\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\Shaders\Shader.h">
+      <Filter>Renders\Shaders</Filter>
+    </ClInclude>
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Systems\Graphics.cpp" />
     <ClCompile Include="Managers\InputManager.cpp" />
@@ -20,6 +77,18 @@
   <ItemGroup>
     <Filter Include="Systems">
       <UniqueIdentifier>{2e0b3a38-e1b7-48f0-8155-d53f3d04213a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renders">
+      <UniqueIdentifier>{68444ba3-6eef-47e9-a6f7-3ab47383375c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renders\IA">
+      <UniqueIdentifier>{279eb05e-9f88-49f0-9ded-fb41a2d8ba38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renders\ConstantBuffers">
+      <UniqueIdentifier>{ed45ed6b-f5a5-4ccd-a778-fe6c18478956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renders\Shaders">
+      <UniqueIdentifier>{b15f8a66-7a83-486b-8e0d-e2742c8cef8b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -159,6 +159,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
+    <ClCompile Include="Renders\IA\InputLayout.cpp" />
+    <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
+    <ClCompile Include="Renders\Shaders\PixelShader.cpp" />
+    <ClCompile Include="Renders\Shaders\Shader.cpp" />
+    <ClCompile Include="Renders\Shaders\VertexShader.cpp" />
     <ClCompile Include="Managers\InputManager.cpp" />
     <ClCompile Include="Managers\PhysicsManager.cpp" />
     <ClCompile Include="Managers\TimeManager.cpp" />
@@ -172,6 +178,14 @@
     <ClCompile Include="Systems\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
+    <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
+    <ClInclude Include="Renders\IA\IndexBuffer.h" />
+    <ClInclude Include="Renders\IA\InputLayout.h" />
+    <ClInclude Include="Renders\IA\VertexBuffer.h" />
+    <ClInclude Include="Renders\Shaders\PixelShader.h" />
+    <ClInclude Include="Renders\Shaders\Shader.h" />
+    <ClInclude Include="Renders\Shaders\VertexShader.h" />
     <ClInclude Include="Managers\InputManager.h" />
     <ClInclude Include="Managers\PhysicsManager.h" />
     <ClInclude Include="Managers\TimeManager.h" />
