@@ -60,6 +60,19 @@
     <ClInclude Include="Renders\Shaders\Shader.h">
       <Filter>Renders\Shaders</Filter>
     </ClInclude>
+    <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Systems\Graphics.cpp" />
+    <ClCompile Include="Managers\InputManager.cpp" />
+    <ClCompile Include="Managers\TimeManager.cpp" />
+    <ClCompile Include="Managers\PhysicsManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Systems\Graphics.h" />
+    <ClInclude Include="Managers\InputManager.h" />
+    <ClInclude Include="Managers\TimeManager.h" />
+    <ClInclude Include="Managers\PhysicsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">

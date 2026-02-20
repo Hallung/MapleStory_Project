@@ -22,7 +22,7 @@ public:
 
 public:
 	void Initialize();
-	void CreatBackBuffer();
+	void CreateBackBuffer();
 
 	void Begin();
 	void End();
@@ -35,6 +35,10 @@ private:
 	ComPtr<ID3D11DeviceContext> deviceContext;
 	ComPtr<ID3D11RenderTargetView> renderTargetView;
 	ComPtr<IDXGISwapChain> swapChain;
+	ComPtr<ID3D11RasterizerState> raterizerState;
+	ComPtr<ID3D11BlendState> blendState;
+	ComPtr<ID3D11SamplerState> samplerPoint;
+	ComPtr<ID3D11SamplerState> samplerLinear;
 	D3D11_VIEWPORT viewport;
 	// 초기화할 색상
 	DirectX::SimpleMath::Color clearColor = { 0.4f, 0.4f, 0.4f, 1.0f };
