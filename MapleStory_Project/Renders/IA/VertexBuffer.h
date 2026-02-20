@@ -24,6 +24,7 @@ private:
 	UINT count = 0; // 전체 Vertex 개수
 };
 
+// template 함수는 특성상 헤더에 정의가 필요하며, inline은 중복 정의(ODR) 방지 및 인라이닝 힌트를 위해 관례적으로 함께 사용
 template<typename T>
 inline void VertexBuffer::Create(const std::vector<T>& vertices, D3D11_USAGE usage)
 {

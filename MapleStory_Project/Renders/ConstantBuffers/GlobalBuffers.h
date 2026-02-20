@@ -27,14 +27,14 @@ public:
 
 // View / Projection 행렬 데이터 구조체
 // Camera 정보 전달에 사용
-struct ViewProjData
+struct ViewProjectionData
 {
 	DirectX::SimpleMath::Matrix view;
-	DirectX::SimpleMath::Matrix proj;
+	DirectX::SimpleMath::Matrix projection;
 };
 
 // Camera의 View / Projection 행렬을 Shader에 전달하는 ConstantBuffer
-class ViewProjectionBuffer : public ConstantBuffer<ViewProjData>
+class ViewProjectionBuffer : public ConstantBuffer<ViewProjectionData>
 {
 public:
 	ViewProjectionBuffer() : ConstantBuffer() {}
@@ -48,9 +48,9 @@ public:
 	}
 
 	// Projection 행렬 설정 (원근 / 직교 투영)
-	void SetProj(const DirectX::SimpleMath::Matrix& proj)
+	void SetProjection(const DirectX::SimpleMath::Matrix& projection)
 	{
-		data.proj = proj.Transpose();
+		data.projection = projection.Transpose();
 
 		bDirty = true;
 	}

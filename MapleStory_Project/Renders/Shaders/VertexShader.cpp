@@ -9,7 +9,7 @@ void VertexShader::Create(const std::wstring& path, const std::string& entryName
 	this->entryName = entryName;
 
 	// Shader 컴파일 (VertexShader profile 사용)
-	CompileShader(this->path, this->entryName, "vs_5_0", &blob);
+	CompileShader(path, entryName, "vs_5_0", &blob);
 
 	// 컴파일된 Bytecode를 기반으로 GPU에 VertexShader 생성
 	HRESULT hr = Graphics::GetInstance().GetDevice()->CreateVertexShader(

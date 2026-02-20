@@ -9,7 +9,7 @@ void PixelShader::Create(const std::wstring& path, const std::string& entryName)
 	this->entryName = entryName;
 
 	// Shader 컴파일 (PixelShader profile 사용)
-	CompileShader(this->path, this->entryName, "ps_5_0", &blob);
+	CompileShader(path, entryName, "ps_5_0", &blob);
 
 	// 컴파일된 Bytecode를 기반으로 GPU에 PixelShader 생성
 	HRESULT hr = Graphics::GetInstance().GetDevice()->CreatePixelShader(

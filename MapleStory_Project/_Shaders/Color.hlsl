@@ -36,7 +36,7 @@ cbuffer World : register(b0)
 cbuffer ViewProjection : register(b1)
 {
     matrix _view;
-    matrix _proj;
+    matrix _projection;
 }
 
 // ==============================
@@ -49,7 +49,7 @@ PixelInput VS(VertexInput input)
 	
     output.position = mul(input.position, _world); // World 변환
     output.position = mul(output.position, _view); // View 변환
-    output.position = mul(output.position, _proj); // Projection 변환
+    output.position = mul(output.position, _projection); // Projection 변환
 	
     output.color = input.color; // 색상 전달
 	

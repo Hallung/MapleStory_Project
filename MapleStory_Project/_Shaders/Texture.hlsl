@@ -32,7 +32,7 @@ cbuffer World : register(b0)
 cbuffer ViewProjection : register(b1)
 {
     matrix _view;
-    matrix _proj;
+    matrix _projection;
 }
 
 // ==============================
@@ -40,7 +40,7 @@ cbuffer ViewProjection : register(b1)
 // SpriteSheet에서 사용할 UV 영역 설정
 // register(b10)
 // ==============================
-cbuffer FrameBuffer : register(b10)
+cbuffer FrameBuffer : register(b2)
 {
     float2 _startUV; // 시작 UV
     float2 _sizeUV; // UV 크기
@@ -57,7 +57,7 @@ PixelInput VS(VertexInput input)
     // 위치 변환
     output.position = mul(input.position, _world);
     output.position = mul(output.position, _view);
-    output.position = mul(output.position, _proj);
+    output.position = mul(output.position, _projection);
     
     // SpriteSheet Frame UV 계산
     output.uv = _startUV + (input.uv * _sizeUV);
