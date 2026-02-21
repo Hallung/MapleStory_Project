@@ -4,6 +4,12 @@
 #include "Renders/Shaders/PixelShader.h"
 #include "ShaderManager.h"
 
+// =================================================
+// Singleton 패턴을 위한 생성자
+// GetInstance()에서 내부 static instance 생성 시 호출
+// =================================================
+ShaderManager::ShaderManager() {}
+
 //================================================
 // 셰이더 요청
 // 캐시에 존재하면 재사용
@@ -31,7 +37,7 @@ ShaderSet ShaderManager::GetShader(const std::wstring& path, std::span<const D3D
 	newSet.pixelShader = std::make_shared<PixelShader>();
 	newSet.pixelShader->Create(path, "PS");
 
-	// 캐시엥 등록 (path 기준)
+	// 캐시에 등록 (path 기준)
 	shaderCache.emplace(path, newSet);
 
 	return newSet;

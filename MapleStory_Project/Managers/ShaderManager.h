@@ -1,4 +1,5 @@
 #pragma once
+#include <span>
 
 //==================================================================
 // 셰이더 구성 모음
@@ -10,11 +11,11 @@
 struct ShaderSet
 {
 	// 입력 레이아웃 (정점 구조 정의)
-	std::shared_ptr<InputLayout> inputLayout;
+	std::shared_ptr<class InputLayout> inputLayout;
 	//버텍스 셰이더
-	std::shared_ptr<VertexShader> vertexShader;
+	std::shared_ptr<class VertexShader> vertexShader;
 	// 픽셀 셰이더
-	std::shared_ptr<PixelShader> pixelShader;
+	std::shared_ptr<class PixelShader> pixelShader;
 };
 
 class ShaderManager
