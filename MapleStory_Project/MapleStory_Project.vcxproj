@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
+    <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
     <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
@@ -184,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
+    <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
     <ClInclude Include="Renders\IA\IndexBuffer.h" />
