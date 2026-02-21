@@ -30,6 +30,7 @@
     <ClCompile Include="Resources\Material.cpp" />
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
+    <ClCompile Include="Resources\VertexType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Resources\Material.h" />
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
+    <ClInclude Include="Resources\VertexType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
