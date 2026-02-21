@@ -144,6 +144,8 @@ void Graphics::Begin()
     deviceContext->RSSetViewports(1, &viewport);                                    // 뷰포트 설정
     deviceContext->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), nullptr); // 렌더 타겟 지정
     deviceContext->ClearRenderTargetView(renderTargetView.Get(), clearColor);       // 화면 지우기
+
+    deviceContext->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF); // Output Merger 단계에 BlendState 적용 (알파 블렌딩 및 투명 처리 설정)
 }
 
 void Graphics::End()
