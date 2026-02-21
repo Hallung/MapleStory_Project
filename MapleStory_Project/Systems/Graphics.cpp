@@ -6,7 +6,7 @@ Graphics::Graphics()
     Initialize();
 }
 
-// 필요한 것들을 만들고 초기화 하는 역할
+// DirectX Device 및 SwapChain 초기화
 void Graphics::Initialize()
 {
     DXGI_SWAP_CHAIN_DESC desc{};
@@ -46,7 +46,7 @@ void Graphics::Initialize()
     UINT flag = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 #ifdef _DEBUG
-    // DX에서 에러를 상세히 말해주는 옵션, 성능 저하가 조금 있다
+    // DirectX 오류 메시지 출력
     flag |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -110,11 +110,12 @@ void Graphics::Initialize()
     CreateBackBuffer();
 }
 
-// 실재 필요한 도화지를 만드는 역할
+// BackBuffer 생성 및 RenderTargetView 생성
 void Graphics::CreateBackBuffer()
 {
     ComPtr<ID3D11Texture2D> backBuffer;
 
+    // SwapChain에서 BackBuffer 가져오기
     HRESULT hr = swapChain->GetBuffer
     (
         0,
@@ -123,6 +124,7 @@ void Graphics::CreateBackBuffer()
     );
     CHECK(hr);
 
+    // RenderTargetView 생성
     hr = device->CreateRenderTargetView
     (
         backBuffer.Get(),
@@ -131,6 +133,7 @@ void Graphics::CreateBackBuffer()
     );
     CHECK(hr);
 
+    // Viewport 설정, 렌더링 영역 지정
     viewport.TopLeftX = 0.0f;
     viewport.TopLeftY = 0.0f;
     viewport.Width = gWinWidth;

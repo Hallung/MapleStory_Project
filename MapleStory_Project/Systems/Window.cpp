@@ -4,7 +4,7 @@
 Window::Window(const WinDesc& initDesc)
     : w_desc(initDesc)
 {
-    WORD wHr = MyRegisterClass(w_desc);
+    WORD wHr = MyRegisterClass(w_desc); // Window Class 등록
     assert(wHr != 0);   // 클래스 등록 실패 여부 검사
 
     // 확장 창 스타일을 사용하여 겹치는, 팝업, 자식 창을 생성 가능
@@ -104,12 +104,13 @@ WPARAM Window::Run()
     return msg.wParam;
 }
 
+// Window 이벤트 처리
 LRESULT Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
     case WM_DESTROY:
-        PostQuitMessage(0);
+        PostQuitMessage(0); // Window 종료 시 프로그램 종료 메시지 전달
 
         return 0;
     }
