@@ -55,3 +55,9 @@ extern float gWinHeight;
 // Systems
 #include "Systems/Window.h"
 #include "Systems/Graphics.h"
+
+// Managers
+#include "Managers/TimeManager.h"
+#include "Managers/InputManager.h"
+#include "Managers/ShaderManager.h"
+#include "Managers/PhysicsManager.h"
