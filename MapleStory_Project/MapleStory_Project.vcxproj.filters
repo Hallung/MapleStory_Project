@@ -51,8 +51,12 @@
     <ClCompile Include="Objects\Object.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Components\PlatformerController.cpp" />
-    <ClCompile Include="Components\Transform.cpp" />
+    <ClCompile Include="Components\PlatformerController.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Transform.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -115,8 +119,13 @@
     <ClInclude Include="Components\Component.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\PlatformerController.h" />
-    <ClInclude Include="Components\Transform.h" />
+    <ClInclude Include="Components\PlatformerController.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Transform.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
