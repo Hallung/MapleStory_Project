@@ -27,10 +27,31 @@
     <ClCompile Include="Renders\Shaders\PixelShader.cpp">
       <Filter>Renders\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Material.cpp" />
-    <ClCompile Include="Resources\Mesh.cpp" />
-    <ClCompile Include="Managers\ShaderManager.cpp" />
-    <ClCompile Include="Resources\VertexType.cpp" />
+    <ClCompile Include="Managers\PhysicsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\ShaderManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\TimeManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\VertexType.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Mesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Material.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\Object.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlatformerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -66,22 +87,39 @@
     </ClInclude>
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Systems\Graphics.cpp" />
-    <ClCompile Include="Managers\InputManager.cpp" />
-    <ClCompile Include="Managers\TimeManager.cpp" />
-    <ClCompile Include="Managers\PhysicsManager.cpp" />
-    <ClInclude Include="Components\Component.h" />
-    <ClInclude Include="Resources\Material.h" />
-    <ClInclude Include="Resources\Mesh.h" />
-    <ClInclude Include="Managers\ShaderManager.h" />
-    <ClInclude Include="Resources\VertexType.h" />
+    <ClInclude Include="Managers\PhysicsManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ShaderManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\TimeManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\VertexType.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Mesh.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Material.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Object.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlatformerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Window.h" />
     <ClInclude Include="Systems\Graphics.h" />
-    <ClInclude Include="Managers\InputManager.h" />
-    <ClInclude Include="Managers\TimeManager.h" />
-    <ClInclude Include="Managers\PhysicsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Systems">
@@ -98,6 +136,18 @@
     </Filter>
     <Filter Include="Renders\Shaders">
       <UniqueIdentifier>{b15f8a66-7a83-486b-8e0d-e2742c8cef8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{4837de9a-e782-4d9a-aab8-4431d007ecc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{6895d447-190a-4d38-8c33-d156d7470747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{8bb2b53d-4856-4b07-b82b-141ca1dfa298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{ba377766-da51-4abb-bc27-555455972737}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
