@@ -52,6 +52,7 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Components\PlatformerController.cpp" />
+    <ClCompile Include="Components\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -115,6 +116,7 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\PlatformerController.h" />
+    <ClInclude Include="Components\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
