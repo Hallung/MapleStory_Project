@@ -158,6 +158,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\PlatformerController.cpp" />
+    <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
@@ -184,6 +186,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\PlatformerController.h" />
+    <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
