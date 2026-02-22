@@ -19,7 +19,7 @@ public:
 	void Bind();
 
 private:
-	std::shared_ptr<InputLayout> inputLayout;	// ÀÔ·Â Á¤Á¡ ·¹ÀÌ¾Æ¿ô
-	std::shared_ptr<VertexShader> vertexShader; // Á¤Á¡ ¼ÎÀÌ´õ
-	std::shared_ptr<PixelShader> pixelShader;	// ÇÈ¼¿ ¼ÎÀÌ´õ
+	std::shared_ptr<class InputLayout> inputLayout;	// ÀÔ·Â Á¤Á¡ ·¹ÀÌ¾Æ¿ô
+	std::shared_ptr<class VertexShader> vertexShader; // Á¤Á¡ ¼ÎÀÌ´õ
+	std::shared_ptr<class PixelShader> pixelShader;	// ÇÈ¼¿ ¼ÎÀÌ´õ
 };
