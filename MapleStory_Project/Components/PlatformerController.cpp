@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PlatformerController.h"
 #include "Objects/Object.h"
-#include "Transform.h"
+#include "RigidBody.h"
 #include "Utilities/VirtualKey.h"
 
 //===================================
@@ -20,27 +20,23 @@ void PlatformerController::Update()
 	Move(dir);
 }
 
-//========================================
-// 좌우 이동 적용
-// Transform 위치를 deltaTime 기반으로 갱신
-//========================================
+
+// 물리 기반 이동
 void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 {
 	// 수평 입력이 없으면 이동 없음
 	if (dir.x == 0.0f) return;
 
-	// 소유 객체의 Transform 획득
-	auto transform = GetOwner()->GetComponent<Transform>("Transform");
+	// Object에 부착된 RigidBody 컴포넌트 가져오기
+	auto rigidBody = owner->GetComponent<RigidBody>("RigidBody");
 
-	// 현재 위치 가져오기
-	DirectX::SimpleMath::Vector2 position = transform->GetPosition();
-
-	// 프레임 시간 기반 이동량 계산
-	float delta = TimeManager::GetInstance().GetDeltaTime();
-	position.x += dir.x * moveSpeed * delta;
-
-	// 위치 적용
-	transform->SetPosition(position);
+	// RigidBody가 존재하고 Box2D Body가 유효한 경우에만 속도 설정
+	// (물리 월드에 등록되지 않은 Body는 접근 방지)
+	if (rigidBody && b2Body_IsValid(rigidBody->GetBodyId()))
+	{
+		// 입력 방향(dir)에 이동 속도(moveSpeed)를 곱해 속도 설정
+		rigidBody->SetVelocity(dir * moveSpeed);
+	}
 }
 
 void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)

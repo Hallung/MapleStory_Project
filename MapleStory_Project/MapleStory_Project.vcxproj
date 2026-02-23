@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Components\PlatformerController.cpp" />
+    <ClCompile Include="Components\RigidBody.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\PlatformerController.h" />
+    <ClInclude Include="Components\RigidBody.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Objects\Object.h" />
@@ -211,6 +213,7 @@
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
+    <ClInclude Include="Utilities\PhysicsUtils.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
