@@ -165,6 +165,7 @@
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
+    <ClCompile Include="Managers\TextureManager.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Components\RigidBody.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
+    <ClInclude Include="Managers\TextureManager.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
