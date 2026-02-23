@@ -36,13 +36,13 @@ void AttachMeshAndMaterial(
 // 2D 스프라이트 Object 생성
 // Quad Mesh 와 머티리얼을 구성하여 Sprite 렌더링이 가능한 Object로 반환
 //====================================================================
-std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation = 0.0f, const std::wstring& path = L"")
-{
-	// Sprite 이름으로 Object 생성
-	std::shared_ptr<Object> object = std::make_shared<Object>("Sprite", position, scale, rotation);
-
-	// TODO : AttachMeshAndMaterial 구현 후 다음 구성 예정
-}
+//std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation = 0.0f, const std::wstring& path = L"")
+//{
+//	// Sprite 이름으로 Object 생성
+//	std::shared_ptr<Object> object = std::make_shared<Object>("Sprite", position, scale, rotation);
+//
+//	// TODO : AttachMeshAndMaterial 구현 후 다음 구성 예정
+//}
 }
 
 namespace GeometryHelper

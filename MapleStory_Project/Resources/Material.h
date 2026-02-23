@@ -1,5 +1,8 @@
 #pragma once
 
+class Texture;
+class FrameBuffer;
+
 //=======================================================================
 // 머티리얼
 // 렌더링에 필요한 셰이더 상태(InputLayout/VertexShader/PixelShader)를 보관

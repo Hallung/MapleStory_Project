@@ -45,8 +45,8 @@ public:
 	void RotateDegree(float degree);
 
 private:
-	DirectX::SimpleMath::Matrix world;
-	std::unique_ptr<class WorldBuffer> worldBuffer;
+	DirectX::SimpleMath::Matrix world;		// 월드 행렬
+	std::unique_ptr<class WorldBuffer> worldBuffer;	// 월드 상수버퍼
 
 	DirectX::SimpleMath::Vector2 position;	// 위치
 	DirectX::SimpleMath::Vector2 scale;		// 스케일
