@@ -57,6 +57,10 @@
     <ClCompile Include="Components\Transform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\RigidBody.cpp" />
+    <ClCompile Include="Resources\Texture.cpp" />
+    <ClCompile Include="Utilities\ObjectFactory.cpp" />
+    <ClCompile Include="Components\MeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -126,6 +130,11 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\VirtualKey.h" />
+    <ClInclude Include="Components\RigidBody.h" />
+    <ClInclude Include="Resources\Texture.h" />
+    <ClInclude Include="Utilities\ObjectFactory.h" />
+    <ClInclude Include="Utilities\PhysicsUtils.h" />
+    <ClInclude Include="Components\MeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
