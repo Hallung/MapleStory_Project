@@ -184,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="Systems\Graphics.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Utilities\ObjectFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
