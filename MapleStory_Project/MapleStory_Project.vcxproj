@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\Animator.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Utilities\ObjectFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
     <ClInclude Include="Components\PlatformerController.h" />

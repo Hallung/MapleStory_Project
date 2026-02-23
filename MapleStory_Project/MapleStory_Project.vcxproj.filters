@@ -61,6 +61,7 @@
     <ClCompile Include="Resources\Texture.cpp" />
     <ClCompile Include="Utilities\ObjectFactory.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
+    <ClCompile Include="Components\Animator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\PhysicsUtils.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
+    <ClInclude Include="Components\Animator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
