@@ -1,5 +1,29 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "Renders/ConstantBuffers/GlobalBuffers.h"
+
+
+Transform::Transform(const std::string& name)
+	: Component(name)
+{
+	worldBuffer = std::make_unique<WorldBuffer>();
+}
+
+void Transform::Update()
+{
+	if (bDirty == false)
+		return;
+
+	DirectX::SimpleMath::Matrix S = DirectX::XMMatrixScalingFromVector(scale);
+	DirectX::SimpleMath::Matrix R = DirectX::XMMatrixRotationZ(-rotation);
+	DirectX::SimpleMath::Matrix T = DirectX::XMMatrixTranslationFromVector(position);
+
+	world = S * R * T;
+	worldBuffer->SetWorld(world);
+	worldBuffer->Update();
+
+	bDirty = false;
+}
 
 //=============================
 // 위치 설정
