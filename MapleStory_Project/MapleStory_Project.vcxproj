@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -176,6 +176,8 @@
     <ClCompile Include="Resources\Mesh.cpp" />
     <ClCompile Include="Resources\Texture.cpp" />
     <ClCompile Include="Resources\VertexType.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Scenes\SandboxScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -206,6 +208,10 @@
     <ClInclude Include="Resources\Mesh.h" />
     <ClInclude Include="Resources\Texture.h" />
     <ClInclude Include="Resources\VertexType.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Scenes\SandboxScene.h" />
+    <ClInclude Include="Scenes\Scene.h" />
+    <ClInclude Include="Scenes\SceneList.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
