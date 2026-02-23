@@ -1,5 +1,35 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "Renders/ConstantBuffers/GlobalBuffers.h"
+
+
+Transform::Transform(const std::string& name)
+	: Component(name)
+{
+	// Transform의 월드 행렬을 GPU에 전달하기 위한 WorldBuffer 생성
+	worldBuffer = std::make_unique<WorldBuffer>();
+}
+
+void Transform::Update()
+{
+	// Transform 값이 변경되지 않았다면 월드 행렬 갱신 불필요
+	if (bDirty == false)
+		return;
+
+	// 스케일, 회전, 위치를 이용해 월드 행렬 구성(좌표계 보정으로 회전은 음수 적용)
+	DirectX::SimpleMath::Matrix S = DirectX::XMMatrixScalingFromVector(scale);
+	DirectX::SimpleMath::Matrix R = DirectX::XMMatrixRotationZ(-rotation);
+	DirectX::SimpleMath::Matrix T = DirectX::XMMatrixTranslationFromVector(position);
+
+	world = S * R * T;
+
+	// 계산된 월드 행렬을 GPU 상수버퍼에 반영
+	worldBuffer->SetWorld(world);
+	worldBuffer->Update();
+
+	// 최신 상태로 동기화 되었으므로 Dirty 플래그 해제
+	bDirty = false;
+}
 
 //=============================
 // 위치 설정

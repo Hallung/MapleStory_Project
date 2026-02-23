@@ -11,7 +11,10 @@ class Transform : public Component
 {
 public:
 	// 기본 Transform 생성(기본 이름: "Transform")
-	Transform(const std::string& name = "Transform") : Component(name) {}
+	Transform(const std::string& name = "Transform");
+
+	// bDirty가 ture면 매 프레임 업데이트
+	void Update() override;
 
 	// 현재 위치 반환
 	DirectX::SimpleMath::Vector2 GetPosition() const { return position; }
@@ -21,8 +24,6 @@ public:
 	float GetRotationRadian() const { return rotation; }
 	// 현재 회전값(디그리, 도) 반환
 	float GetRotationDegree() const { return DirectX::XMConvertToDegrees(rotation); }
-	// 현재 Transform 변경 여부 반환
-	bool GetDirty() const { return bDirty; }
 
 	// 위치 설정
 	void SetPosition(DirectX::SimpleMath::Vector2 position);
@@ -32,8 +33,7 @@ public:
 	void SetRotationRadian(float radian);
 	// 회전 설정(디그리, 도)
 	void SetRotationDegree(float degree);
-	// WorldBuffer에 변경된 Transform을 적용 후 변경 여부 초기화 설정
-	void ResetDirty() { bDirty = false; }
+
 
 	// 위치 이동
 	void Move(DirectX::SimpleMath::Vector2 value);
@@ -45,6 +45,9 @@ public:
 	void RotateDegree(float degree);
 
 private:
+	DirectX::SimpleMath::Matrix world;		// 월드 행렬
+	std::unique_ptr<class WorldBuffer> worldBuffer;	// 월드 상수버퍼
+
 	DirectX::SimpleMath::Vector2 position;	// 위치
 	DirectX::SimpleMath::Vector2 scale;		// 스케일
 	float rotation = 0.0f;					// 회전

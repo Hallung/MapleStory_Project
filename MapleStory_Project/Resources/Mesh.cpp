@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "Renders/IA/VertexBuffer.h"
-#include "Renders/IA/IndexBuffer.h"
 #include "Mesh.h"
 
 //====================================================

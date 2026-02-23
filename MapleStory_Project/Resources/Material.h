@@ -1,5 +1,8 @@
 #pragma once
 
+class Texture;
+class FrameBuffer;
+
 //=======================================================================
 // 머티리얼
 // 렌더링에 필요한 셰이더 상태(InputLayout/VertexShader/PixelShader)를 보관
@@ -18,8 +21,27 @@ public:
 	// 머티리얼 셰이더 상태를 렌더링 파이프라인에 바인딩
 	void Bind();
 
+	//=================================
+	// 텍스처 설정
+	// 머티리얼에 사용할 Texture 지정
+	// shared_ptr로 이동하여 소유권 이전
+	//=================================
+	void SetTexture(std::shared_ptr<Texture> texture)
+	{
+		this->texture = move(texture);
+	}
+
+	//======================================
+	// 프레임(애니메이션 UV) 데이터 버퍼 반환
+	// 셰이더에 전달되는 FrameBuffer 접근용
+	//======================================
+	const std::shared_ptr<FrameBuffer>& GetFrameBuffer() const { return frameBuffer; }
+
 private:
 	std::shared_ptr<class InputLayout> inputLayout;	// 입력 정점 레이아웃
 	std::shared_ptr<class VertexShader> vertexShader; // 정점 셰이더
 	std::shared_ptr<class PixelShader> pixelShader;	// 픽셀 셰이더
+
+	std::shared_ptr<Texture> texture;	// 머티리얼에 바인딩될 텍스처 리소스
+	std::shared_ptr<FrameBuffer> frameBuffer; // UV 프레임/애니메이션 정보를 담는 상수 버퍼
 };

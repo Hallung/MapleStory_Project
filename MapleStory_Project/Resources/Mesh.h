@@ -1,4 +1,6 @@
 #pragma once
+#include "Renders/IA/VertexBuffer.h"
+#include "Renders/IA/IndexBuffer.h"
 
 //==============================================
 // 렌더링용 메시 클래스
@@ -32,12 +34,12 @@ private:
 	std::unique_ptr<IndexBuffer> indexBuffer;
 };
 
-//===============================================================
+//=================================================================
 // 템플릿 함수 구현
-// inline 사용 이유
+// inline 사용 이유:
 // 템플릿 함수는 정의가 헤더에 있어야 모든 타입에 대해 인스턴스화 가능
-// 헤더 포함 시 중복 정의(ODR) 방지를 위해 inline 사용
-//===============================================================
+// 헤더 포함 시 중복 정의 방지를 위해 inline 지정
+//=================================================================
 template<typename T>
 inline void Mesh::Create(const std::vector<T>& vertices, const std::vector<UINT>& indices)
 {
