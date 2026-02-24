@@ -1,17 +1,18 @@
 #include "stdafx.h"
-#include "Scenes/SceneList.h"
 #include "Game.h"
+#include "Scenes/SceneList.h"
+#include "Objects/Camera.h"
 
 Game::Game()
 {
-	// TODO : Camera 클래스 구현 후 연동 예정
-	// TODO : Window 메인 루프에서 Game 생성 및 Init / Update / Render 호출 구조로 연동 예정
+	mainCamera = std::make_shared<Camera>(); // Main Camera 생성
 }
 
 Game::~Game()
 {
 	currentScene = nullptr; // 현재 Scene 참조 해제
 	sceneList.clear(); // Scene 목록 전체 제거
+	mainCamera = nullptr; // Main Camera 참조 해제
 	PhysicsManager::GetInstance().Destroy(); // Physics 시스템 리소스 정리
 }
 
@@ -30,11 +31,13 @@ void Game::Init()
 void Game::Update()
 {
 	currentScene->Update();
+	mainCamera->Update();
 }
 
 // 게임 렌더링
 void Game::Render()
 {
+	mainCamera->Bind();
 	currentScene->Render();
 }
 
