@@ -1,11 +1,19 @@
 #include "stdafx.h"
 #include "Object.h"
-#include "Components/Component.h"
+#include "Components/Transform.h"
 
 Object::Object(const std::string& name, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation)
-	:name(name), position(position), scale(scale), rotation(rotation)
+	:name(name)
 {
-	// TODO : Object의 Transform을 어떻게 관리할지 회의 후 리팩토링 예정
+	// Object는 생성 시 기본 Transform을 생성하고 초기 위치/스케일/회전 값을 설정
+	transform = std::make_shared <Transform>();
+
+	transform->SetPosition(position);
+	transform->SetScale(scale);
+	transform->SetRotationDegree(rotation);
+
+	// Transform 또한 하나의 Component이므로 일반 Component와 동일하게 등록하여 관리
+	AddComponent(transform);
 }
 
 // Object가 소유한 모든 Component Awake 호출
@@ -18,8 +26,13 @@ void Object::Awake()
 // 매 프레임 Component Update 호출
 void Object::Update()
 {
+	// Transform은 항상 updateList의 0번에 위치
+	// 월드 변환은 모든 Component Update 이후에 수행되어야 하므로 1번 인덱스부터 순회
 	for (size_t i = 1; i < updateList.size(); ++i)
 		updateList[i]->Update();
+
+	// 마지막에 Transform Update 수행 (최종 위치/회전/스케일 기반 월드 행렬 계산)
+	transform->Update();
 }
 
 // Object가 소유한 모든 Component Render 호출

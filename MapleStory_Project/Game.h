@@ -21,6 +21,8 @@ private:
 	//=======================================
 	void SwitchScene(size_t index);
 
+	std::shared_ptr<class Camera> mainCamera; // 현재 게임에서 사용하는 Main Camera
+
 	std::vector<std::shared_ptr<Scene>> sceneList; // Scene 목록, Game이 소유하며 Scene 전환에 사용
 	std::shared_ptr<Scene> currentScene; //현재 실행 중인 Scene
 };

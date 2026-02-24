@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Window.h"
+#include "Game.h"
+
+// Window에서 실행하는 Game static 인스턴스 정의 및 초기화
+std::unique_ptr<Game> Window::game = nullptr;
 
 Window::Window(const WinDesc& initDesc)
     : w_desc(initDesc)
@@ -83,6 +87,9 @@ ATOM Window::MyRegisterClass(const WinDesc& initDesc)
 // 게임 루프
 WPARAM Window::Run()
 {
+    game = std::make_unique<Game>();
+    game->Init();
+
     MSG msg;
 
     while (true)
@@ -98,6 +105,25 @@ WPARAM Window::Run()
 
             // 메시지를 WndProc()으로 전달
             DispatchMessage(&msg);
+        }
+        else
+        {
+            // 시스템 업데이트
+            InputManager::GetInstance().Update();
+            TimeManager::GetInstance().Update();
+
+            // Game 로직 업데이트
+            game->Update();
+
+            // Game 렌더링
+            Graphics::GetInstance().Begin();
+            {
+                game->Render();
+            }
+            Graphics::GetInstance().End();
+
+            // 목표 프레임 시간이 있다면 대기하여 FPS를 일정하게 유지
+            TimeManager::GetInstance().WaitToTargetFrameRate();
         }
     }
 
