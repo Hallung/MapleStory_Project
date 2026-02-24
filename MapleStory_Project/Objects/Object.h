@@ -1,6 +1,7 @@
 #pragma once
 
 class Component;
+class Transform;
 
 // 게임 내 존재하는 모든 객체의 기본 클래스
 class Object
@@ -29,11 +30,11 @@ public:
 		return dynamic_pointer_cast<T>(components.at(compName));
 	}
 
+	Transform* GetTransform() { return transform.get(); } // Object는 Transform을 항상 보유, 별도 검색 없이 빠르게 접근하기 위한 전용 Getter
+
 protected:
 	std::string name; // Object 이름
-	DirectX::SimpleMath::Vector2 position;
-	DirectX::SimpleMath::Vector2 scale;
-	float rotation;
+	std::shared_ptr<Transform> transform; // Object의 공간 정보(위치, 회전, 스케일) 담당, 항상 존재하는 핵심 Component
 
 	// 이름 기반 Component 저장 및 조회용
 	std::unordered_map<std::string, std::shared_ptr<Component>> components;
