@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Camera.h"
-#include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Components/Transform.h"
 
 Camera::Camera()
@@ -38,7 +37,7 @@ void Camera::Update()
 	DirectX::SimpleMath::Matrix R = DirectX::XMMatrixRotationZ(-rot);
 	DirectX::SimpleMath::Matrix S = DirectX::XMMatrixScaling(zoom, zoom, 1.0f);
 
-	view = T * R * S;
+	view = T * R * S; // Inverse TRS ¼ø¼­
 
 	// GPU ConstantBuffer Update
 	viewProjectionBuffer->SetView(view);
