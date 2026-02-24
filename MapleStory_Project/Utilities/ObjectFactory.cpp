@@ -1,16 +1,21 @@
 #include "stdafx.h"
 #include "ObjectFactory.h"
 #include "Objects/Object.h"
+#include "Components/MeshRenderer.h"
 #include "Resources/Mesh.h"
 #include "Resources/Material.h"
 #include "Resources/VertexType.h"
+#include "Resources/Texture.h"
 #include <span>
 
 namespace ObjectFactory
 {
 namespace
 {
+//===================================================================
 // Objevt에서 MeshRenderer 구성 요소를 생성하여 부착하는 내부 헬퍼 함수
+// ObjectFactory 외부에서 직접 사용할 필요가 없어 익명 namespace 사용
+//===================================================================
 void AttachMeshAndMaterial(
 	const std::shared_ptr<Object>& object,
 	const std::shared_ptr<Mesh>& mesh,
@@ -21,28 +26,51 @@ void AttachMeshAndMaterial(
 	const std::wstring& texturePath = L""
 )
 {
-	// TODO : 
-	// MeshRenderer 생성 후 Object에 추가하는 공통 로직 구현 예정
-	// 예정 동작:
-	// 1. MeshRenderer 생성
-	// 2. Mesh / Topology 설정
-	// 3. Material 생성 후 Color 설정
-	// 4. texturePath가 있으면 Texture로 로드 후 Material에 설정
-	// 5. Renderer를 Object에 Component로 추가
+	// MeshRenderer 생성 및 메쉬/토폴로지 설정
+	auto renderer = std::make_shared<MeshRenderer>();
+	renderer->SetMesh(mesh);
+	renderer->SetTopology(topology);
+
+	// Material 생성 후 색상 설정
+	auto material = std::make_shared<Material>(shaderPath, descs);
+	material->SetColor(color);
+
+	// 텍스처 경로가 있으면 TextureManager를 통해 로드 후 설정
+	if (texturePath.empty() == false)
+	{
+		auto texture = TextureManager::GetInstance().LoadTexture(texturePath);
+		material->SetTexture(std::move(texture));
+	}
+
+	// Renderer에 Material 적용 후 Object에 부착
+	renderer->SetMaterial(std::move(material));
+	object->AddComponent(renderer);
 }
 }
 
 //====================================================================
 // 2D 스프라이트 Object 생성
-// Quad Mesh 와 머티리얼을 구성하여 Sprite 렌더링이 가능한 Object로 반환
+// Quad Mesh 와 Texture Shader, 기본 머티리얼을 구성
+// texturePath 지정 시 텍스처가 적용된 Sprite Object로 반환
 //====================================================================
-//std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation = 0.0f, const std::wstring& path = L"")
-//{
-//	// Sprite 이름으로 Object 생성
-//	std::shared_ptr<Object> object = std::make_shared<Object>("Sprite", position, scale, rotation);
-//
-//	// TODO : AttachMeshAndMaterial 구현 후 다음 구성 예정
-//}
+std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation = 0.0f, const std::wstring& path = L"")
+{
+	// Sprite 이름으로 Object 생성
+	std::shared_ptr<Object> object = std::make_shared<Object>("Sprite", position, scale, rotation);
+
+	// Quad 메쉬 기반 Sprite 렌더러 구성
+	AttachMeshAndMaterial(
+		object,
+		GeometryHelper::CreateTexturedQuad(),
+		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST,
+		DirectX::SimpleMath::Color(1, 1, 1, 1),	// 기본 색상(텍스처 원본 유지)
+		L"_Shaders/Texture.hlsl",
+		VertexTexture::descs,
+		path
+	);
+
+	return object;
+}
 }
 
 namespace GeometryHelper
