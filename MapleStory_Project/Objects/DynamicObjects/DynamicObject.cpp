@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "DynamicObject.h"
-#include "Components/RigidBody.h"
 
 DynamicObject::DynamicObject(const std::string& name, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, BodyType type)
 	: Object(name, position, scale, rotation)

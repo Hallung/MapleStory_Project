@@ -1,7 +1,6 @@
 #pragma once
 #include "Objects/Object.h"
-
-class RigidBody;
+#include "Components/RigidBody.h"
 
 //=======================================================
 // 정적 오브젝트의 베이스 클래스
