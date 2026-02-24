@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Renders/ConstantBuffers/GlobalBuffers.h"
 
 //=======================================
 // 2D 변환(Transform) 컴포넌트
@@ -24,6 +25,8 @@ public:
 	float GetRotationRadian() const { return rotation; }
 	// 현재 회전값(디그리, 도) 반환
 	float GetRotationDegree() const { return DirectX::XMConvertToDegrees(rotation); }
+	// 부동소수 비교 허용 오차값 반환
+	float GetEpsilon() const { return epsilon; }
 
 	// 위치 설정
 	void SetPosition(DirectX::SimpleMath::Vector2 position);
@@ -33,7 +36,6 @@ public:
 	void SetRotationRadian(float radian);
 	// 회전 설정(디그리, 도)
 	void SetRotationDegree(float degree);
-
 
 	// 위치 이동
 	void Move(DirectX::SimpleMath::Vector2 value);
