@@ -53,7 +53,7 @@ void AttachMeshAndMaterial(
 // Quad Mesh 와 Texture Shader, 기본 머티리얼을 구성
 // texturePath 지정 시 텍스처가 적용된 Sprite Object로 반환
 //====================================================================
-std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation = 0.0f, const std::wstring& path = L"")
+std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& path)
 {
 	// Sprite 이름으로 Object 생성
 	std::shared_ptr<Object> object = std::make_shared<Object>("Sprite", position, scale, rotation);
