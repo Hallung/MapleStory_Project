@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Renders/IA/InputLayout.h"
 #include "Renders/Shaders/VertexShader.h"
 #include "Renders/Shaders/PixelShader.h"
