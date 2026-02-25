@@ -71,6 +71,15 @@ std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, Dire
 
 	return object;
 }
+
+std::shared_ptr<Object> ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, DirectX::SimpleMath::Color color)
+{
+	auto obj = std::make_shared<Object>("ColorRect", position, scale, rotation);
+
+	AttachMeshAndMaterial(obj, GeometryHelper::CreateRectangle(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, color, L"_Shaders/Vertex.hlsl", Vertex::descs);
+
+	return obj;
+}
 }
 
 namespace GeometryHelper
@@ -103,6 +112,27 @@ std::shared_ptr<Mesh> CreateTexturedQuad()
 		std::vector<UINT> indices = { 0, 1, 2, 2, 1, 3 };
 
 		// Mesh 积己 棺 滚欺 备己
+		mesh = std::make_shared<Mesh>();
+		mesh->Create(vertices, indices);
+	}
+
+	return mesh;
+}
+
+std::shared_ptr<Mesh> CreateRectangle()
+{
+	static std::shared_ptr<Mesh> mesh;
+
+	if (mesh == nullptr)
+	{
+		std::vector<Vertex> vertices(4);
+		vertices[0].position = { -0.5f, -0.5f };
+		vertices[1].position = { -0.5f, 0.5f };
+		vertices[2].position = { 0.5f, -0.5f };
+		vertices[3].position = { 0.5f, 0.5f };
+
+		std::vector<UINT> indices = { 0, 1, 2, 2, 1, 3 };
+
 		mesh = std::make_shared<Mesh>();
 		mesh->Create(vertices, indices);
 	}

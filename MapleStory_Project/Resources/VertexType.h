@@ -4,22 +4,16 @@
 // 정점 타입 : 위치 + 색상
 // 컬러 렌더링용 기본 2D 정점 구조
 //===============================
-struct VertexColor
+struct Vertex
 {
-	VertexColor() = default;
-	// 위치 + 색상 초기화 생성자
-	VertexColor(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Color color) 
-		: position(position), color(color)
-	{ 
+	Vertex() = default;
+	Vertex(DirectX::SimpleMath::Vector2 position)
+		:position(position)
+	{
 	}
 
-	DirectX::SimpleMath::Vector2 position;	// 정점 위치
-	DirectX::SimpleMath::Color color;		// 정점 색상
+	DirectX::SimpleMath::Vector2 position;
 
-	//==============================================
-	// 입력 레이아웃 정의 (InputLayout 생성용)
-	// 인스턴스마다 생성할 필요가 없어 static으로 선언
-	//==============================================
 	static std::vector<D3D11_INPUT_ELEMENT_DESC> descs;
 };
 

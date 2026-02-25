@@ -35,6 +35,12 @@ public:
 		this->texture = move(texture);
 	}
 
+	DirectX::SimpleMath::Color GetColor() const
+	{
+		if (colorBuffer) return colorBuffer->GetColor();
+		return DirectX::SimpleMath::Color(1, 1, 1, 1);
+	}
+
 	// 머티리얼 색상(ConstantBuffer) 설정
 	void SetColor(DirectX::SimpleMath::Color color)
 	{

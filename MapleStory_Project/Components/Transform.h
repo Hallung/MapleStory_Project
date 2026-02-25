@@ -16,6 +16,7 @@ public:
 
 	// bDirty가 ture면 매 프레임 업데이트
 	void Update() override;
+	void Render() override;
 
 	// 현재 위치 반환
 	DirectX::SimpleMath::Vector2 GetPosition() const { return position; }
