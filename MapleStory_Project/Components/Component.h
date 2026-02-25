@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 class Object;
+class Collider;
 
 // 모든 컴포넌트의 기본 베이스 클래스
 // 오브젝트에 부착되는 기능
