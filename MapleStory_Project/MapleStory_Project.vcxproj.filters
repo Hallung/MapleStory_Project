@@ -91,6 +91,9 @@
     <ClCompile Include="Components\Collider.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\BoxCollider.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\CollisionLayer.h">
       <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BoxCollider.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

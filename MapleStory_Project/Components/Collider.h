@@ -20,9 +20,6 @@ public:
 	void Awake() override; // Owner의 Rigidbody를 기반으로 Shape를 생성
 	void Update() override; // Transform Scale 변경 감지 시 Shape를 갱신
 
-	// 특정 Point가 Collider 내부에 포함되는지 확인, 각 Collider 타입에서 구현 필요
-	virtual bool IsColliding(DirectX::SimpleMath::Vector2 point) = 0;
-
 	// Collider Offset 설정, Offset 변경 시 Shape를 재생성
 	void SetOffset(DirectX::SimpleMath::Vector2 val)
 	{
