@@ -88,6 +88,12 @@
     <ClCompile Include="Objects\DynamicObjects\DynamicObject.cpp">
       <Filter>Objects\DynamicObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Components\Collider.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\BoxCollider.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -198,6 +204,15 @@
     </ClInclude>
     <ClInclude Include="Objects\DynamicObjects\DynamicObject.h">
       <Filter>Objects\DynamicObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Collider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\CollisionLayer.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BoxCollider.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

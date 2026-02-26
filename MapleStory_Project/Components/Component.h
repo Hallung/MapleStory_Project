@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 class Object;
+class Collider;
 
 // 모든 컴포넌트의 기본 베이스 클래스
 // 오브젝트에 부착되는 기능
@@ -30,6 +31,11 @@ public:
 	// 렌더 단계
 	// 렌더 프레임마다 호출
 	virtual void Render() {}
+
+	// Object로부터 전달받는 충돌 시작 이벤트
+	virtual void OnCollisionEnter(Collider* other) {}
+	// Object로부터 전달받는 충돌 종료 이벤트
+	virtual void OnCollisionExit(Collider* other) {}
 
 	// 컴포넌트 이름 반환
 	std::string GetName() const { return name; }

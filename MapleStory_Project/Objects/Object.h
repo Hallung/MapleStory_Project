@@ -2,6 +2,7 @@
 
 class Component;
 class Transform;
+class Collider;
 
 // 게임 내 존재하는 모든 객체의 기본 클래스
 class Object
@@ -15,6 +16,9 @@ public:
 	virtual void Awake(); // 초기화 단계에서 호출
 	virtual void Update(); // 매 프레임 호출
 	virtual void Render(); // 렌더링 단계에서 호출
+
+	void OnCollisionEnter(Collider* other); // 다른 Collider와 충돌 시작 시 호출
+	void OnCollisionExit(Collider* other); // 다른 Collider와 충돌 종료 시 호출
 
 	// Component를 Object에 등록하고 Owner 설정
 	void AddComponent(const std::shared_ptr<Component>& component);
