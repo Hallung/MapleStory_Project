@@ -83,6 +83,18 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
+    <ClCompile Include="Objects\StaticObjects\StaticObject.cpp">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\DynamicObjects\DynamicObject.cpp">
+      <Filter>Objects\DynamicObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Collider.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\BoxCollider.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -189,6 +201,21 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
+    <ClInclude Include="Objects\StaticObjects\StaticObject.h">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DynamicObjects\DynamicObject.h">
+      <Filter>Objects\DynamicObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Collider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\CollisionLayer.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\BoxCollider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

@@ -38,8 +38,18 @@ public:
 	// Box2D 월드 ID 반환
 	b2WorldId GetWorldId() const { return worldId; }
 
+	// Box2D 월드의 gravity를 갱신하며, 이후 물리 시뮬레이션에 적용
+	void SetGravity(DirectX::SimpleMath::Vector2 gravity);
+
 private:
+	// Box2D에서 발생한 Sensor / Contact 이벤트를 처리하는 내부 함수
+	// 각 Shape의 UserData에 등록된 Collider를 통해 Object -> Component 순으로 충돌 이벤트를 전달
+	void ProcessEvents();
+
 	b2WorldId worldId = b2_nullWorldId; // Box2D 물리 월드 ID
-	int subStepCount = 4;		// 프레임당 최대 물리 스템 횟수 (고정 시간동안 반복 수)
+	float timeScale = 1.0f;		// 물리 시뮬레이션 속도 배율
+	int subStepCount = 4;		// 프레임당 최대 물리 스텝 횟수 (고정 시간동안 반복 수)
+
+	float stepSize = 1.0f / 144.0f; // 물리 고정 시간 간격
 	float timeAccumulator = 0.0f;	// 누적 시간 (초)
 };

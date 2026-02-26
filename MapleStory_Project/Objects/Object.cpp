@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Object.h"
 #include "Components/Transform.h"
+#include "Components/Collider.h"
 
 Object::Object(const std::string& name, DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation)
 	:name(name)
@@ -40,6 +41,20 @@ void Object::Render()
 {
 	for (const auto& comp : updateList)
 		comp->Render();
+}
+
+// Object가 소유한 모든 Component에게 충돌 시작 이벤트를 전달
+void Object::OnCollisionEnter(Collider* other)
+{
+	for (const auto& comp : updateList)
+		comp->OnCollisionEnter(other);
+}
+
+// Object가 소유한 모든 Component에게 충돌 종료 이벤트를 전달
+void Object::OnCollisionExit(Collider* other)
+{
+	for (const auto& comp : updateList)
+		comp->OnCollisionExit(other);
 }
 
 //====================================================

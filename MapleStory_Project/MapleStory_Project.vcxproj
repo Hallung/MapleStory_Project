@@ -159,6 +159,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Components\Animator.cpp" />
+    <ClCompile Include="Components\BoxCollider.cpp" />
+    <ClCompile Include="Components\Collider.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
@@ -196,6 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Animator.h" />
+    <ClInclude Include="Components\BoxCollider.h" />
+    <ClInclude Include="Components\Collider.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
     <ClInclude Include="Components\PlatformerController.h" />
@@ -228,6 +232,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Utilities\CollisionLayer.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\PhysicsUtils.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />
