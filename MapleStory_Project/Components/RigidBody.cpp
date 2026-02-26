@@ -27,7 +27,7 @@ RigidBody::~RigidBody()
 // Transform 정보를 기반으로 Box2D 바디를 생성하고 월드에 등록
 void RigidBody::Awake()
 {
-	auto transform = GetOwner()->GetComponent<Transform>("Transform");
+	auto transform = GetOwner()->GetTransform();
 
 	// 화면 좌표 -> 물리 월드 좌표 변환
 	bodyDef.position = PhysicsUtils::ScreenToWorld(transform->GetPosition());
@@ -56,7 +56,7 @@ void RigidBody::Update()
 	b2Rot rotation = b2Body_GetRotation(bodyId);
 	float angle = b2Rot_GetAngle(rotation);
 
-	auto transform = GetOwner()->GetComponent<Transform>("Transform");
+	auto transform = GetOwner()->GetTransform();
 	// 물리 월드 -> 화면 좌표 변환 후 Transform 반영
 	transform->SetPosition(PhysicsUtils::WorldToScreen(position));
 	// Box2D(반시계) -> 엔진(시계) 회전 보정

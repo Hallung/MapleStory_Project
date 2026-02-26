@@ -33,6 +33,23 @@ public:
 	ComPtr<ID3D11Device> GetDevice() const { return device; } // GPU 리소스 생성 시 사용
 	ComPtr<ID3D11DeviceContext> GetDeviceContext() const { return deviceContext; } // GPU 렌더링 명령 실행 시 사용
 
+	//==================================================================
+	// 현재 설정된 샘플러 상태 반환
+	// bPoint == true : Point 샘플링 반환 (픽셀 아트 등 선명한 텍스처용)
+	// bPoint == false : Linear 샘플링 반환 (일반 텍스처 보간용)
+	//==================================================================
+	ID3D11SamplerState* GetSample(bool bPoint) const { return bPoint ? samplerPoint.Get() : samplerLinear.Get(); }
+
+	//================================================================
+	// Pixel Shader에 샘플러 상태 바인딩
+	// bPoint 값에 따라 Point / Linear 샘플러를 선택하여 slot 0 에 설정
+	// 이후 Pixel Shader에서 텍스처 샘플링 시 해당 필터 방식이 적용
+	//================================================================
+	void SetSampler(bool bPoint)
+	{
+		deviceContext->PSSetSamplers(0, 1, bPoint ? samplerPoint.GetAddressOf() : samplerLinear.GetAddressOf());
+	}
+
 private:
 	ComPtr<ID3D11Device> device; // GPU 리소스 생성 담당
 	ComPtr<ID3D11DeviceContext> deviceContext; // GPU 렌더링 명령 실행 담당

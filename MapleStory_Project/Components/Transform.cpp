@@ -31,6 +31,12 @@ void Transform::Update()
 	bDirty = false;
 }
 
+void Transform::Render()
+{
+	// WorldBuffer를 Vertex Shader 슬롯 0번에 바인딩
+	worldBuffer->BindVS(0);
+}
+
 //=============================
 // 위치 설정
 // 기존 값과 동일하면 return

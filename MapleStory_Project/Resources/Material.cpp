@@ -17,6 +17,13 @@ Material::Material(std::wstring shaderPath, std::span<const D3D11_INPUT_ELEMENT_
 	vertexShader = shaders.vertexShader;
 	pixelShader = shaders.pixelShader;
 
+	//================================================================
+	// Material에서 사용할 색상 상수버퍼(ColorBuffer) 생성
+	// 기본 색상은 흰색(1,1,1,1)로 초기화하여 텍스처 색을 그대로 출력하도록 설정
+	//================================================================
+	colorBuffer = std::make_unique<ColorBuffer>();
+	colorBuffer->SetColor(DirectX::SimpleMath::Color(1, 1, 1, 1));
+
 	// 프레임 데이터용 상수버퍼 생성
 	frameBuffer = std::make_shared<FrameBuffer>();
 	// 기본 UV 영역 전체(0 ~ 1)로 초기화(애니메이션 미사용 시 전체 텍스처 출력)
@@ -36,8 +43,19 @@ void Material::Bind()
 	if (vertexShader) vertexShader->Bind();
 	if (pixelShader) pixelShader->Bind();
 
+	// 현재 설정된 샘플링 모드를 Graphics에 적용
+	Graphics::GetInstance().SetSampler(bPointSampling);
+
 	// 텍스처 바인딩 (PS 슬롯 0)
 	if (texture) texture->Bind(0);
+
+	if (colorBuffer)
+	{
+		// CPU에서 설정된 색상 값을 GPU에 상수 버퍼 업데이트
+		colorBuffer->Update();
+		// Pixel Shader 슬롯 0번에 ColorBuffer 바인딩
+		colorBuffer->BindPS(0);
+	}
 
 	// 프레임(UV) 데이터 셰이더 전달
 	if (frameBuffer)

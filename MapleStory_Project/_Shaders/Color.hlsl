@@ -5,7 +5,6 @@
 struct VertexInput
 {
     float4 position : POSITION0; // 정점 위치
-    float4 color : COLOR0; // 정점 색상
 };
 
 // ==============================
@@ -15,7 +14,6 @@ struct VertexInput
 struct PixelInput
 {
     float4 position : SV_POSITION0; // 변환된 최종 정점 위치 (Clip Space)
-    float4 color : COLOR0; // Pixel Shader에 전달할 색상
 };
 
 // ==============================
@@ -51,9 +49,16 @@ PixelInput VS(VertexInput input)
     output.position = mul(output.position, _view); // View 변환
     output.position = mul(output.position, _projection); // Projection 변환
 	
-    output.color = input.color; // 색상 전달
-	
     return output;
+}
+
+//================================================================
+// Material의 ColorBuffer에서 전달된 색상 데이터
+// register(b0) 슬롯을 통해 Pixel Shader에서 오브젝트 색상으로 사용
+//================================================================
+cbuffer ColorBuffer : register(b0)
+{
+    float4 _color;
 }
 
 // ==============================
@@ -62,5 +67,5 @@ PixelInput VS(VertexInput input)
 // ==============================
 float4 PS(PixelInput input) : SV_Target0
 {
-    return input.color;
+    return _color;
 }
