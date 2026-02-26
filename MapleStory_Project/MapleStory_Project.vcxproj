@@ -167,9 +167,8 @@
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Managers\TextureManager.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
-    <ClCompile Include="Objects\DynamicObjects\DynamicObject.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
-    <ClCompile Include="Objects\StaticObjects\StaticObject.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
     <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
@@ -205,9 +204,8 @@
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Managers\TextureManager.h" />
     <ClInclude Include="Objects\Camera.h" />
-    <ClInclude Include="Objects\DynamicObjects\DynamicObject.h" />
+    <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\Object.h" />
-    <ClInclude Include="Objects\StaticObjects\StaticObject.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
     <ClInclude Include="Renders\IA\IndexBuffer.h" />

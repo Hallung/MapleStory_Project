@@ -82,12 +82,7 @@
     <ClCompile Include="Scenes\SandboxScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\StaticObjects\StaticObject.cpp">
-      <Filter>Objects\StaticObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\DynamicObjects\DynamicObject.cpp">
-      <Filter>Objects\DynamicObjects</Filter>
-    </ClCompile>
+    <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -193,12 +188,7 @@
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\StaticObjects\StaticObject.h">
-      <Filter>Objects\StaticObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\DynamicObjects\DynamicObject.h">
-      <Filter>Objects\DynamicObjects</Filter>
-    </ClInclude>
+    <ClInclude Include="Objects\DynamicObjects\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
