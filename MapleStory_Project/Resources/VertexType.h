@@ -4,10 +4,10 @@
 // 정점 타입 : 위치 + 색상
 // 컬러 렌더링용 기본 2D 정점 구조
 //===============================
-struct Vertex
+struct Color
 {
-	Vertex() = default;
-	Vertex(DirectX::SimpleMath::Vector2 position)
+	Color() = default;
+	Color(DirectX::SimpleMath::Vector2 position)
 		:position(position)
 	{
 	}

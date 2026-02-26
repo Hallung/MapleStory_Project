@@ -76,7 +76,7 @@ std::shared_ptr<Object> ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vect
 {
 	auto obj = std::make_shared<Object>("ColorRect", position, scale, rotation);
 
-	AttachMeshAndMaterial(obj, GeometryHelper::CreateRectangle(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, color, L"_Shaders/Vertex.hlsl", Vertex::descs);
+	AttachMeshAndMaterial(obj, GeometryHelper::CreateRectangle(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, color, L"_Shaders/Color.hlsl", Color::descs);
 
 	return obj;
 }
@@ -125,7 +125,7 @@ std::shared_ptr<Mesh> CreateRectangle()
 
 	if (mesh == nullptr)
 	{
-		std::vector<Vertex> vertices(4);
+		std::vector<Color> vertices(4);
 		vertices[0].position = { -0.5f, -0.5f };
 		vertices[1].position = { -0.5f, 0.5f };
 		vertices[2].position = { 0.5f, -0.5f };

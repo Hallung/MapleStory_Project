@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VertexType.h"
 
-std::vector<D3D11_INPUT_ELEMENT_DESC> Vertex::descs
+std::vector<D3D11_INPUT_ELEMENT_DESC> Color::descs
 {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
