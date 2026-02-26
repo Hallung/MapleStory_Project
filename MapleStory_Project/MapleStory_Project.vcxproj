@@ -232,6 +232,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Utilities\CollisionLayer.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\PhysicsUtils.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />

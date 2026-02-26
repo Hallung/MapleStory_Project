@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Utilities/CollisionLayer.h"
 
 //=================================================================
 // Box2D Shape를 기반으로 충돌 판정을 담당하는 Component 베이스 클래스
@@ -32,6 +33,9 @@ public:
 		}
 	}
 
+	void SetCollisionLayer(CollisionLayer layer); // 이 Collider가 속할 CollisionLayer 를 설정
+	void SetCollisionMask(uint32_t mask); // 이 Collider가 충돌을 허용할 레이어 Mask 설정
+
 	DirectX::SimpleMath::Vector2 GetOffset() const { return offset; } // Offset 반환
 
 	void SetIsSensor(bool value) { isSensor = value; } // Sensor 여부 설정, Sensor는 물리 반응 없이 이벤트만 발생
@@ -48,6 +52,8 @@ protected:
 	// Shape 제거 시 Overlap 되어있는 Collider들에게 Collision Exit 이벤트를 전달하기 위한 Callback 함수
 	static bool NotifyExitCallback(b2ShapeId otherShapeId, void* context);
 
+	void ApplyFilter() const; // 현재 layer 와 mask 값을 Box2D Shape Filter에 적용
+
 	b2ShapeId shapeId = b2_nullShapeId; // Box2D Shape 식별자
 	bool isSensor = false; // Sensor 여부
 
@@ -56,4 +62,7 @@ protected:
 	// 마지막으로 Shape 생성 시 사용한 Scale, Scale 변경 감지용
 	// Shape 최초 생성을 보장하기 위해 의도적으로 유효하지 않은 값으로 초기화
 	DirectX::SimpleMath::Vector2 lastScale = { -999.0f, -999.0f };
+
+	CollisionLayer layer = CollisionLayer::Default; // 현재 Collider가 속한 Collision Layer
+	uint32_t mask = 0xFFFFFFFF; // 충돌 허용 레이어 Mask (0xFFFFFFFF : 모든 레이어와 충돌 허용)
 };

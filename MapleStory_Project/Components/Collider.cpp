@@ -36,6 +36,30 @@ void Collider::Update()
 		RefreshShape();
 }
 
+void Collider::SetCollisionLayer(CollisionLayer layer)
+{
+	// 동일한 값이면 불필요한 업데이트 방지
+	if (this->layer == layer) return;
+
+	// Collision Layer 변경
+	this->layer = layer;
+
+	// Box2D Filter에 즉시 반영
+	ApplyFilter();
+}
+
+void Collider::SetCollisionMask(uint32_t mask)
+{
+	// 동일한 값이면 불필요한 업데이트 방지
+	if (this->mask == mask) return;
+
+	// Collision Mask 변경
+	this->mask = mask;
+
+	// Box2D Filter에 즉시 반영
+	ApplyFilter();
+}
+
 // Shape 생성 및 재생성 처리
 void Collider::RefreshShape()
 {
@@ -82,6 +106,10 @@ void Collider::RefreshShape()
 	if (!isSensor)
 		shapeDef.enableContactEvents = true;
 
+	// Collision Filter 설정, 이를 통해 Layer 기반 Collision Filtering 수행
+	shapeDef.filter.categoryBits = static_cast<uint32_t>(layer);
+	shapeDef.filter.maskBits = mask;
+
 	// 실제 Shape 생성
 	shapeId = CreateShapeInternal(rb->GetBodyId(), shapeDef, scale);
 
@@ -105,4 +133,17 @@ bool Collider::NotifyExitCallback(b2ShapeId otherShapeId, void* context)
 	}
 
 	return false;
+}
+
+void Collider::ApplyFilter() const
+{
+	if (b2Shape_IsValid(shapeId) == false) return; // Shape가 아직 생성되지 않았으면 적용 불가
+
+	b2Filter filter = b2DefaultFilter(); // 기본 Filter 생성
+
+	filter.categoryBits = static_cast<uint32_t>(layer); // 이 Collider가 속한 Layer
+	filter.maskBits = mask; // 이 Collider가 충돌을 허용할 Layer
+	filter.groupIndex = 0; // 같은 그룹 간 충돌 제어용 (현재 사용 안함)
+
+	b2Shape_SetFilter(shapeId, filter); // Box2D Shape에 Filter 적용
 }

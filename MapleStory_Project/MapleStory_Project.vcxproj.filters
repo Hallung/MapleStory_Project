@@ -205,6 +205,9 @@
     <ClInclude Include="Components\Collider.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\CollisionLayer.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
