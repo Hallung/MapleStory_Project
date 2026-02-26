@@ -43,6 +43,8 @@ void Material::Bind()
 	if (vertexShader) vertexShader->Bind();
 	if (pixelShader) pixelShader->Bind();
 
+	// 현재 설정된 샘플링 모드를 Graphics에 적용
+	Graphics::GetInstance().SetSampler(bPointSampling);
 
 	// 텍스처 바인딩 (PS 슬롯 0)
 	if (texture) texture->Bind(0);

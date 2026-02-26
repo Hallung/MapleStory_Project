@@ -53,6 +53,13 @@ public:
 	//======================================
 	const std::shared_ptr<FrameBuffer>& GetFrameBuffer() const { return frameBuffer; }
 
+	//======================================================
+	// Point 샘플링 사용 여부 설정
+	// true : Point Sampling (픽셀 아트, 선명한 텍스처 유지)
+	// false : Linear Sampling (부드러운 보간)
+	//======================================================
+	void SetPointSampler(bool value) { bPointSampling = value; }
+
 private:
 	std::shared_ptr<class InputLayout> inputLayout;	// 입력 정점 레이아웃
 	std::shared_ptr<class VertexShader> vertexShader; // 정점 셰이더
@@ -62,4 +69,6 @@ private:
 	std::shared_ptr<FrameBuffer> frameBuffer; // UV 프레임/애니메이션 정보를 담는 상수 버퍼
 
 	std::unique_ptr<ColorBuffer> colorBuffer;	// 머티리얼 색상 정보를 GUP에 전달하는 상수 버퍼
+
+	bool bPointSampling = false;	// 현재 샘플러 필터링 모드 상태
 };
