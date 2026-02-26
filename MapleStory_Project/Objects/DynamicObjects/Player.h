@@ -40,6 +40,7 @@ public:
 		HITTING,
 		CLIMBING,
 		ATTACKING,
+		JUMPING,
 		WALKING,
 		IDLE,
 		NONE
