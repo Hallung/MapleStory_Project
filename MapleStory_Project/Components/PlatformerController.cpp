@@ -4,6 +4,7 @@
 #include "Objects/DynamicObjects/Player.h"
 #include "RigidBody.h"
 #include "Transform.h"
+#include "Animator.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/PhysicsUtils.h"
 
@@ -20,7 +21,7 @@ void PlatformerController::Update()
 	{
 		dir.x += 1.0f;
 
-		auto transform = GetOwner()->GetTransform();
+		auto transform = owner->GetTransform();
 		DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 		float absScaleX = fabsf(scale.x);
 		if (scale.x > 0.0f)
@@ -31,7 +32,7 @@ void PlatformerController::Update()
 	{
 		dir.x -= 1.0f;
 
-		auto transform = GetOwner()->GetTransform();
+		auto transform = owner->GetTransform();
 		DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 		float absScaleX = fabsf(scale.x);
 		if (scale.x < 0.0f)
@@ -95,5 +96,8 @@ void PlatformerController::Jump()
 
 void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 {
-	// TODO : Animatior 컴포넌트 제작 후 작성
+	auto animator = owner->GetComponent<Animator>("Animaotr");
+	if (animator == nullptr) return;
+
+	// TODO: 애니메이션 xml 제작 후 상태에 따른 애니메이션 Play 방식 변경 호출 제작
 }
