@@ -21,6 +21,8 @@ public:
 private:
 	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 워치 갱신
 	void Move(DirectX::SimpleMath::Vector2 dir);
+
+	void Jump();
 	
 	// 애니메이션 상태 업데이트(이동 방향에 따라 상태 변경)
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
