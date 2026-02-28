@@ -56,3 +56,26 @@ Abi: 3642517282b3f816e90d6bef949e2272688700356fcf8f801d18311384970011
 Description: A simple, small, efficient, C++ XML parser
 Status: install ok installed
 
+Package: imgui
+Version: 1.91.9
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 30fd2ec0b37ecab9e0b17ef972256cc0960ac2f090cb2b12f013fe94f8fd9b61
+Description: Bloat-free Immediate Mode Graphical User interface for C++ with minimal dependencies.
+Status: install ok installed
+
+Package: imgui
+Feature: dx11-binding
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available DirectX11 binding
+Status: install ok installed
+
+Package: imgui
+Feature: win32-binding
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available Win32 binding
+Status: install ok installed
+

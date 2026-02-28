@@ -3,11 +3,15 @@
     "name": "d2d",
     "version": "0.0.1",
     "dependencies": [
-      {
-        "name": "directxtex",
-        "features": [ "dx11" ]
-      },
-      "box2d",
-      "tinyxml2"
+        {
+            "name": "directxtex",
+            "features": [ "dx11" ]
+        },
+        "box2d",
+        "tinyxml2",
+        {
+            "name": "imgui",
+            "features": [ "win32-binding", "dx11-binding" ]
+        }
     ]
 }
