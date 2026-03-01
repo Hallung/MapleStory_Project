@@ -32,4 +32,6 @@ public:
 	void Render(); // ImGui DrawData를 DX11으로 렌더링
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Win32 메시지를 ImGui에 전달
+
+	void ShowFPSOverlay(); // 우측 상단에 FPS 및 Frame Time(ms)을 표시하는 오버레이 UI 출력 (디버그용 정보 표시 목적)
 };

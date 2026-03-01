@@ -92,6 +92,9 @@ WPARAM Window::Run()
 
     MSG msg;
 
+    // 목표 FPS를 144로 설정
+    TimeManager::GetInstance().SetTargetFPS(144.0);
+
     while (true)
     {
         // 메시지가 없으면 대기하지 않고 즉시 반환
@@ -133,6 +136,11 @@ WPARAM Window::Run()
 // Window 이벤트 처리
 LRESULT Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    // ImGui가 해당 메시지를 먼저 처리하도록 전달 
+    // 마우스, 키보드 입력 등을 UI에서 소비하는 경우 true 반환
+    if (ImGuiManager::GetInstance().WndProc(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
     case WM_DESTROY:

@@ -63,3 +63,48 @@ LRESULT ImGuiManager::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
+
+void ImGuiManager::ShowFPSOverlay()
+{
+	// 화면 가장자리와의 간격
+	constexpr float DISTANCE = 10.0f;
+
+	// 우측 상단 위치 계산 (pivot을 이용해 오른쪽 정렬)
+	ImVec2 winPos = ImVec2(gWinWidth - DISTANCE, DISTANCE);
+	ImVec2 winPosPivot = ImVec2(1.0f, 0.0f);
+
+	ImGui::SetNextWindowPos(winPos, ImGuiCond_Always, winPosPivot);
+
+	// 오버레이 창 옵션 설정
+	ImGuiWindowFlags winFlags = ImGuiWindowFlags_NoDecoration | // 타이틀바 및 테두리 제거
+		ImGuiWindowFlags_AlwaysAutoResize |						// 내용에 맞게 자동 크기 조절
+		ImGuiWindowFlags_NoSavedSettings |						// 위치/설정 저장하지 않음
+		ImGuiWindowFlags_NoFocusOnAppearing |					// 생성 시 포커스 가져가지 않음
+		ImGuiWindowFlags_NoNav |								// 키보드 네비게이션 비활성화
+		ImGuiWindowFlags_NoMove |								// 창 이동 불가
+		ImGuiWindowFlags_NoBackground;							// 배경 없이 텍스트만 표시
+
+	ImGui::Begin("FPS Overlay", nullptr, winFlags);
+
+	UINT fps = TimeManager::GetInstance().GetFPS();
+
+	// FPS 및 Frame Time 문자열 생성
+	char fpsText[64];
+	sprintf_s(fpsText, "FPS : %d", fps);
+	char msText[64];
+	sprintf_s(msText, "Frame Time : %.3f ms", 1000.0f / fps);
+
+	// 두 텍스트 중 더 긴 길이를 기준으로 정렬
+	float width1 = ImGui::CalcTextSize(fpsText).x;
+	float width2 = ImGui::CalcTextSize(msText).x;
+	float maxWidth = max(width1, width2);
+
+	// 오른쪽 정렬을 맞추기 위해 커서 위치 조정
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (maxWidth - width1));
+	ImGui::TextUnformatted(fpsText);
+
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (maxWidth - width2));
+	ImGui::TextUnformatted(msText);
+
+	ImGui::End();
+}

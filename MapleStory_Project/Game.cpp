@@ -14,11 +14,15 @@ Game::~Game()
 	sceneList.clear(); // Scene 목록 전체 제거
 	mainCamera = nullptr; // Main Camera 참조 해제
 	PhysicsManager::GetInstance().Destroy(); // Physics 시스템 리소스 정리
+	ImGuiManager::GetInstance().Destroy(); // ImGui 컨텍스트 및 백엔드 종료
 }
 
 // 게임 초기화
 void Game::Init()
 {
+	// ImGui 시스템 초기화
+	ImGuiManager::GetInstance().Init();
+
 	// SandboxScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<SandboxScene>());
 
@@ -30,8 +34,16 @@ void Game::Init()
 // 게임 업데이트
 void Game::Update()
 {
+	// ImGui 프레임 시작
+	ImGuiManager::GetInstance().Update();
+
 	currentScene->Update();
 	mainCamera->Update();
+
+#ifdef _DEBUG
+	// 디버그 모드에서만 FPS 오버레이 출력
+	ImGuiManager::GetInstance().ShowFPSOverlay();
+#endif
 }
 
 // 게임 렌더링
@@ -39,6 +51,9 @@ void Game::Render()
 {
 	mainCamera->Bind();
 	currentScene->Render();
+
+	// ImGui 렌더링
+	ImGuiManager::GetInstance().Render();
 }
 
 // Scene 전환 함수
