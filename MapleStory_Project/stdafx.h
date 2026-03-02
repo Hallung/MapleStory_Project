@@ -35,11 +35,16 @@
 // WRL
 #include <wrl.h>
 
-// DirectXTK
+// DirectXTex
 #include <DirectXTex.h>
 
-// DirectXTK
+// DirectXTK-SimpleMath
 #include "_Libraries/DirectXTK/SimpleMath.h"
+
+// ImGui
+#include <imgui.h>
+#include <imgui_impl_win32.h>
+#include <imgui_impl_dx11.h>
 
 extern HWND gHandle;
 extern float gWinWidth;
@@ -62,3 +67,4 @@ extern float gWinHeight;
 #include "Managers/ShaderManager.h"
 #include "Managers/PhysicsManager.h"
 #include "Managers/TextureManager.h"
+#include "Managers/ImGuiManager.h"

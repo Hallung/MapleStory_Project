@@ -158,30 +158,35 @@ AnimationClip::AnimationClip(const std::wstring& name, const std::wstring& textu
 //=========================================================
 void Animator::Update()
 {
-	// 재생 중이 아니거나 클립이 없으면 종료
-	if (currentClip == nullptr || !bPlaying) return;
+	// 클립이 없으면 종료
+	if (currentClip == nullptr) return;
 
-	// 시간 누적
-	accumulatedTime += TimeManager::GetInstance().GetDeltaTime();
-
-	// 프레임 전환 시점 도달 시
-	if (accumulatedTime >= currentClip->playRate)
+	// 재생 중일 때만 프레임 진행
+	if (bPlaying)
 	{
-		// 누적 시간을 playRate만큼 차감
-		accumulatedTime -= currentClip->playRate;
-		++currentFrameIndex;	// currentFrameIndex 증가
+		// 시간 누적
+		accumulatedTime += TimeManager::GetInstance().GetDeltaTime();
 
-		// 마지막 프레임 도달 시
-		if (currentFrameIndex >= currentClip->keyframes.size())
+		// 설정된 playRate에 도달하면 다음 프레임으로 전환
+		if (accumulatedTime >= currentClip->playRate)
 		{
-			if (currentClip->bLoop)
+			// 누적 시간을 playRate만큼 차감
+			accumulatedTime -= currentClip->playRate;
+			++currentFrameIndex;	// currentFrameIndex 증가
+
+			// 마지막 프레임 도달 시
+			if (currentFrameIndex >= currentClip->keyframes.size())
 			{
-				currentFrameIndex = 0;	// 루프
-			}
-			else
-			{
-				currentFrameIndex = (UINT)currentClip->keyframes.size() - 1;
-				bPlaying = false;	// 재생 종료
+				if (currentClip->bLoop)
+				{
+					currentFrameIndex = 0;	// 루프 애니메이션이면 처음으로 돌아감
+				}
+				else
+				{
+					// 루프가 아니면 마지막 프레임에서 정지
+					currentFrameIndex = (UINT)currentClip->keyframes.size() - 1;
+					bPlaying = false;
+				}
 			}
 		}
 	}

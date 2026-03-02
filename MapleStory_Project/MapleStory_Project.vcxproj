@@ -166,6 +166,7 @@
     <ClCompile Include="Components\RigidBody.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Managers\ImGuiManager.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Managers\TextureManager.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Components\PlatformerController.h" />
     <ClInclude Include="Components\RigidBody.h" />
     <ClInclude Include="Components\Transform.h" />
+    <ClInclude Include="Managers\ImGuiManager.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Managers\TextureManager.h" />
     <ClInclude Include="Objects\Camera.h" />

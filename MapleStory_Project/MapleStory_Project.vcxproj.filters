@@ -82,18 +82,17 @@
     <ClCompile Include="Scenes\SandboxScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
-    <ClCompile Include="Objects\StaticObjects\StaticObject.cpp">
-      <Filter>Objects\StaticObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects\DynamicObjects\DynamicObject.cpp">
-      <Filter>Objects\DynamicObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Components\Collider.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Components\BoxCollider.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\ImGuiManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\DynamicObjects\Player.cpp">
+      <Filter>Objects\DynamicObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,13 +199,6 @@
     <ClInclude Include="Scenes\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\DynamicObjects\Player.h" />
-    <ClInclude Include="Objects\StaticObjects\StaticObject.h">
-      <Filter>Objects\StaticObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects\DynamicObjects\DynamicObject.h">
-      <Filter>Objects\DynamicObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Components\Collider.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -215,6 +207,12 @@
     </ClInclude>
     <ClInclude Include="Components\BoxCollider.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ImGuiManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DynamicObjects\Player.h">
+      <Filter>Objects\DynamicObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,9 +256,6 @@
     </Filter>
     <Filter Include="Objects\DynamicObjects">
       <UniqueIdentifier>{d44ee734-e410-4cfa-8ead-9c45f14297d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Objects\StaticObjects">
-      <UniqueIdentifier>{93e1f8da-c219-46cf-9d21-b051b92baca6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

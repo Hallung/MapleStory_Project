@@ -31,7 +31,7 @@ public:
 	);
 
 	// 클립 이름 반환
-	std::wstring GetName() const { return name; }
+	const std::wstring &GetName() const { return name; }
 
 private:
 	std::wstring name;						// 애니메이션 이름
@@ -62,6 +62,25 @@ public:
 	void AddClip(std::shared_ptr<AnimationClip> clip);
 	// 클립 재생 시작
 	void Play(const std::wstring& clipName);
+
+	// 모든 애니메이션 클립 목록 반환 (ImGui 콤보박스 구성용)
+	const std::unordered_map<std::wstring, std::shared_ptr<AnimationClip>>& GetClips() const { return clips; }
+	// 현재 재생 중인 클립 반환
+	const std::shared_ptr<AnimationClip>& GetCurrentClip() const { return currentClip; }
+
+	// 현재 프레임 인덱스 반환 / 설정 (디버그 및 ImGui 제어용)
+	UINT GetCurrentFrameIndex() const { return currentFrameIndex; }
+	void SetCurrentFrameIndex(UINT index) { currentFrameIndex = index; }
+
+	// 애니메이션 재생 여부 반환 / 설정
+	bool IsPlaying() const { return bPlaying; }
+	void SetPlaying(bool playing) { bPlaying = playing; }
+
+	// 현재 클립의 전체 프레임 수 반환
+	UINT GetCurrentClipFrameCount() const
+	{
+		return currentClip ? (UINT)currentClip->keyframes.size() : 0;
+	}
 
 private:
 	std::unordered_map<std::wstring, std::shared_ptr<AnimationClip>> clips;	// 클립 목록
