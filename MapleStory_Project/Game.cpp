@@ -43,6 +43,14 @@ void Game::Update()
 #ifdef _DEBUG
 	// 디버그 모드에서만 FPS 오버레이 출력
 	ImGuiManager::GetInstance().ShowFPSOverlay();
+
+	// Inspector 창 시작
+	// 현재 씬이 OnImGui()를 override 했다면 해당 씬의 디버그 UI가 이 창 안에 출력
+	ImGui::Begin("Inspector");
+	// 씬별 ImGui 출력 (없으면 기본 빈 창)
+	currentScene->OnImGui();
+	// Inspector 창 종료
+	ImGui::End();
 #endif
 }
 

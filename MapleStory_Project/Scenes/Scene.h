@@ -39,6 +39,9 @@ public:
 		objects.push_back(move(object));
 	}
 
+	// 디버그용 ImGui 출력 함수 (필요한 씬에서 override)
+	virtual void OnImGui() {}
+
 protected:
 	//==========================
 	// Scene이 소유한 Object 목록
