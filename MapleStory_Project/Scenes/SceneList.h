@@ -13,5 +13,6 @@
 
 // 테스트 / 실험용 Scene
 #include "SandboxScene.h"
+#include "TileMapEditorScene.h"
 
 // 실제 게임 Scene

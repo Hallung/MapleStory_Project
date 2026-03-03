@@ -172,6 +172,7 @@
     <ClCompile Include="Objects\Camera.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\TileMap.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
     <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Resources\VertexType.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Scenes\SandboxScene.cpp" />
+    <ClCompile Include="Scenes\TileMapEditorScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -212,6 +214,7 @@
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\TileMap.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
     <ClInclude Include="Renders\IA\IndexBuffer.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="Scenes\SandboxScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneList.h" />
+    <ClInclude Include="Scenes\TileMapEditorScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />

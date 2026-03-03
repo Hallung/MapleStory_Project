@@ -6,6 +6,9 @@
 Game::Game()
 {
 	mainCamera = std::make_shared<Camera>(); // Main Camera 생성
+	
+	// 생성된 Main Camera의 실제 주소를 static main 포인터에 등록
+	Camera::main = mainCamera.get();
 }
 
 Game::~Game()
@@ -24,7 +27,10 @@ void Game::Init()
 	ImGuiManager::GetInstance().Init();
 
 	// SandboxScene 생성 및 Scene 목록에 추가
-	sceneList.push_back(std::make_shared<SandboxScene>());
+	//sceneList.push_back(std::make_shared<SandboxScene>());
+	
+	// TileMapEditorScene 생성 및 Scene 목록에 추가
+	sceneList.push_back(std::make_shared<TileMapEditorScene>());
 
 	currentScene = sceneList[0]; // 첫 번째 Scene을 현재 Scene으로 설정
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
