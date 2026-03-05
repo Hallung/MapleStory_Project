@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/imgui-x64-windows-1.91.9-4aee284e-591b-4ad7-b6b1-d20c81a907d5",
-  "name": "imgui:x64-windows@1.91.9 30fd2ec0b37ecab9e0b17ef972256cc0960ac2f090cb2b12f013fe94f8fd9b61",
+  "documentNamespace": "https://spdx.org/spdxdocs/imgui-x64-windows-1.91.9-03f014a1-2703-4f4e-b451-800eab8ab411",
+  "name": "imgui:x64-windows@1.91.9 4a612ac48eb2ef33d98abbc698c7cc948f5866b099d93e722b45a704ea333542",
   "creationInfo": {
     "creators": [
-      "Tool: vcpkg-2025-12-16-44bb3ce006467fc13ba37ca099f64077b8bbf84d"
+      "Tool: vcpkg-2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3"
     ],
-    "created": "2026-02-26T02:51:00Z"
+    "created": "2026-02-26T02:50:59Z"
   },
   "relationships": [
     {
@@ -144,7 +144,7 @@
     {
       "name": "imgui:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "30fd2ec0b37ecab9e0b17ef972256cc0960ac2f090cb2b12f013fe94f8fd9b61",
+      "versionInfo": "4a612ac48eb2ef33d98abbc698c7cc948f5866b099d93e722b45a704ea333542",
       "downloadLocation": "NONE",
       "licenseConcluded": "MIT",
       "licenseDeclared": "NOASSERTION",
@@ -276,7 +276,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "a3f50b325f4c4cb21c36a5bd1b87a900540de1329f59f23ef3e4d03e612d803e"
+          "checksumValue": "f4450a527c3d10bfa3419bbfa35ed48f35276af0d1d401c75a22a5dc921fd8d3"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -396,7 +396,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "efc997cc573dd9db836a9b8a7fcb9ed865dae32e63afd708514c332f9870474e"
+          "checksumValue": "91765ea3b7eed49bc792649879a3368759f8235daaa4afa641e6b9925ae8211e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -456,7 +456,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ce3a9dbe7bbece49a9f8947defaab61df1458507419e71bf3de8697f8b208269"
+          "checksumValue": "08dbc2ff59d7ce8f29ede53f654b7667d64069dfeb048b230410155c28017d9c"
         }
       ],
       "licenseConcluded": "NOASSERTION",

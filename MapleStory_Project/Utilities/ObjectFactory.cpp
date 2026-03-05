@@ -71,14 +71,29 @@ std::shared_ptr<Object> CreateSprite(DirectX::SimpleMath::Vector2 position, Dire
 
 	return object;
 }
-
-std::shared_ptr<Object> ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, DirectX::SimpleMath::Color color)
+//=============================================================================
+// Sandbox용 체인 형태의 Line Terrain Object 생성 함수
+// 전달된 지형 포인트들을 기반으로 Line Mesh를 생성하고 렌더링 가능한 Object로 변환
+//=============================================================================
+std::shared_ptr<Object> CreateChainLine(std::vector<DirectX::SimpleMath::Vector2> terrainScreenPoints)
 {
-	auto obj = std::make_shared<Object>("ColorRect", position, scale, rotation);
+	// Terrain Object 생성(위치(0,0), 기본 스케일(1), 회전x)
+	auto terrainObj = std::make_shared<Object>("Terrain", DirectX::SimpleMath::Vector2(0.0f), DirectX::SimpleMath::Vector2(1.0f), 0.0f);
 
-	AttachMeshAndMaterial(obj, GeometryHelper::CreateRectangle(), D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, color, L"_Shaders/Color.hlsl", Color::descs);
+	// 전달된 포인트들을 기반으로 Line Strip 형태의 지형 Mesh 생성
+	auto mesh = GeometryHelper::CreateLineTerrainStrip(terrainScreenPoints);
 
-	return obj;
+	// Mesh 기반 렌더러 구성
+	AttachMeshAndMaterial(
+		terrainObj, 
+		mesh, 
+		D3D11_PRIMITIVE_TOPOLOGY_LINELIST, 
+		DirectX::SimpleMath::Color(0.3f, 0.8f, 0.3f, 1), 
+		L"_Shaders/Vertex.hlsl", 
+		Color::descs
+	);
+
+	return terrainObj;
 }
 }
 
@@ -118,24 +133,32 @@ std::shared_ptr<Mesh> CreateTexturedQuad()
 
 	return mesh;
 }
-
-std::shared_ptr<Mesh> CreateRectangle()
+//===============================================================
+// Sandbox 지형 생성을 위한 Line Strip Mesh 생성 헬퍼 함수
+// 전달된 포인트들을 기반으로 선 형태(Line List)의 지형 Mesh를 생성
+//===============================================================
+std::shared_ptr<Mesh> CreateLineTerrainStrip(const std::vector<DirectX::SimpleMath::Vector2>& points)
 {
-	static std::shared_ptr<Mesh> mesh;
+	std::vector<Color> vertices;
+	std::vector<UINT> indices;
 
-	if (mesh == nullptr)
+	// 입력된 포인트 개수
+	int vertexSize = static_cast<int>(points.size());
+
+	// 포인트 좌표를 Vertex 데이터로 변환
+	for (auto& point : points)
+		vertices.push_back({ point });
+
+	// 인접한 두 포인트를 연결하여 Line 인덱스 생성
+	for (int i = 0; i < vertexSize - 1; ++i)
 	{
-		std::vector<Color> vertices(4);
-		vertices[0].position = { -0.5f, -0.5f };
-		vertices[1].position = { -0.5f, 0.5f };
-		vertices[2].position = { 0.5f, -0.5f };
-		vertices[3].position = { 0.5f, 0.5f };
-
-		std::vector<UINT> indices = { 0, 1, 2, 2, 1, 3 };
-
-		mesh = std::make_shared<Mesh>();
-		mesh->Create(vertices, indices);
+		indices.push_back(i);
+		indices.push_back(i + 1);
 	}
+
+	// 생성된 Vertex / Index 데이터를 기반으로 Mesh 생성
+	std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
+	mesh->Create(vertices, indices);
 
 	return mesh;
 }
