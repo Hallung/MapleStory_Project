@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TileMapEditorScene.h"
 #include "Utilities/ObjectFactory.h"
+#include "Utilities/VirtualKey.h"
 #include "Components/Transform.h"
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
@@ -52,6 +53,24 @@ void TileMapEditorScene::Update()
 	// 우클릭 시 타일 제거 (textureIndex = -1)
 	if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
 		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
+
+	// Ctrl + S : 현재 타일맵을 "Test.xml"로 저장
+	// Ctrl + L : "Test.xml" 파일을 다시 불러옴
+	// (현재는 기능 동작 확인을 위한 임시 테스트 로직)
+	if (InputManager::GetInstance().GetKeyPress(VK_CONTROL))
+	{
+		if (InputManager::GetInstance().GetKeyDown(VK_S))
+		{
+			tileMap->Save(L"Test.xml");
+			MessageBeep(MB_OK); // 저장 완료 알림
+		}
+
+		if (InputManager::GetInstance().GetKeyDown(VK_L))
+		{
+			tileMap->Load(L"Test.xml");
+			MessageBeep(MB_ICONINFORMATION); // 로드 완료 알림
+		}
+	}
 
 	// TileMap 좌표 변환 확인용 디버그 창
 	ImGui::Begin("TileMap Editor Debug");

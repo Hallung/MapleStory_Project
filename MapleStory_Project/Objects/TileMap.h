@@ -36,6 +36,11 @@ public:
 	TileInfo* GetTile(int gridX, int gridY);
 	const TileInfo* GetTile(int gridX, int gridY) const;
 
+	// 타일맵 데이터를 파일로 저장
+	void Save(const std::wstring& path); // path : 저장할 XML 파일 경로
+	// XML 파일로부터 타일맵 데이터를 불러옴
+	void Load(const std::wstring& path); // path : 불러올 XML 파일 경로
+
 	UINT GetWidth() const { return width; }
 	UINT GetHeight() const { return height; }
 	float GetTileSize() const { return tileSize; }
