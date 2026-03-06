@@ -20,6 +20,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetPointSampler(true);
 	// 물리 바디 추가 (이동/충돌 처리)
 	auto playerRb = std::make_shared<RigidBody>(bodyType);
+	// FixedRotation 설정으로 캐릭터 회전 방지
 	playerRb->SetFixedRotation(true);
 	player->AddComponent(playerRb);
 	// 바디에 맞춰서 쉐이프 추가

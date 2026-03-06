@@ -89,7 +89,7 @@ std::shared_ptr<Object> CreateChainLine(std::vector<DirectX::SimpleMath::Vector2
 		mesh, 
 		D3D11_PRIMITIVE_TOPOLOGY_LINELIST, 
 		DirectX::SimpleMath::Color(0.3f, 0.8f, 0.3f, 1), 
-		L"_Shaders/Vertex.hlsl", 
+		L"_Shaders/Color.hlsl", 
 		Color::descs
 	);
 
@@ -149,8 +149,11 @@ std::shared_ptr<Mesh> CreateLineTerrainStrip(const std::vector<DirectX::SimpleMa
 	for (auto& point : points)
 		vertices.push_back({ point });
 
+	//==================================================================
 	// 인접한 두 포인트를 연결하여 Line 인덱스 생성
-	for (int i = 0; i < vertexSize - 1; ++i)
+	// GhostVertex 부분은 그리지 않기 위해 1 ~ vertexSize - 2 까지만 생성
+	//==================================================================
+	for (int i = 1; i < vertexSize - 2; ++i)
 	{
 		indices.push_back(i);
 		indices.push_back(i + 1);

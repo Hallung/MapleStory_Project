@@ -29,8 +29,11 @@ void SandboxScene::Init()
 	// Player가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(player->GetPlayer());
 
+	// 지형 Ground 객체 생성
 	auto ground = std::make_shared<Ground>(Ground::GroundName::SANDBOX);
+	// Ground가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(ground->GetGround(Ground::GroundName::SANDBOX));
+	// 등록된 Ground에 맞춰 충돌 가능한 Chain 컴포넌트 추가 
 	ground->SetChain(Ground::GroundName::SANDBOX);
 }
 
