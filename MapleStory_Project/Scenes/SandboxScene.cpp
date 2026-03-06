@@ -2,6 +2,7 @@
 #include "SandboxScene.h"
 #include "Objects/Object.h"
 #include "Objects/DynamicObjects/Player.h"
+#include "Objects/StaticObjects/Ground.h"
 #include "Components/RigidBody.h"
 
 //=====================================
@@ -27,6 +28,10 @@ void SandboxScene::Init()
 		);
 	// Player가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(player->GetPlayer());
+
+	auto ground = std::make_shared<Ground>(Ground::GroundName::SANDBOX);
+	AddObject(ground->GetGround(Ground::GroundName::SANDBOX));
+	ground->SetChain(Ground::GroundName::SANDBOX);
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리
