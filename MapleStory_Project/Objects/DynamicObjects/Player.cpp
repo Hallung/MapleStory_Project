@@ -19,7 +19,9 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// PointSampler 설정
 	player->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetPointSampler(true);
 	// 물리 바디 추가 (이동/충돌 처리)
-	player->AddComponent(std::make_shared<RigidBody>(bodyType));
+	auto playerRb = std::make_shared<RigidBody>(bodyType);
+	playerRb->SetFixedRotation(true);
+	player->AddComponent(playerRb);
 	// 바디에 맞춰서 쉐이프 추가
 	player->AddComponent(std::make_shared<BoxCollider>());
 	// 플랫폼 이동 컨트롤러 추가

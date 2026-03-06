@@ -6,7 +6,7 @@ class Chain : public Component
 {
 public:
 	// Chain 컴포넌트 생성(기본 이름: "Chain")
-	Chain(std::string name = "Chain");
+	Chain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector2> points, std::string name = "Chain");
 	// Chain 제거 시 Box2D에 생성된 Chain도 함께 제거
 	~Chain();
 

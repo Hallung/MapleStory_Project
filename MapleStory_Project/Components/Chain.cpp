@@ -2,11 +2,14 @@
 #include "Chain.h"
 #include "Utilities/PhysicsUtils.h"
 
-Chain::Chain(std::string name)
+Chain::Chain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector2> points, std::string name)
 	: Component(name)
 {
 	// 초기 상태에서는 Chain이 생성되지 않았으므로 null 상태로 초기화
 	chainId = b2_nullChainId;
+
+	// 초기 생성 시 BodyId와 Points를 받아서 생성
+	CreateChain(bodyId, points);
 }
 
 Chain::~Chain()
@@ -21,7 +24,10 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 {
 	// Body가 유효하지 않으면 Chain 생성 불가
 	if (!b2Body_IsValid(bodyId))
+	{
+		std::cout << "Create Faile\n";
 		return;
+	}
 
 	// 이미 Chain이 존재한다면 기존 Chain 제거 후 재생성
 	if (b2Chain_IsValid(chainId))
@@ -45,7 +51,7 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 	//=============================================================
 	for (size_t i = 0; i < points.size(); ++i)
 	{
-		int idx = points.size() - 1 - i;
+		size_t idx = points.size() - 1 - i;
 
 		// Screen 좌표 -> Box2D World 좌표 변환
 		b2Vec2 world = PhysicsUtils::ScreenToWorld(points[idx]);
@@ -65,5 +71,6 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 	chainId = b2CreateChain(bodyId, &chainDef);
 
 	// 체인 마찰력 설정 (지형과의 마찰 처리)
-	b2Chain_SetFriction(chainId, 0.5f);
+	b2Chain_SetFriction(chainId, 1.0);
+	std::cout << "Chain Create\n";
 }
