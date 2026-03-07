@@ -42,6 +42,8 @@ void PlatformerController::Update()
 
 	if (InputManager::GetInstance().GetKeyDown(VK_SPACE))
 		Jump();
+
+	UpdateAnimation(dir);
 }
 
 
@@ -94,10 +96,18 @@ void PlatformerController::Jump()
 	std::cout << "Impalse\n";
 }
 
+
 void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 {
-	auto animator = owner->GetComponent<Animator>("Animaotr");
+	// Object에 부착된 Animator 컴포넌트 가져오기
+	auto animator = owner->GetComponent<Animator>("Animator");
+	// Animator가 존재하지 않으면 애니메이션 업데이트 불가
 	if (animator == nullptr) return;
 
-	// TODO: 애니메이션 xml 제작 후 상태에 따른 애니메이션 Play 방식 변경 호출 제작
+	// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
+	if (dir.x != 0.0f)
+		animator->Play(L"Move");
+	// 이동 입력이 없으면 Stand(Idle) 애니메이션 재생
+	else
+		animator->Play(L"Stand");
 }

@@ -13,7 +13,7 @@ public:
 	// 기본 이동 속도를 가지는 컨트롤러 생성
 	// Component 이름을 "PlatformerController"로 설정
 	//===============================================
-	PlatformerController(float moveSpeed = 200.0f) : Component("PlatformerController"), moveSpeed(moveSpeed) {}
+	PlatformerController(float moveSpeed = 150.0f) : Component("PlatformerController"), moveSpeed(moveSpeed) {}
 
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Resources/Material.h"
+#include "Components/Animator.h"
 #include "Components/MeshRenderer.h"
 #include "Components/BoxCollider.h"
 #include "Components/PlatformerController.h"
@@ -27,6 +28,12 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->AddComponent(std::make_shared<BoxCollider>());
 	// ÇÃ·§Æû ÀÌµ¿ ÄÁÆ®·Ñ·¯ Ãß°¡
 	player->AddComponent(std::make_shared<PlatformerController>());
+
+	auto playerAnimator = std::make_shared<Animator>();
+	player->AddComponent(playerAnimator);
+	playerAnimator->Load(L"_Animations/MoveStand.xml");
+	playerAnimator->Play(L"Stand");
+
 	// ³»ºÎ Player Object Ä³½Ì
 	cachPlayer = player;
 }

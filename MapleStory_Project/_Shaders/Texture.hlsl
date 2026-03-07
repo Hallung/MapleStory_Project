@@ -93,6 +93,10 @@ float4 PS(PixelInput input) : SV_Target0
 {
     float4 color = srcTex.Sample(samp, input.uv); // Texture 색상 샘플링
     
+    // 스프라이트 투명 처리를 위해 마젠타(Color Key) 색상 제거
+    if (all(color.rgb == float3(1.0, 0.0, 1.0)))
+        discard;
+    
     // Texture 색상에 Tint 색상 적용
     return color * _color;
 }
