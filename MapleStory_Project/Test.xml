@@ -3,6 +3,7 @@
     <Tile x="5" y="4" index="0" solid="true"/>
     <Tile x="6" y="4" index="0" solid="true"/>
     <Tile x="7" y="4" index="0" solid="true"/>
+    <Tile x="10" y="4" index="0" solid="true"/>
     <Tile x="13" y="4" index="0" solid="true"/>
     <Tile x="14" y="4" index="0" solid="true"/>
     <Tile x="5" y="5" index="0" solid="true"/>
@@ -14,4 +15,7 @@
     <Tile x="11" y="5" index="0" solid="true"/>
     <Tile x="12" y="5" index="0" solid="true"/>
     <Tile x="13" y="5" index="0" solid="true"/>
+    <Tile x="10" y="6" index="0" solid="true"/>
+    <Tile x="11" y="6" index="0" solid="true"/>
+    <Tile x="1" y="8" index="0" solid="true"/>
 </Map>

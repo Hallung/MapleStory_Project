@@ -2,6 +2,7 @@
 #include "TileMapEditorScene.h"
 #include "Utilities/ObjectFactory.h"
 #include "Utilities/VirtualKey.h"
+#include "Utilities/FileDialog.h"
 #include "Components/Transform.h"
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
@@ -54,24 +55,6 @@ void TileMapEditorScene::Update()
 	if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
 		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
 
-	// Ctrl + S : 현재 타일맵을 "Test.xml"로 저장
-	// Ctrl + L : "Test.xml" 파일을 다시 불러옴
-	// (현재는 기능 동작 확인을 위한 임시 테스트 로직)
-	if (InputManager::GetInstance().GetKeyPress(VK_CONTROL))
-	{
-		if (InputManager::GetInstance().GetKeyDown(VK_S))
-		{
-			tileMap->Save(L"Test.xml");
-			MessageBeep(MB_OK); // 저장 완료 알림
-		}
-
-		if (InputManager::GetInstance().GetKeyDown(VK_L))
-		{
-			tileMap->Load(L"Test.xml");
-			MessageBeep(MB_ICONINFORMATION); // 로드 완료 알림
-		}
-	}
-
 	// TileMap 좌표 변환 확인용 디버그 창
 	ImGui::Begin("TileMap Editor Debug");
 	ImGui::Text("Mouse Screen : %.1f, %.1f", mouseScreenPos.x, mouseScreenPos.y);
@@ -85,6 +68,32 @@ void TileMapEditorScene::Update()
 		ImGui::TextColored(ImVec4(0, 1, 0, 1), "Grid Index  : [%d, %d]", (int)currentGridIndex.x, (int)currentGridIndex.y);
 	else
 		ImGui::TextColored(ImVec4(1, 0, 0, 1), "Grid Index  : [%d, %d] (Out of Bounds)", (int)currentGridIndex.x, (int)currentGridIndex.y);
+
+	ImGui::Separator();
+
+	// Map 저장 버튼
+	if (ImGui::Button("Save Map"))
+	{
+		// Windows 파일 저장 다이얼로그 실행 (XML 확장자만 보이도록 필터 적용)
+		std::wstring path = SaveFileDialog(L"XML Files (*.xml)\0*.xml\0");
+
+		// 사용자가 경로를 선택한 경우에만 저장 실행
+		if (!path.empty())
+			tileMap->Save(path);
+	}
+
+	ImGui::SameLine();
+
+	// Map 불러오기 버튼
+	if (ImGui::Button("Load Map"))
+	{
+		// Windows 파일 열기 다이얼로그 실행 (XML 파일만 선택 가능하도록 필터 적용)
+		std::wstring path = OpenFileDialog(L"XML Files (*.xml)\0*.xml\0");
+
+		// 경로가 선택되면 TileMap 로드
+		if (!path.empty())
+			tileMap->Load(path);
+	}
 
 	ImGui::End();
 }
