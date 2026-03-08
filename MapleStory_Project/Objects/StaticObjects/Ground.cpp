@@ -91,5 +91,20 @@ void Ground::SetChain(GroundName name)
 	// Chain 컴포넌트 추가
 	// 지형 좌표를 이용해 물리 체인 생성
 	//=================================
-	ground->AddComponent(std::make_shared<Chain>(groundId, GetGroundPos(name)));
+	auto groundChain = std::make_shared<Chain>(groundId, GetGroundPos(name));
+	
+	//======================================================
+	// Ground 객체의 Collision Layer를 Ground로 설정
+	// 다른 객체들이 Ground 레이어와 충돌 여부를 판단할 때 사용
+	//======================================================
+	groundChain->SetChainLayer(CollisionLayer::Ground);
+
+	//======================================================
+	// Ground가 충돌할 수 있는 레이어 설정
+	// Player, Bullet, Monster 레이어와 충돌하도록 Mask 지정
+	//======================================================
+	groundChain->SetChainMask(CollisionLayer::Player | CollisionLayer::Bullet | CollisionLayer::Monster);
+	
+	// 생성한 Chain Collider를 Ground Object에 컴포넌트로 추가
+	ground->AddComponent(groundChain);
 }
