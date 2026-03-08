@@ -48,12 +48,16 @@ void TileMapEditorScene::Update()
 	// 커서를 해당 타일 중앙으로 이동
 	cursorObject->GetTransform()->SetPosition(snappedWorldPos);
 
-	// 좌클릭 시 현재 그리드 위치에 타일 생성 (textureIndex = 0)
-	if (InputManager::GetInstance().GetKeyPress(VK_LBUTTON))
-		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, 0);
-	// 우클릭 시 타일 제거 (textureIndex = -1)
-	if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
-		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
+	// ImGui UI 위에 마우스가 올라가 있는 경우 타일맵 편집 입력이 동시에 발생하지 않도록 마우스 입력을 차단
+	if (ImGuiManager::GetInstance().WantCaptureMouse() == false)
+	{
+		// 좌클릭 시 현재 그리드 위치에 타일 생성 (textureIndex = 0)
+		if (InputManager::GetInstance().GetKeyPress(VK_LBUTTON))
+			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, 0);
+		// 우클릭 시 타일 제거 (textureIndex = -1)
+		if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
+			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
+	}
 
 	// TileMap 좌표 변환 확인용 디버그 창
 	ImGui::Begin("TileMap Editor Debug");

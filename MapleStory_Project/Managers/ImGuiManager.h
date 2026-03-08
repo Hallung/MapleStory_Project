@@ -35,6 +35,10 @@ public:
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam); // Win32 메시지를 ImGui에 전달
 
+	// ImGui가 현재 마우스 입력을 사용 중인지 여부 반환
+	// 에디터에서 ImGui UI 조작 시 게임/에디터 입력이 동시에 처리되는 것을 방지하기 위해 사용
+	bool WantCaptureMouse() const { return ImGui::GetCurrentContext() ? ImGui::GetIO().WantCaptureMouse : false; }
+
 	void ShowFPSOverlay(); // 우측 상단에 FPS 및 Frame Time(ms)을 표시하는 오버레이 UI 출력 (디버그용 정보 표시 목적)
 	void DrawObjectInspector(std::shared_ptr<Object> object, std::string name); // 오브젝트 전체 Inspector UI 출력
 
