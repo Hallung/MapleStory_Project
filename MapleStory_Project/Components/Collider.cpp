@@ -91,7 +91,7 @@ void Collider::RefreshShape()
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
 	shapeDef.density = 1.0f;
 	shapeDef.material.friction = 0.5f;
-	shapeDef.material.restitution = 0.1f;
+	shapeDef.material.restitution = 0.0f;
 
 	// UserData에 Collider 저장, Collision 이벤트에서 사용
 	shapeDef.userData = this;

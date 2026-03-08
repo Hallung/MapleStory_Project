@@ -21,17 +21,35 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetPointSampler(true);
 	// 물리 바디 추가 (이동/충돌 처리)
 	auto playerRb = std::make_shared<RigidBody>(bodyType);
+
 	// FixedRotation 설정으로 캐릭터 회전 방지
 	playerRb->SetFixedRotation(true);
 	player->AddComponent(playerRb);
+
 	// 바디에 맞춰서 쉐이프 추가
-	player->AddComponent(std::make_shared<BoxCollider>());
+	auto playerCol = std::make_shared<BoxCollider>();
+
+	// Player 객체를 Player Collision Layer에 설정
+	playerCol->SetCollisionLayer(CollisionLayer::Player);
+
+	//=================================================
+	// Player가 충돌할 수 있는 레이어 설정
+	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
+	//=================================================
+	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+
+	// Player Object에 Collider 컴포넌트 추가
+	player->AddComponent(playerCol);
+
 	// 플랫폼 이동 컨트롤러 추가
 	player->AddComponent(std::make_shared<PlatformerController>());
 
+	// 플레이어 애니메이션 추가
 	auto playerAnimator = std::make_shared<Animator>();
 	player->AddComponent(playerAnimator);
+	// 로드할 .xml 설정
 	playerAnimator->Load(L"_Animations/MoveStand.xml");
+	// 초기 상태 설정
 	playerAnimator->Play(L"Stand");
 
 	// 내부 Player Object 캐싱

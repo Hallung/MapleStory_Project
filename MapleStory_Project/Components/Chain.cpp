@@ -25,7 +25,6 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 	// Body가 유효하지 않으면 Chain 생성 불가
 	if (!b2Body_IsValid(bodyId))
 	{
-		std::cout << "Create Faile\n";
 		return;
 	}
 
@@ -67,10 +66,64 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 	// 루프 여부(false = 열린 체인, true = 닫힌 체인)
 	chainDef.isLoop = false;
 
+	chainDef.userData = this;
+
 	// Box2D에 Chain 생성
 	chainId = b2CreateChain(bodyId, &chainDef);
 
 	// 체인 마찰력 설정 (지형과의 마찰 처리)
 	b2Chain_SetFriction(chainId, 1.0);
-	std::cout << "Chain Create\n";
+}
+
+void Chain::SetChainLayer(CollisionLayer layer)
+{
+	// 동일한 레이어라면 다시 적용할 필요 없음
+	if (this->layer == layer) return;
+
+	// 새로운 레이어 설정
+	this->layer = layer;
+	// 변경된 레이어 정보를 Shape 필터에 적용
+	ApplyFilter();
+}
+
+void Chain::SetChainMask(uint32_t mask)
+{
+	// 동일한 마스크라면 다시 적용할 필요 없음
+	if (this->mask == mask) return;
+
+	// 충돌 가능한 레이어 마스크 설정
+	this->mask = mask;
+	// 변경된 마스크 정보를 Shape 필터에 적용
+	ApplyFilter();
+}
+
+void Chain::ApplyFilter() const
+{
+	// Chain이 유효하지 않으면 처리하지 않음
+	if (b2Chain_IsValid(chainId) == false) return;
+
+	// Chain을 구성하는 segment 개수 가져오기
+	UINT segmentCount = b2Chain_GetSegmentCount(chainId);
+
+	// 모든 segment Shape를 저장할 배열
+	std::vector<b2ShapeId> segments(segmentCount);
+
+	// 실제 segment Shape들을 가져오기
+	UINT returnedCount = b2Chain_GetSegments(chainId, segments.data(), segmentCount);
+
+	// 각 segment Shape에 Collision Filter 적용
+	for (int i = 0; i < returnedCount; ++i)
+	{
+		// 기본 필터 생성
+		b2Filter filter = b2DefaultFilter();
+		// 해당 객체의 충돌 레이어 설정
+		filter.categoryBits = static_cast<uint32_t>(layer);
+		// 충돌 가능한 레이어 마스크 설정
+		filter.maskBits = mask;
+		// groupIndex는 사용하지 않음 (기본값 0)
+		filter.groupIndex = 0;
+
+		// Shape에 필터 적용
+		b2Shape_SetFilter(segments[i], filter);
+	}
 }
