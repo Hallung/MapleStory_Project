@@ -103,7 +103,11 @@ void Ground::SetChain(GroundName name)
 	// Ground가 충돌할 수 있는 레이어 설정
 	// Player, Bullet, Monster 레이어와 충돌하도록 Mask 지정
 	//======================================================
-	groundChain->SetChainMask(CollisionLayer::Player | CollisionLayer::Bullet | CollisionLayer::Monster);
+	groundChain->SetChainMask(
+		CollisionLayer::Player | 
+		CollisionLayer::Bullet | 
+		CollisionLayer::Monster
+	);
 	
 	// 생성한 Chain Collider를 Ground Object에 컴포넌트로 추가
 	ground->AddComponent(groundChain);
