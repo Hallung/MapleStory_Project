@@ -143,6 +143,18 @@ LRESULT Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     switch (message)
     {
+    case WM_MOUSEWHEEL:
+    {
+        // 마우스 휠 스크롤 값 얻기
+        // +120 : 휠 위로 스크롤
+        // -120 : 휠 아래로 스크롤
+        int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+
+        // 휠 값을 InputManager에 전달 (WHEEL_DELTA(120)로 나누어 스크롤 단위를 -1 / +1로 정규화)
+        InputManager::GetInstance().SetMouseWheel(delta / WHEEL_DELTA);
+
+        return 0;
+    }
     case WM_DESTROY:
         PostQuitMessage(0); // Window 종료 시 프로그램 종료 메시지 전달
 

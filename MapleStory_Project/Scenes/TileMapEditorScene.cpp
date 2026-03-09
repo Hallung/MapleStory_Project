@@ -4,6 +4,7 @@
 #include "Utilities/VirtualKey.h"
 #include "Utilities/FileDialog.h"
 #include "Components/Transform.h"
+#include "Components/CameraController.h"
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
 
@@ -19,6 +20,8 @@ void TileMapEditorScene::Init()
 	// 실제 타일이 존재할 경우 화면에 그려줄 테스트용 오브젝트
 	// 현재는 하나의 프리팹을 위치만 바꿔가며 무식하게 렌더링 중
 	tilePrefab = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f });
+
+	Camera::main->AddComponent(std::make_shared<CameraController>());
 }
 
 void TileMapEditorScene::Destroy()

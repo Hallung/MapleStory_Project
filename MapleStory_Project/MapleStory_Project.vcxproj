@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="Components\Animator.cpp" />
     <ClCompile Include="Components\BoxCollider.cpp" />
+    <ClCompile Include="Components\CameraController.cpp" />
     <ClCompile Include="Components\Collider.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
@@ -203,6 +204,7 @@
   <ItemGroup>
     <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\BoxCollider.h" />
+    <ClInclude Include="Components\CameraController.h" />
     <ClInclude Include="Components\Collider.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\MeshRenderer.h" />

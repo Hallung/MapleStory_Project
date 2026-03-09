@@ -40,6 +40,12 @@ public:
 	bool GetKeyPress(size_t key) const { return keyMap[key] == KEY_INPUT_STATUS_PRESS; }
 	// 현재 마우스의 위치
 	DirectX::SimpleMath::Vector2 GetMousePos() const { return mousePos; }
+	// 현재 프레임에서 발생한 마우스 휠 입력값 반환
+	int GetMouseWheel() const { return mouseWheel; }
+	// WndProc에서 전달된 마우스 휠 입력을 누적
+	void SetMouseWheel(int delta) { mouseWheel += delta; }
+	// 프레임 처리 후 마우스 휠 입력 초기화
+	void ResetMouseWheel() { mouseWheel = 0; }
 
 private:
 	// 키 입력 상태(열거형)
@@ -59,4 +65,6 @@ private:
 	std::array<unsigned char, MAX_INPUT_KEY> keyMap = { 0 };
 	// 현재 마우스 위치
 	DirectX::SimpleMath::Vector2 mousePos{};
+	// 현재 프레임의 마우스 휠 입력 값 (휠 위 : 양수, 휠 아래 : 음수)
+	int mouseWheel = 0;
 };
