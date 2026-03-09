@@ -1,3 +1,4 @@
 <Texture path="_Textures/Player1.png">
-	<Clip name="Stand" x="0" y="1200" w="480" h="76" count="4" loop="true" speed="0.3"/>
+	<Clip name="Stand" x="680" y="140" w="520" h="120" count="4" loop="true" speed="0.3"/>
+	<Clip name="Move" x="680" y="400" w="524" h="120" count="4" loop="true" speed="0.2"/>
 </Texture>

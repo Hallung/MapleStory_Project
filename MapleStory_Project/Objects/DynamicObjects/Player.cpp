@@ -48,7 +48,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	auto playerAnimator = std::make_shared<Animator>();
 	player->AddComponent(playerAnimator);
 	// 로드할 .xml 설정
-	playerAnimator->Load(L"_Animations/MoveStand.xml");
+	playerAnimator->Load(L"_Animations/Player1.xml");
 	// 초기 상태 설정
 	playerAnimator->Play(L"Stand");
 
