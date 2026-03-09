@@ -29,6 +29,12 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// 바디에 맞춰서 쉐이프 추가
 	auto playerCol = std::make_shared<BoxCollider>();
 
+	//===========================================
+	// Player Collider 크기 수동 설정
+	// Sprite 이미지 크기와 별개로 Collider 크기를 설정할 수 있도록 분리
+	// 이를 통해 렌더링 크기와 충돌 영역을 독립적으로 제어 가능
+	//===========================================
+	playerCol->SetColliderScale(DirectX::SimpleMath::Vector2(55.0f, 70.0f));
 	// Player 객체를 Player Collision Layer에 설정
 	playerCol->SetCollisionLayer(CollisionLayer::Player);
 

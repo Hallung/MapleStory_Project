@@ -40,6 +40,10 @@ public:
 
 	b2ShapeId GetShapeId() const { return shapeId; } // Box2D ShapeId 반환
 
+	// Collider의 월드 크기를 직접 설정(설정하지 않을 경우 Transform Scale을 기본값으로 사용)
+	void SetColliderScale(DirectX::SimpleMath::Vector2 scale) { this->scale = scale; }
+	DirectX::SimpleMath::Vector2 GetColliderScale() const { return scale; }	// 현재 설정된 Collider Scale 반환
+
 protected:
 	// 실제 Shape 생성 함수, 각 Collider 타입에서 구현
 	virtual b2ShapeId CreateShapeInternal(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale) = 0;
@@ -62,4 +66,7 @@ protected:
 
 	CollisionLayer layer = CollisionLayer::Default; // 현재 Collider가 속한 Collision Layer
 	uint32_t mask = 0xFFFFFFFF; // 충돌 허용 레이어 Mask (0xFFFFFFFF : 모든 레이어와 충돌 허용)
+
+	// Collider 전용 Scale 값(기본값 (0,0)은 Transform Scale 사용을 의미)
+	DirectX::SimpleMath::Vector2 scale = { 0.0f,0.0f };
 };

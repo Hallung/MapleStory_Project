@@ -68,7 +68,15 @@ void Collider::RefreshShape()
 	// Rigidbody가 없거나 Body가 유효하지 않으면 생성 불가
 	if (rb == nullptr || b2Body_IsValid(rb->GetBodyId()) == false) return;
 
-	DirectX::SimpleMath::Vector2 scale = GetOwner()->GetTransform()->GetScale();
+	//===========================================
+	// Collider Scale 결정 로직
+	// - ColliderScale이 설정되지 않았을 경우
+	//   Owner의 Transform Scale을 사용
+	// - ColliderScale이 설정된 경우
+	//   해당 값을 충돌 크기로 사용
+	//===========================================
+	if (scale.x < MIN_SIZE && scale.y < MIN_SIZE)
+		scale = GetOwner()->GetTransform()->GetScale();
 
 	// 너무 작은 경우 Shape 생성하지 않음
 	if (abs(scale.x) < MIN_SIZE || abs(scale.y) < MIN_SIZE) return;

@@ -93,7 +93,6 @@ void PlatformerController::Jump()
 	// 위 방향으로 임펄스 적용
 	b2Vec2 impulse(0.0f, jumpPower);
 	b2Body_ApplyLinearImpulseToCenter(rigidBody->GetBodyId(), impulse, true);
-	std::cout << "Impalse\n";
 }
 
 
@@ -109,5 +108,7 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 		animator->Play(L"Move");
 	// 이동 입력이 없으면 Stand(Idle) 애니메이션 재생
 	else
+	{
 		animator->Play(L"Stand");
+	}
 }
