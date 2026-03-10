@@ -10,16 +10,15 @@ namespace
 constexpr float MIN_SIZE = 0.001f;
 }
 
-Collider::Collider()
-	: Component("Collider")
+Collider::Collider(std::string name)
+	: Component(name)
 {
-	shapeId = b2_nullShapeId;
 }
 
 Collider::~Collider()
 {
-	if (b2Shape_IsValid(shapeId))
-		b2DestroyShape(shapeId, true);
+	// Collider 소멸시 Shape 해제
+	DestroyShapes();
 }
 
 void Collider::Awake()
@@ -66,7 +65,7 @@ void Collider::RefreshShape()
 	auto rb = GetOwner()->GetComponent<RigidBody>("RigidBody");
 
 	// Rigidbody가 없거나 Body가 유효하지 않으면 생성 불가
-	if (rb == nullptr || b2Body_IsValid(rb->GetBodyId()) == false) return;
+	if (!rb || !b2Body_IsValid(rb->GetBodyId())) return;
 
 	//===========================================
 	// Collider Scale 결정 로직
@@ -82,16 +81,24 @@ void Collider::RefreshShape()
 	if (abs(scale.x) < MIN_SIZE || abs(scale.y) < MIN_SIZE) return;
 
 	// 기존 Shape가 존재하는 경우 제거 처리
-	if (b2Shape_IsValid(shapeId))
+	for (auto id : shapeIds)
 	{
-		// 기존 Shape와 겹쳐있는 Collider들에게 Collision Exit 이벤트 전달
-		b2AABB aabb = b2Shape_GetAABB(shapeId);
-		b2World_OverlapAABB(PhysicsManager::GetInstance().GetWorldId(), aabb, b2DefaultQueryFilter(), NotifyExitCallback, this);
+		if (b2Shape_IsValid(id))
+		{
+			// 기존 Shape와 겹쳐있는 Collider들에게 Collision Exit 이벤트 전달
+			b2AABB aabb = b2Shape_GetAABB(id);
+			b2World_OverlapAABB(
+				PhysicsManager::GetInstance().GetWorldId(), 
+				aabb, 
+				b2DefaultQueryFilter(), 
+				NotifyExitCallback, 
+				this);
 
-		// 기존 Shape 제거
-		b2DestroyShape(shapeId, true);
-		shapeId = b2_nullShapeId;
+			// 기존 Shape 제거
+			b2DestroyShape(id, true);
+		}
 	}
+	shapeIds.clear();
 
 	lastScale = scale;
 
@@ -119,10 +126,21 @@ void Collider::RefreshShape()
 	shapeDef.filter.maskBits = mask;
 
 	// 실제 Shape 생성
-	shapeId = CreateShapeInternal(rb->GetBodyId(), shapeDef, scale);
+	CreateShapes(rb->GetBodyId(), shapeDef, scale);
 
 	// Body 깨우기
 	b2Body_SetAwake(rb->GetBodyId(), true);
+}
+
+// Shape가 존재하면 shapeIds를 순회하며 모두 해제 후 vector 비우기
+void Collider::DestroyShapes()
+{
+	for (auto id : shapeIds)
+	{
+		if (b2Shape_IsValid(id))
+			b2DestroyShape(id, true);
+	}
+	shapeIds.clear();
 }
 
 // Shape 제거 시 호출되는 Callback, 기존 충돌 상태를 종료시키기 위한 Exit 이벤트 전달
@@ -130,7 +148,7 @@ bool Collider::NotifyExitCallback(b2ShapeId otherShapeId, void* context)
 {
 	Collider* me = (Collider*)context;
 
-	if (b2Shape_IsValid(otherShapeId) == false) return true;
+	if (!b2Shape_IsValid(otherShapeId)) return true;
 
 	Collider* other = (Collider*)b2Shape_GetUserData(otherShapeId);
 
@@ -145,13 +163,16 @@ bool Collider::NotifyExitCallback(b2ShapeId otherShapeId, void* context)
 
 void Collider::ApplyFilter() const
 {
-	if (b2Shape_IsValid(shapeId) == false) return; // Shape가 아직 생성되지 않았으면 적용 불가
-
 	b2Filter filter = b2DefaultFilter(); // 기본 Filter 생성
 
 	filter.categoryBits = static_cast<uint32_t>(layer); // 이 Collider가 속한 Layer
 	filter.maskBits = mask; // 이 Collider가 충돌을 허용할 Layer
 	filter.groupIndex = 0; // 같은 그룹 간 충돌 제어용 (현재 사용 안함)
 
-	b2Shape_SetFilter(shapeId, filter); // Box2D Shape에 Filter 적용
+	// 전체 shapeId를 돌면서 필터 적용
+	for (auto id : shapeIds)
+	{
+		if (b2Shape_IsValid(id))
+			b2Shape_SetFilter(id, filter); // Box2D Shape에 Filter 적용
+	}
 }

@@ -15,5 +15,5 @@ public:
 	// scale  : Object의 현재 크기 (픽셀 단위)
 	// 반환값 : 생성된 Box2D ShapeId
 	//============================================================
-	b2ShapeId CreateShapeInternal(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale) override;
+	void CreateShapes(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale) override;
 };
