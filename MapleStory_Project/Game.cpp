@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Scenes/SceneList.h"
 #include "Objects/Camera.h"
+#include "Utilities/Random.h"
 
 Game::Game()
 {
@@ -25,6 +26,9 @@ void Game::Init()
 {
 	// ImGui 시스템 초기화
 	ImGuiManager::GetInstance().Init();
+
+	// 랜덤 생성기 초기화 (seed 설정)
+	Random::Init();
 
 	// SandboxScene 생성 및 Scene 목록에 추가
 	//sceneList.push_back(std::make_shared<SandboxScene>());

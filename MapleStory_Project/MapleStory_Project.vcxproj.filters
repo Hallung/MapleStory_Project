@@ -98,6 +98,7 @@
     <ClCompile Include="Scenes\TileMapEditorScene.cpp" />
     <ClCompile Include="Utilities\FileDialog.cpp" />
     <ClCompile Include="Components\CameraController.cpp" />
+    <ClCompile Include="Utilities\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Scenes\TileMapEditorScene.h" />
     <ClInclude Include="Utilities\FileDialog.h" />
     <ClInclude Include="Components\CameraController.h" />
+    <ClInclude Include="Utilities\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

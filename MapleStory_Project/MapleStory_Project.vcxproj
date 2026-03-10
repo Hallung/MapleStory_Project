@@ -200,6 +200,7 @@
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Utilities\FileDialog.cpp" />
     <ClCompile Include="Utilities\ObjectFactory.cpp" />
+    <ClCompile Include="Utilities\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Animator.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="Utilities\FileDialog.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\PhysicsUtils.h" />
+    <ClInclude Include="Utilities\Random.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
