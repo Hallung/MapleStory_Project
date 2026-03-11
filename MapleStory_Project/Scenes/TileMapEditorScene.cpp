@@ -5,6 +5,8 @@
 #include "Utilities/FileDialog.h"
 #include "Components/Transform.h"
 #include "Components/CameraController.h"
+#include "Components/MeshRenderer.h"
+#include "Resources/Material.h"
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
 
@@ -14,12 +16,16 @@ void TileMapEditorScene::Init()
 	tileMap = std::make_shared<TileMap>(20, 20, 64.0f);
 
 	// 현재 선택된 타일을 시각적으로 보여주기 위한 반투명 사각형
-	cursorObject = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 1.0f, 0.0f, 0.0f, 0.5f });
+	//cursorObject = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 1.0f, 0.0f, 0.0f, 0.5f });
+	//AddObject(cursorObject);
+	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
+	cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
 	AddObject(cursorObject);
 
 	// 실제 타일이 존재할 경우 화면에 그려줄 테스트용 오브젝트
 	// 현재는 하나의 프리팹을 위치만 바꿔가며 무식하게 렌더링 중
-	tilePrefab = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f });
+	//tilePrefab = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f });
+	tilePrefab = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
 
 	Camera::main->AddComponent(std::make_shared<CameraController>());
 }
