@@ -9,6 +9,13 @@
 #include "Utilities/VirtualKey.h"
 #include "Utilities/PhysicsUtils.h"
 
+PlatformerController::PlatformerController(float moveSpeed)
+	: Component("PlatformerController"), moveSpeed(moveSpeed)
+{
+	// PlatformerController 생성 시 Player 관리 클래스 객체 생성
+	player = std::make_shared<Player>();
+}
+
 //===================================
 // 매 프레임 입력 기반 이동 처리
 // A/D 키 입력으로 좌우 방향 벡터 생성
@@ -16,15 +23,23 @@
 //===================================
 void PlatformerController::Update()
 {
-	player = std::make_shared<Player>();
+	// Owner 객체에 붙어있는 Collider 컴포넌트를 가져옴
 	auto collider = GetOwner()->GetComponent<Collider>("Collider");
+
+	// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
 	if (!collider->CheckGrounded())
 	{
+		// 공중 상태일 때
+
+		// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
 		if (player->GetState() != Player::State::JUMPING)
 			player->SetState(Player::State::JUMPING);
 	}
 	else
 	{
+		// 지면에 닿아 있는 상태
+
+		// 현재 상태가 Standing이 아니라면 상태를 Standing으로 변경
 		if (player->GetState() != Player::State::STANDING)
 			player->SetState(Player::State::STANDING);
 	}
@@ -119,10 +134,12 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 	// Animator가 존재하지 않으면 애니메이션 업데이트 불가
 	if (animator == nullptr) return;
 
+	// Player 상태가 Jumping일 경우 Jump 애니메이션 재생
 	if (player->GetState() == Player::State::JUMPING)
 	{
 		animator->Play(L"Jump");
 	}
+	// Player 상태가 Jumping이 아니면 다른 애니메이션 재생
 	else
 	{
 		// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
