@@ -53,6 +53,20 @@ void ChainCollider::CreateShapes(b2BodyId bodyId, const b2ShapeDef& def, DirectX
 		worldPoints.push_back(world - bodyPos);
 	}
 
+	// 디버깅용 로그(필요 시 활성화, World 좌표에 들어간 Chain의 Position 확인)
+	//static bool logged = false;
+	//if (!logged)
+	//{
+	//	logged = true;
+	//	b2Vec2 bodyPos = b2Body_GetPosition(bodyId);
+	//	std::cout << "[CHAIN GROUND] bodyPos(world): " << bodyPos.x << ", " << bodyPos.y << '\n';
+	//	for (const auto& wp : worldPoints)
+	//	{
+	//		b2Vec2 worldAbs = bodyPos + wp;
+	//		std::cout << "  segment point: " << worldAbs.x << ", " << worldAbs.y << '\n';
+	//	}
+	//}
+
 	// Chain에 사용할 포인터 배열 설정
 	chainDef.points = worldPoints.data();
 	// 포인트 개수 설정

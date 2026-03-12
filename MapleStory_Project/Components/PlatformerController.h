@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+
+
 //=======================================
 // 2D 플렛폼 캐릭터 이동 컨트롤러 컴포넌트
 // 좌우 이동입력 처리 및 속도 적용
@@ -28,4 +30,6 @@ private:
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
 
 	float moveSpeed = 0.0f;	// 이동 속도
+
+	std::shared_ptr<class Player> player;
 };

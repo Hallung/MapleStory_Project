@@ -176,3 +176,33 @@ void Collider::ApplyFilter() const
 			b2Shape_SetFilter(id, filter); // Box2D Shape에 Filter 적용
 	}
 }
+
+// 플레이어 (또는 이 Collider를 가진 객체)가 지면에 닿아 있는지 확인하는 함수
+bool Collider::CheckGrounded()
+{
+	// Owner 객체의 Transform Scale 및 Position을 가져오기
+	auto ownerScale = GetOwner()->GetTransform()->GetScale();
+	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
+
+	// 객체 높이의 절반 (캐릭터 중심 기준으로 발 위치를 계산할 때 사용)
+	float halfHeight = ownerScale.y * 0.5f;
+
+	// RayCast 시작 위치
+	DirectX::SimpleMath::Vector2 origin = ownerPosition;
+
+	// Ray가 검사할 최대 거리
+	float totalDistance = 1.2f;
+
+	//=============================================================
+	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
+	// origin : Ray 시작 위치
+	// {0, -1} : 아래 방향 (Down)
+	// totalDistance : Ray 길이
+	// CollisionLayer::Ground : Ground 레이어만 충돌 검사
+	//=============================================================
+	RaycastHit hit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
+	// 충돌이 없으면 false (공중 상태)
+	return hit.hit;
+}

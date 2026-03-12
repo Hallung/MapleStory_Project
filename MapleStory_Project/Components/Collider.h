@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Utilities/CollisionLayer.h"
+#include <box2d/box2d.h>
 
 //=================================================================
 // Box2D Shape를 기반으로 충돌 판정을 담당하는 Component 베이스 클래스
@@ -46,6 +47,8 @@ public:
 	void SetColliderScale(DirectX::SimpleMath::Vector2 scale) { this->scale = scale; }
 	DirectX::SimpleMath::Vector2 GetColliderScale() const { return scale; }	// 현재 설정된 Collider Scale 반환
 
+	bool CheckGrounded();
+
 protected:
 	// 실제 Shape 생성 함수, 각 Collider 타입에서 구현
 	virtual void CreateShapes(
@@ -60,7 +63,6 @@ protected:
 	static bool NotifyExitCallback(b2ShapeId otherShapeId, void* context);
 
 	void ApplyFilter() const; // 현재 layer 와 mask 값을 Box2D Shape Filter에 적용
-
 
 protected:
 	std::vector<b2ShapeId> shapeIds; // Box2D Shape 식별자들

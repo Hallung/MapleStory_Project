@@ -4,7 +4,9 @@
 #include "Components/Animator.h"
 #include "Components/MeshRenderer.h"
 #include "Components/BoxCollider.h"
+#include "Components/HitEvents.h"
 #include "Components/PlatformerController.h"
+#include "Components/Transform.h"
 #include "Utilities/ObjectFactory.h"
 
 Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
@@ -57,6 +59,9 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	playerAnimator->Load(L"_Animations/Player1.xml");
 	// 초기 상태 설정
 	playerAnimator->Play(L"Stand");
+
+	// Player의 충돌 판정을 위한 HitEvents 추가
+	player->AddComponent(std::make_shared<HitEvents>());
 
 	// 내부 Player Object 캐싱
 	cachPlayer = player;
