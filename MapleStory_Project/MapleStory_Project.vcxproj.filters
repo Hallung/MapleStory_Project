@@ -99,6 +99,7 @@
     <ClCompile Include="Utilities\FileDialog.cpp" />
     <ClCompile Include="Components\CameraController.cpp" />
     <ClCompile Include="Utilities\Random.cpp" />
+    <ClCompile Include="Renders\IA\InstanceBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Utilities\FileDialog.h" />
     <ClInclude Include="Components\CameraController.h" />
     <ClInclude Include="Utilities\Random.h" />
+    <ClInclude Include="Renders\IA\InstanceBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
