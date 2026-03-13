@@ -42,8 +42,7 @@ public:
 		CLIMBING,
 		ATTACKING,
 		JUMPING,
-		WALKING,
-		IDLE,
+		STANDING,
 		NONE
 	};
 

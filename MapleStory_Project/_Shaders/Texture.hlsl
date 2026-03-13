@@ -91,7 +91,7 @@ Texture2D srcTex : register(t0);
 // ==============================
 float4 PS(PixelInput input) : SV_Target0
 {
-    float4 color = srcTex.Sample(samp, input.uv); // Texture 색상 샘플링
+    float4 color = srcTex.Sample(samp, input.uv); // Texture 색상 샘플링    
     
     // Texture 색상에 Tint 색상 적용
     return color * _color;

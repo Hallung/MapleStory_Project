@@ -16,5 +16,8 @@ public:
 	void Update() override; // Scene 업데이트, 기본 Scene Update 호출 후 추가 테스트 로직 확장 가능
 	void Render() override; // Scene 렌더링, 기본 Scene Render 호출 후 디버그 렌더링 등 확장 가능
 
+	void OnImGui() override;
+
 private:
+	std::shared_ptr<Object> cachPlayer;
 };

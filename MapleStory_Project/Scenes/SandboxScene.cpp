@@ -12,7 +12,7 @@
 //=====================================
 namespace
 {
-constexpr DirectX::SimpleMath::Vector2 scale = { 77.0f, 77.0f };
+constexpr DirectX::SimpleMath::Vector2 scale = { 120.0f, 120.0f };
 constexpr float rotation = 0.0f;
 constexpr float halfValue = 0.5f;
 }
@@ -28,6 +28,8 @@ void SandboxScene::Init()
 		);
 	// Player가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(player->GetPlayer());
+
+	cachPlayer = player->GetPlayer();
 
 	// 지형 Ground 객체 생성
 	auto ground = std::make_shared<Ground>(Ground::GroundName::SANDBOX);
@@ -54,4 +56,10 @@ void SandboxScene::Update()
 void SandboxScene::Render()
 {
 	__super::Render();
+}
+
+void SandboxScene::OnImGui()
+{
+	// Player 오브젝트 정보를 실시간 확인
+	ImGuiManager::GetInstance().DrawObjectInspector(cachPlayer, "Player");
 }

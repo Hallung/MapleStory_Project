@@ -160,8 +160,9 @@
   <ItemGroup>
     <ClCompile Include="Components\Animator.cpp" />
     <ClCompile Include="Components\BoxCollider.cpp" />
-    <ClCompile Include="Components\Chain.cpp" />
+    <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Components\Collider.cpp" />
+    <ClCompile Include="Components\HitEvents.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
@@ -202,9 +203,10 @@
   <ItemGroup>
     <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\BoxCollider.h" />
-    <ClInclude Include="Components\Chain.h" />
+    <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Components\Collider.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\HitEvents.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
     <ClInclude Include="Components\PlatformerController.h" />
     <ClInclude Include="Components\RigidBody.h" />

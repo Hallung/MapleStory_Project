@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Resources/Material.h"
+#include "Components/Animator.h"
 #include "Components/MeshRenderer.h"
 #include "Components/BoxCollider.h"
+#include "Components/HitEvents.h"
 #include "Components/PlatformerController.h"
+#include "Components/Transform.h"
 #include "Utilities/ObjectFactory.h"
 
 Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
@@ -20,13 +23,46 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetPointSampler(true);
 	// 물리 바디 추가 (이동/충돌 처리)
 	auto playerRb = std::make_shared<RigidBody>(bodyType);
+
 	// FixedRotation 설정으로 캐릭터 회전 방지
 	playerRb->SetFixedRotation(true);
 	player->AddComponent(playerRb);
+
 	// 바디에 맞춰서 쉐이프 추가
-	player->AddComponent(std::make_shared<BoxCollider>());
+	auto playerCol = std::make_shared<BoxCollider>();
+
+	//===========================================
+	// Player Collider 크기 수동 설정
+	// Sprite 이미지 크기와 별개로 Collider 크기를 설정할 수 있도록 분리
+	// 이를 통해 렌더링 크기와 충돌 영역을 독립적으로 제어 가능
+	//===========================================
+	playerCol->SetColliderScale(DirectX::SimpleMath::Vector2(55.0f, 70.0f));
+	// Player 객체를 Player Collision Layer에 설정
+	playerCol->SetCollisionLayer(CollisionLayer::Player);
+
+	//=================================================
+	// Player가 충돌할 수 있는 레이어 설정
+	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
+	//=================================================
+	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+
+	// Player Object에 Collider 컴포넌트 추가
+	player->AddComponent(playerCol);
+
 	// 플랫폼 이동 컨트롤러 추가
 	player->AddComponent(std::make_shared<PlatformerController>());
+
+	// 플레이어 애니메이션 추가
+	auto playerAnimator = std::make_shared<Animator>();
+	player->AddComponent(playerAnimator);
+	// 로드할 .xml 설정
+	playerAnimator->Load(L"_Animations/Player1.xml");
+	// 초기 상태 설정
+	playerAnimator->Play(L"Stand");
+
+	// Player의 충돌 판정을 위한 HitEvents 추가
+	player->AddComponent(std::make_shared<HitEvents>());
+
 	// 내부 Player Object 캐싱
 	cachPlayer = player;
 }

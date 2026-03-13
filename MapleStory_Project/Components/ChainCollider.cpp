@@ -1,18 +1,13 @@
 #include "stdafx.h"
-#include "Chain.h"
+#include "ChainCollider.h"
 #include "Utilities/PhysicsUtils.h"
 
-Chain::Chain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector2> points, std::string name)
-	: Component(name)
+ChainCollider::ChainCollider(std::vector<DirectX::SimpleMath::Vector2> points, std::string name)
+	: Collider(name), points(points)
 {
-	// 초기 상태에서는 Chain이 생성되지 않았으므로 null 상태로 초기화
-	chainId = b2_nullChainId;
-
-	// 초기 생성 시 BodyId와 Points를 받아서 생성
-	CreateChain(bodyId, points);
 }
 
-Chain::~Chain()
+ChainCollider::~ChainCollider()
 {
 	// Chain이 유효한 경우 Box2D에서 제거
 	// Physics World에 남아있는 Shape 정리
@@ -20,12 +15,11 @@ Chain::~Chain()
 		b2DestroyChain(chainId);
 }
 
-void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector2> points)
+void ChainCollider::CreateShapes(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale)
 {
 	// Body가 유효하지 않으면 Chain 생성 불가
 	if (!b2Body_IsValid(bodyId))
 	{
-		std::cout << "Create Faile\n";
 		return;
 	}
 
@@ -33,7 +27,6 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 	if (b2Chain_IsValid(chainId))
 	{
 		b2DestroyChain(chainId);
-		chainId = b2_nullChainId;
 	}
 
 	// 기본 Chain 정의 생성
@@ -60,6 +53,20 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 		worldPoints.push_back(world - bodyPos);
 	}
 
+	// 디버깅용 로그(필요 시 활성화, World 좌표에 들어간 Chain의 Position 확인)
+	//static bool logged = false;
+	//if (!logged)
+	//{
+	//	logged = true;
+	//	b2Vec2 bodyPos = b2Body_GetPosition(bodyId);
+	//	std::cout << "[CHAIN GROUND] bodyPos(world): " << bodyPos.x << ", " << bodyPos.y << '\n';
+	//	for (const auto& wp : worldPoints)
+	//	{
+	//		b2Vec2 worldAbs = bodyPos + wp;
+	//		std::cout << "  segment point: " << worldAbs.x << ", " << worldAbs.y << '\n';
+	//	}
+	//}
+
 	// Chain에 사용할 포인터 배열 설정
 	chainDef.points = worldPoints.data();
 	// 포인트 개수 설정
@@ -72,5 +79,26 @@ void Chain::CreateChain(b2BodyId bodyId, std::vector<DirectX::SimpleMath::Vector
 
 	// 체인 마찰력 설정 (지형과의 마찰 처리)
 	b2Chain_SetFriction(chainId, 1.0);
-	std::cout << "Chain Create\n";
+
+	// Chain Segment 개수 가져오기
+	UINT count = b2Chain_GetSegmentCount(chainId);
+
+	// Segment 개수만큼 백터 공간 마련
+	std::vector<b2ShapeId> segments(count);
+
+	// 마련해둔 백터 공간에 Segment 정보 담기
+	UINT returned = b2Chain_GetSegments(chainId, segments.data(), count);
+
+	// 각 segment에 shapeId를 설정
+	for (UINT i = 0; i < returned; ++i)
+	{
+		b2ShapeId shapeId = segments[i];
+
+		b2Shape_SetUserData(shapeId, this);
+		// shapeId를 저장
+		shapeIds.push_back(shapeId);
+	}
+
+	// 필터 적용
+	ApplyFilter();
 }

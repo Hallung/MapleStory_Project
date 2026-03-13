@@ -5,8 +5,16 @@
 #include "RigidBody.h"
 #include "Transform.h"
 #include "Animator.h"
+#include "HitEvents.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/PhysicsUtils.h"
+
+PlatformerController::PlatformerController(float moveSpeed)
+	: Component("PlatformerController"), moveSpeed(moveSpeed)
+{
+	// PlatformerController 생성 시 Player 관리 클래스 객체 생성
+	player = std::make_shared<Player>();
+}
 
 //===================================
 // 매 프레임 입력 기반 이동 처리
@@ -15,13 +23,34 @@
 //===================================
 void PlatformerController::Update()
 {
+	// Owner 객체에 붙어있는 Collider 컴포넌트를 가져옴
+	auto collider = GetOwner()->GetComponent<Collider>("Collider");
+
+	// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
+	if (!collider->CheckGrounded())
+	{
+		// 공중 상태일 때
+
+		// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
+		if (player->GetState() != Player::State::JUMPING)
+			player->SetState(Player::State::JUMPING);
+	}
+	else
+	{
+		// 지면에 닿아 있는 상태
+
+		// 현재 상태가 Standing이 아니라면 상태를 Standing으로 변경
+		if (player->GetState() != Player::State::STANDING)
+			player->SetState(Player::State::STANDING);
+	}
+
 	DirectX::SimpleMath::Vector2 dir;
 	// 오른쪽 이동 입력
 	if (InputManager::GetInstance().GetKeyPress(VK_D)) 
 	{
 		dir.x += 1.0f;
 
-		auto transform = owner->GetTransform();
+		auto transform = GetOwner()->GetTransform();
 		DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 		float absScaleX = fabsf(scale.x);
 		if (scale.x > 0.0f)
@@ -40,8 +69,14 @@ void PlatformerController::Update()
 	}
 	Move(dir);
 
-	if (InputManager::GetInstance().GetKeyDown(VK_SPACE))
-		Jump();
+	if (InputManager::GetInstance().GetKeyPress(VK_SPACE))
+	{
+		// Player 상태 확인 (이미 점프 중이면 중복 점프 방지)
+		if (player->GetState() != Player::State::JUMPING)
+			Jump();
+	}
+
+	UpdateAnimation(dir);
 }
 
 
@@ -52,7 +87,7 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 	if (dir.x == 0.0f) return;
 
 	// Object에 부착된 RigidBody 컴포넌트 가져오기
-	auto rigidBody = owner->GetComponent<RigidBody>("RigidBody");
+	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 
 	// 현재 Box2D 속도 조회 (중력 포함)
 	b2Vec2 gravity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
@@ -73,14 +108,12 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 
 void PlatformerController::Jump()
 {
-	const float jumpPower = 30.0f;	// 점프 시 가해질 임펄스 세기
+	const float jumpPower = 20.0f;	// 점프 시 가해질 임펄스 세기
 
-	// Player 상태 확인 (이미 점프 중이면 중복 점프 방지)
 	auto player = std::make_shared<Player>();
-	if (player->GetState() == Player::State::JUMPING) return;
-	
+
 	// RigidBody 컴포넌트 획득
-	auto rigidBody = owner->GetComponent<RigidBody>("RigidBody");
+	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 
 	// 현재 수직 속도 제거
 	// (기존 낙하/상승 속도를 초기화하여 점프 높이 일정하게 유지)
@@ -91,13 +124,31 @@ void PlatformerController::Jump()
 	// 위 방향으로 임펄스 적용
 	b2Vec2 impulse(0.0f, jumpPower);
 	b2Body_ApplyLinearImpulseToCenter(rigidBody->GetBodyId(), impulse, true);
-	std::cout << "Impalse\n";
 }
+
 
 void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 {
-	auto animator = owner->GetComponent<Animator>("Animaotr");
+	// Object에 부착된 Animator 컴포넌트 가져오기
+	auto animator = GetOwner()->GetComponent<Animator>("Animator");
+	// Animator가 존재하지 않으면 애니메이션 업데이트 불가
 	if (animator == nullptr) return;
 
-	// TODO: 애니메이션 xml 제작 후 상태에 따른 애니메이션 Play 방식 변경 호출 제작
+	// Player 상태가 Jumping일 경우 Jump 애니메이션 재생
+	if (player->GetState() == Player::State::JUMPING)
+	{
+		animator->Play(L"Jump");
+	}
+	// Player 상태가 Jumping이 아니면 다른 애니메이션 재생
+	else
+	{
+		// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
+		if (dir.x != 0.0f)
+			animator->Play(L"Move");
+		// 이동 입력이 없으면 Stand(Idle) 애니메이션 재생
+		else
+		{
+			animator->Play(L"Stand");
+		}
+	}
 }
