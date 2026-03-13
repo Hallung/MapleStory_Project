@@ -109,3 +109,29 @@ public:
 		bDirty = true;
 	}
 };
+
+// Sprite Atlas 데이터 구조체
+// Atlas 기반 Sprite Instancing에서 텍스처 전체 크기와 Sprite 단위 크기 전달
+struct SpriteAtlasData
+{
+	DirectX::SimpleMath::Vector2 textureSize; // Atlas 전체 텍스처 크기
+	DirectX::SimpleMath::Vector2 spriteSize;  // 개별 Sprite 크기
+};
+
+// Sprite Atlas 정보를 Shader에 전달하는 ConstantBuffer
+// instIndex를 이용해 Atlas UV 계산에 사용
+class SpriteAtlasBuffer : public ConstantBuffer<SpriteAtlasData>
+{
+public:
+	// Atlas 데이터 설정
+	// 동일한 값이면 업데이트하지 않아 GPU 업데이트 최소화
+	void SetData(DirectX::SimpleMath::Vector2 textureSize, DirectX::SimpleMath::Vector2 spriteSize)
+	{
+		if (data.textureSize == textureSize && data.spriteSize == spriteSize)
+			return;
+
+		data.textureSize = textureSize;
+		data.spriteSize = spriteSize;
+		bDirty = true;
+	}
+};
