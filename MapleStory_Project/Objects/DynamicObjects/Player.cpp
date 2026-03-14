@@ -13,7 +13,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	: bodyType(bodyType), texturePath(texturePath)
 {
 	// Sprite Objet 생성 (렌더 가능한 기본 Player 형태)
-	auto player = ObjectFactory::CreateSprite(
+	player = ObjectFactory::CreateSprite(
 			DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f),
 			DirectX::SimpleMath::Vector2(scale),
 			rotation,
@@ -63,14 +63,11 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player의 충돌 판정을 위한 HitEvents 추가
 	player->AddComponent(std::make_shared<HitEvents>());
 
-	// 내부 Player Object 캐싱
-	cachPlayer = player;
 }
 
-// Player 제거 시 내부 Object 참조 해제
 Player::~Player()
 {
-	cachPlayer = nullptr;
+
 }
 
 //=====================================
