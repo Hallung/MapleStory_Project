@@ -172,7 +172,9 @@
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Managers\TextureManager.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\Monster.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
@@ -215,7 +217,9 @@
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Managers\TextureManager.h" />
     <ClInclude Include="Objects\Camera.h" />
+    <ClInclude Include="Objects\DynamicObjects\Monster.h" />
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
+    <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />

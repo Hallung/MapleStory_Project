@@ -62,7 +62,6 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 
 	// Player의 충돌 판정을 위한 HitEvents 추가
 	player->AddComponent(std::make_shared<HitEvents>());
-
 }
 
 Player::~Player()

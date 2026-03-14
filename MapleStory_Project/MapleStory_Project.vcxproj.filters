@@ -97,6 +97,8 @@
     <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\Monster.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -220,6 +222,8 @@
     <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Components\HitEvents.h" />
+    <ClInclude Include="Objects\DynamicObjects\Monster.h" />
+    <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

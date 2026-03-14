@@ -2,6 +2,7 @@
 #include "SandboxScene.h"
 #include "Objects/Object.h"
 #include "Objects/DynamicObjects/Player.h"
+#include "Objects/DynamicObjects/Scarecrow.h"
 #include "Objects/StaticObjects/Ground.h"
 #include "Components/RigidBody.h"
 
@@ -13,6 +14,7 @@
 namespace
 {
 constexpr DirectX::SimpleMath::Vector2 scale = { 120.0f, 120.0f };
+constexpr float offsetPos = 200.0f;
 constexpr float rotation = 0.0f;
 constexpr float halfValue = 0.5f;
 }
@@ -37,6 +39,15 @@ void SandboxScene::Init()
 	AddObject(ground->GetGround(Ground::GroundName::SANDBOX));
 	// 등록된 Ground에 맞춰 충돌 가능한 Chain 컴포넌트 추가 
 	ground->SetChain(Ground::GroundName::SANDBOX);
+
+	// 화면 중앙 위치에서 offsetPos만큼 떨어진 위치에 객체 생성
+	auto scarecrow = std::make_shared<Scarecrow>(
+		DirectX::SimpleMath::Vector2(gWinWidth * halfValue + offsetPos, gWinHeight * halfValue),
+		DirectX::SimpleMath::Vector2(scale.x - 20.0f),
+		rotation
+	);
+	//Scarecrow가 관리하는 실제 게임 Object를 씬에 등록
+	AddObject(scarecrow->GetMonster());
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리
