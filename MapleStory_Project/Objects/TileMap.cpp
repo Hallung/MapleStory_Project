@@ -4,22 +4,103 @@
 #include "tinyxml2.h"
 #include <filesystem>
 
-TileMap::TileMap(UINT width, UINT height, float tileSize)
+#include "Renders/ConstantBuffers/GlobalBuffers.h"
+#include "Renders/IA/InstanceBuffer.h"
+#include "Utilities/ObjectFactory.h"
+#include "Resources/VertexType.h"
+#include "Resources/Mesh.h"
+#include "Resources/Material.h"
+#include "Resources/Texture.h"
+
+TileMap::TileMap(UINT width, UINT height, float tileSize, const std::wstring& tileSetPath, UINT tileCols, UINT tileRows)
 	: width(width), height(height), tileSize(tileSize)
 {
 	// width * height 만큼 타일 공간을 미리 확보
 	// 모든 타일은 기본값(textureIndex = -1) 상태로 초기화됨
 	tiles.resize(width * height);
-}
 
-void TileMap::Update()
-{
-	//TODO : 타일 애니메이션, 상태 업데이트 등 처리
+	//==============================
+	// Instance Rendering 준비
+	//==============================
+
+	// 최대 타일 수만큼 InstanceBuffer 생성
+	instanceBuffer = std::make_shared<InstanceBuffer>();
+	instanceBuffer->Create(width * height, sizeof(VertexInstancing));
+
+	// CPU에서 사용할 인스턴스 데이터 공간 확보
+	instanceData.reserve(width * height);
+
+	//==============================
+	// 타일셋 텍스처 로드
+	//==============================
+
+	std::shared_ptr<Texture> tileTexture = TextureManager::GetInstance().LoadTexture(tileSetPath);
+	// 실제 텍스처 해상도
+	DirectX::SimpleMath::Vector2 actualTexSize = tileTexture->GetSize();
+
+	//==============================
+	// Atlas에서 개별 Sprite 크기 계산
+	//==============================
+
+	DirectX::SimpleMath::Vector2 sliceSize;
+
+	// 타일셋을 tileCols x tileRows 형태로 분할
+	sliceSize.x = actualTexSize.x / (float)tileCols;
+	sliceSize.y = actualTexSize.y / (float)tileRows;
+
+	//==============================
+	// Sprite Atlas ConstantBuffer 설정
+	//==============================
+
+	spriteAtlasBuffer = std::make_shared<SpriteAtlasBuffer>();
+
+	// Atlas 전체 크기와 Sprite 단위 크기를 Shader에 전달
+	spriteAtlasBuffer->SetData(actualTexSize, sliceSize);
+	spriteAtlasBuffer->Update();
+
+	//==============================
+	// 타일 렌더링용 Quad Mesh 생성
+	//==============================
+
+	quadMesh = GeometryHelper::CreateTexturedQuad();
+
+	//==============================
+	// InputLayout 구성
+	// Vertex + Instance 데이터 결합
+	//==============================
+
+	std::vector<D3D11_INPUT_ELEMENT_DESC> combinedDescs = VertexTexture::descs;
+
+	// Instancing 데이터(InputLayout) 추가
+	combinedDescs.insert(combinedDescs.end(), VertexInstancing::descs.begin(), VertexInstancing::descs.end());
+
+	//==============================
+	// Sprite Instancing Material 생성
+	//==============================
+
+	material = make_shared<Material>(L"_Shaders/SpriteInstancing.hlsl", combinedDescs);
+
+	// 타일셋 텍스처 설정
+	material->SetTexture(tileTexture);
 }
 
 void TileMap::Render()
 {
-	//TODO : 타일 전체를 일괄 렌더링하도록 구현
+	// 타일 데이터가 변경되었으면 인스턴스 데이터 재생성
+	UpdateInstances();
+
+	// 그릴 타일이 없으면 렌더링 생략
+	if (instanceData.empty()) return;
+
+	quadMesh->Bind(); // Quad Mesh 바인딩
+	instanceBuffer->Bind(); // InstanceBuffer 바인딩
+	material->Bind(); // Material (Shader + Texture) 바인딩
+	spriteAtlasBuffer->BindVS(10); // Sprite Atlas ConstantBuffer 바인딩
+
+	// 삼각형 리스트 토폴로지 설정
+	Graphics::GetInstance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// Instanced Draw 호출
+	Graphics::GetInstance().GetDeviceContext()->DrawIndexedInstanced(quadMesh->GetIndexBuffer()->GetCount(), (UINT)instanceData.size(), 0, 0, 0);
 }
 
 DirectX::SimpleMath::Vector2 TileMap::WorldToGrid(DirectX::SimpleMath::Vector2 worldPos) const
@@ -65,6 +146,8 @@ void TileMap::SetTile(int gridX, int gridY, int textureIndex)
 	tiles[index].textureIndex = textureIndex;
 	// textureIndex가 0 이상이면 충돌 타일로 간주
 	tiles[index].bSolid = (textureIndex >= 0);
+
+	bDirty = true;
 }
 
 TileInfo* TileMap::GetTile(int gridX, int gridY)
@@ -154,6 +237,9 @@ void TileMap::Load(const std::wstring& path)
 		// 기존 타일 데이터 초기화 후 새 크기로 재할당
 		tiles.clear();
 		tiles.resize(width * height);
+
+		// InstanceBuffer 크기 재설정
+		instanceBuffer->Create(width * height, sizeof(VertexInstancing));
 	}
 
 	// 저장된 타일 노드를 순회하며 복원
@@ -176,4 +262,56 @@ void TileMap::Load(const std::wstring& path)
 
 		tileNode = tileNode->NextSiblingElement("Tile");
 	}
+
+	bDirty = true;
+}
+
+void TileMap::UpdateInstances()
+{
+	// 타일 데이터가 변경되지 않았다면 업데이트 생략
+	if (!bDirty) return;
+
+	// CPU 인스턴스 데이터 초기화
+	instanceData.clear();
+
+	// 전체 타일 순회
+	for (UINT y = 0; y < height; ++y)
+	{
+		for (UINT x = 0; x < width; ++x)
+		{
+			const TileInfo* tile = GetTile(x, y);
+
+			// 비어있는 타일은 렌더링하지 않음
+			if (tile != nullptr && tile->textureIndex >= 0)
+			{
+				VertexInstancing inst;
+				// 타일 중심 월드 좌표 계산
+				DirectX::SimpleMath::Vector2 worldPos = GridToWorld(x, y);
+
+				// 타일 크기만큼 스케일
+				DirectX::SimpleMath::Matrix S = DirectX::XMMatrixScaling(tileSize, tileSize, 1.0f);
+				// 타일 위치로 이동
+				DirectX::SimpleMath::Matrix T = XMMatrixTranslationFromVector(worldPos);
+
+				// 최종 월드 행렬 계산
+				inst.world = XMMatrixTranspose(S * T);
+				// Atlas에서 사용할 텍스처 인덱스
+				inst.textureIndex = tile->textureIndex;
+
+				// CPU 인스턴스 배열에 추가
+				instanceData.push_back(inst);
+			}
+		}
+	}
+
+	// 실제로 렌더링할 인스턴스 개수
+	UINT drawCount = (UINT)instanceData.size();
+
+	// CPU에서 생성한 인스턴스 데이터를 GPU InstanceBuffer에 업로드
+	if (drawCount > 0)
+	{
+		instanceBuffer->Update(instanceData.data(), drawCount);
+	}
+
+	bDirty = false;
 }

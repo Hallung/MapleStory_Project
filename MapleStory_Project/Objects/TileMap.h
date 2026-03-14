@@ -12,12 +12,13 @@ struct TileInfo
 class TileMap
 {
 public:
-	// width  : 가로 타일 개수
-	// height : 세로 타일 개수
-	// tileSize : 타일 한 칸의 월드 좌표 크기
-	TileMap(UINT width, UINT height, float tileSize);
+	// TileMap 생성자
+	// width / height : 타일맵 크기
+	// tileSize : 타일 월드 크기
+	// tileSetPath : 타일셋 텍스처 경로
+	// tileCols / tileRows : 타일셋 Atlas 분할 정보
+	TileMap(UINT width, UINT height, float tileSize, const std::wstring& tileSetPath, UINT tileCols, UINT tileRows);
 
-	void Update();
 	void Render();
 
 	// 월드 좌표를 그리드 인덱스로 변환
@@ -52,4 +53,18 @@ private:
 
 	// 2차원 타일 데이터를 1차원 배열로 저장 (index = y * width + x 방식 사용)
 	std::vector<TileInfo> tiles;
+
+	// InstanceBuffer 데이터를 재생성
+	void UpdateInstances();
+
+	std::shared_ptr<class Mesh> quadMesh; // 타일을 그리기 위한 Quad Mesh
+	std::shared_ptr<class Material> material; // 타일셋 텍스처와 Instancing Shader를 사용하는 Material
+	std::shared_ptr<class InstanceBuffer> instanceBuffer; // GPU InstanceBuffer (타일 인스턴스 데이터 저장)
+	std::shared_ptr<class SpriteAtlasBuffer> spriteAtlasBuffer; // Atlas UV 계산에 사용하는 ConstantBuffer
+
+	// 실제 인스턴스 데이터 배열
+	std::vector<struct VertexInstancing> instanceData;
+
+	// 타일 데이터가 변경되었을 때 InstanceBuffer 재생성을 위한 Dirty Flag
+	bool bDirty = true;
 };
