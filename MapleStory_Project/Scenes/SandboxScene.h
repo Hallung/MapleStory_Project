@@ -19,5 +19,6 @@ public:
 	void OnImGui() override;
 
 private:
-	std::shared_ptr<Object> cachPlayer;
+	std::shared_ptr<Player> player;
+	std::shared_ptr<Object> worldPlayer;
 };

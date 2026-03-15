@@ -67,18 +67,13 @@ void Collider::RefreshShape()
 	// Rigidbody가 없거나 Body가 유효하지 않으면 생성 불가
 	if (!rb || !b2Body_IsValid(rb->GetBodyId())) return;
 
-	//===========================================
-	// Collider Scale 결정 로직
-	// - ColliderScale이 설정되지 않았을 경우
-	//   Owner의 Transform Scale을 사용
-	// - ColliderScale이 설정된 경우
-	//   해당 값을 충돌 크기로 사용
-	//===========================================
-	if (scale.x < MIN_SIZE && scale.y < MIN_SIZE)
-		scale = GetOwner()->GetTransform()->GetScale();
+	// Shape의 실제 크기와 별개로 Object 크기 변화 시
+	// 사용하기 위한 ownerScale
+	DirectX::SimpleMath::Vector2 ownerScale 
+		= GetOwner()->GetTransform()->GetScale();
 
 	// 너무 작은 경우 Shape 생성하지 않음
-	if (abs(scale.x) < MIN_SIZE || abs(scale.y) < MIN_SIZE) return;
+	if (abs(ownerScale.x) < MIN_SIZE || abs(ownerScale.y) < MIN_SIZE) return;
 
 	// 기존 Shape가 존재하는 경우 제거 처리
 	for (auto id : shapeIds)
@@ -100,7 +95,7 @@ void Collider::RefreshShape()
 	}
 	shapeIds.clear();
 
-	lastScale = scale;
+	lastScale = ownerScale;
 
 	// Shape 기본 설정
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
@@ -126,7 +121,7 @@ void Collider::RefreshShape()
 	shapeDef.filter.maskBits = mask;
 
 	// 실제 Shape 생성
-	CreateShapes(rb->GetBodyId(), shapeDef, scale);
+	CreateShapes(rb->GetBodyId(), shapeDef, Collider::scale);
 
 	// Body 깨우기
 	b2Body_SetAwake(rb->GetBodyId(), true);

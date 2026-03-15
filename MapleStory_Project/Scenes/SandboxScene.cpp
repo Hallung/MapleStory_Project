@@ -23,7 +23,7 @@ constexpr float halfValue = 0.5f;
 void SandboxScene::Init()
 {
 	// 화면 중앙 위치에 Player 객체 생성
-	auto player = std::make_shared<Player>(
+	player = std::make_shared<Player>(
 		DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
 		DirectX::SimpleMath::Vector2(scale),
 		rotation
@@ -31,7 +31,7 @@ void SandboxScene::Init()
 	// Player가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(player->GetPlayer());
 
-	cachPlayer = player->GetPlayer();
+	worldPlayer = player->GetPlayer();
 
 	// 지형 Ground 객체 생성
 	auto ground = std::make_shared<Ground>(Ground::GroundName::SANDBOX);
@@ -61,6 +61,7 @@ void SandboxScene::Update()
 {
 	__super::Update();
 	PhysicsManager::GetInstance().Update();
+	player->Update();
 }
 
 // Scene의 기본 Object Render 수행, 필요 시 디버그 렌더링 등 확장 가능
@@ -72,5 +73,5 @@ void SandboxScene::Render()
 void SandboxScene::OnImGui()
 {
 	// Player 오브젝트 정보를 실시간 확인
-	ImGuiManager::GetInstance().DrawObjectInspector(cachPlayer, "Player");
+	ImGuiManager::GetInstance().DrawObjectInspector(worldPlayer, "Player");
 }

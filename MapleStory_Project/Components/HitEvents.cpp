@@ -40,7 +40,6 @@ void HitEvents::OnCollisionEnter(Collider* other)
 void HitEvents::OnCollisionExit(Collider* other)
 {
 	if (!other) return;
-
 	currentColliders.erase(other);	// 충돌 목록에서 제거
 }
 
@@ -55,8 +54,9 @@ bool HitEvents::IsCollidingWith(CollisionLayer layer) const
 	{
 		// Collider 존재 확인 후 Layer 비교
 		if (col && col->GetCollisionLayer() == layer)
+		{
 			return true;
+		}
 	}
-
 	return false;	// 해당 Layer와 충돌 중인 Collider가 없음
 }

@@ -8,6 +8,7 @@
 class BoxCollider : public Collider
 {
 public:
+	BoxCollider(std::string name = "Collider") : Collider(name) {}
 	//============================================================
 	// Box2D Shape 생성 함수
 	// bodyId : Shape가 부착될 Box2D Body
