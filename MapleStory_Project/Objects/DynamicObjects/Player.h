@@ -35,6 +35,8 @@ public:
 	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/testPos.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
 	~Player();
 
+	void Update();
+
 	// Player ป๓ลย
 	enum class State
 	{

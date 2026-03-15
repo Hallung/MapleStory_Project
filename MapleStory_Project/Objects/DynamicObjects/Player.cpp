@@ -44,10 +44,14 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player가 충돌할 수 있는 레이어 설정
 	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
 	//=================================================
-	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+	playerCol->SetCollisionMask((uint32_t)CollisionLayer::Ground | (uint32_t)CollisionLayer::Monster);
 
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
+
+	// 충돌 이벤트를 확인하는 HitEvents 추가
+	auto playerHitEvents = std::make_shared<HitEvents>();
+	player->AddComponent(playerHitEvents);
 
 	// 플랫폼 이동 컨트롤러 추가
 	player->AddComponent(std::make_shared<PlatformerController>());
@@ -67,6 +71,15 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 Player::~Player()
 {
 
+}
+
+void Player::Update()
+{
+	// Player가 Monster와 충돌 중인지 확인
+	if (player->GetComponent<HitEvents>("HitEvents")->IsCollidingWith(CollisionLayer::Monster))
+		std::cout << "Hit\n";
+	else
+		std::cout << "UnHit\n";
 }
 
 //=====================================
