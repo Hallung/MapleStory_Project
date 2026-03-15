@@ -7,7 +7,6 @@
 #include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Renders/IA/InstanceBuffer.h"
 #include "Utilities/ObjectFactory.h"
-#include "Resources/VertexType.h"
 #include "Resources/Mesh.h"
 #include "Resources/Material.h"
 #include "Resources/Texture.h"

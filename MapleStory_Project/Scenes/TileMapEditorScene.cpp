@@ -3,6 +3,7 @@
 #include "Utilities/ObjectFactory.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/FileDialog.h"
+#include "Utilities/Random.h"
 #include "Components/Transform.h"
 #include "Components/CameraController.h"
 #include "Components/MeshRenderer.h"
@@ -12,20 +13,23 @@
 
 void TileMapEditorScene::Init()
 {
-	// 20x20 크기, 타일 크기 64인 TileMap 생성
-	tileMap = std::make_shared<TileMap>(20, 20, 64.0f);
+	// 타일셋 구성 정보
+	constexpr UINT tileCols = 10;
+	constexpr UINT tileRows = 18;
+	constexpr UINT maxTilesInTileset = tileCols * tileRows;
+
+	// 테스트용 맵 크기 (타일셋 크기와 동일하게 생성)
+	constexpr UINT mapWidth = maxTilesInTileset;
+	constexpr UINT mapHeight = maxTilesInTileset;
+
+	// Instancing 기반 TileMap 생성
+	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/tiles.jpg", tileCols, tileRows);
 
 	// 현재 선택된 타일을 시각적으로 보여주기 위한 반투명 사각형
-	//cursorObject = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 1.0f, 0.0f, 0.0f, 0.5f });
-	//AddObject(cursorObject);
+	// 이후 Tile Palette 기능 추가 시 선택 타일 미리보기로 사용할 예정
 	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
 	cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
 	AddObject(cursorObject);
-
-	// 실제 타일이 존재할 경우 화면에 그려줄 테스트용 오브젝트
-	// 현재는 하나의 프리팹을 위치만 바꿔가며 무식하게 렌더링 중
-	//tilePrefab = ObjectFactory::CreateColorRect(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f });
-	tilePrefab = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
 
 	Camera::main->AddComponent(std::make_shared<CameraController>());
 }
@@ -60,9 +64,14 @@ void TileMapEditorScene::Update()
 	// ImGui UI 위에 마우스가 올라가 있는 경우 타일맵 편집 입력이 동시에 발생하지 않도록 마우스 입력을 차단
 	if (ImGuiManager::GetInstance().WantCaptureMouse() == false)
 	{
-		// 좌클릭 시 현재 그리드 위치에 타일 생성 (textureIndex = 0)
+		// 마우스 눌렀을 때 한번만 랜덤 생성
+		if (InputManager::GetInstance().GetKeyDown(VK_LBUTTON))
+			paintTileIndex = Random::Range(0, 179);
+
+		// 좌클릭 시 현재 그리드 위치에 타일 생성 (textureIndex = paintTileIndex)
 		if (InputManager::GetInstance().GetKeyPress(VK_LBUTTON))
-			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, 0);
+			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, paintTileIndex);
+
 		// 우클릭 시 타일 제거 (textureIndex = -1)
 		if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
 			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
@@ -115,24 +124,7 @@ void TileMapEditorScene::Render()
 {
 	__super::Render();
 
-	for (UINT y = 0; y < tileMap->GetHeight(); ++y)
-	{
-		for (UINT x = 0; x < tileMap->GetWidth(); ++x)
-		{
-			// 타일이 존재하는 경우에만 렌더
-			const TileInfo* tile = tileMap->GetTile(x, y);
-
-			if (tile != nullptr && tile->textureIndex >= 0)
-			{
-				// 해당 그리드의 월드 중앙 좌표 계산
-				DirectX::SimpleMath::Vector2 worldPos = tileMap->GridToWorld(x, y);
-
-				// 프리팹 위치 이동
-				tilePrefab->GetTransform()->SetPosition(worldPos);
-				// Transform 갱신 후 직접 Render 호출 (현재는 구조 테스트 단계라 일단 무식하게 처리)
-				tilePrefab->GetTransform()->Update();
-				tilePrefab->Render();
-			}
-		}
-	}
+	// TileMap Instancing 렌더링
+	if (tileMap)
+		tileMap->Render();
 }

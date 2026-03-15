@@ -1,4 +1,5 @@
 #pragma once
+#include "Resources/VertexType.h"
 
 // 단순한 순수 데이터 구조체
 // 한 칸의 타일이 가지는 최소 정보만 보관
@@ -63,7 +64,7 @@ private:
 	std::shared_ptr<class SpriteAtlasBuffer> spriteAtlasBuffer; // Atlas UV 계산에 사용하는 ConstantBuffer
 
 	// 실제 인스턴스 데이터 배열
-	std::vector<struct VertexInstancing> instanceData;
+	std::vector<VertexInstancing> instanceData;
 
 	// 타일 데이터가 변경되었을 때 InstanceBuffer 재생성을 위한 Dirty Flag
 	bool bDirty = true;

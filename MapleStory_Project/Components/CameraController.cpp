@@ -23,7 +23,7 @@ void CameraController::Update()
 
         // 마우스 이동 방향에 따라 카메라 평행 이동
         pos.x -= delta.x * panSpeed;
-        pos.y += delta.y * panSpeed;
+        pos.y -= delta.y * panSpeed;
 
         transform->SetPosition(pos);
     }

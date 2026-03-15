@@ -15,10 +15,8 @@ private:
 	std::shared_ptr<class TileMap> tileMap;
 	// 현재 선택된 타일 위치를 표시하기 위한 커서 오브젝트
 	std::shared_ptr<class Object> cursorObject; 
-
-	// 실제 타일을 화면에 그리기 위한 프리팹 오브젝트
-	// 현재는 테스트 단계라 하나의 오브젝트를 재사용하여 렌더링
-	std::shared_ptr<class Object> tilePrefab;
+	// 타일 인덱스를 저장하는 변수
+	UINT paintTileIndex = 0;
 
 	// 현재 마우스가 위치한 그리드 인덱스
 	DirectX::SimpleMath::Vector2 currentGridIndex;
