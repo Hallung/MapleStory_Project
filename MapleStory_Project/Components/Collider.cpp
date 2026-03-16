@@ -31,7 +31,7 @@ void Collider::Update()
 	DirectX::SimpleMath::Vector2 currentScale = GetOwner()->GetTransform()->GetScale();
 
 	// Scale이 변경된 경우 Refresh
-	if (DirectX::SimpleMath::Vector2::DistanceSquared(currentScale, lastScale) > GetOwner()->GetTransform()->GetEpsilon())
+	if (DirectX::SimpleMath::Vector2::DistanceSquared(DirectX::XMVectorAbs(currentScale), DirectX::XMVectorAbs(lastScale)) > GetOwner()->GetTransform()->GetEpsilon())
 		RefreshShape();
 }
 

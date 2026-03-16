@@ -23,26 +23,11 @@ PlatformerController::PlatformerController(float moveSpeed)
 //===================================
 void PlatformerController::Update()
 {
-	// Owner 객체에 붙어있는 Collider 컴포넌트를 가져옴
-	auto collider = GetOwner()->GetComponent<Collider>("Collider");
+	// 매 프레임 피격 판정 처리
+	Hit();
 
-	// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
-	if (!collider->CheckGrounded())
-	{
-		// 공중 상태일 때
-
-		// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
-		if (player->GetState() != Player::State::JUMPING)
-			player->SetState(Player::State::JUMPING);
-	}
-	else
-	{
-		// 지면에 닿아 있는 상태
-
-		// 현재 상태가 Standing이 아니라면 상태를 Standing으로 변경
-		if (player->GetState() != Player::State::STANDING)
-			player->SetState(Player::State::STANDING);
-	}
+	// 매 프레임 현재 플레이어 상태 확인
+	UpdateState();
 
 	DirectX::SimpleMath::Vector2 dir;
 	// 오른쪽 이동 입력
@@ -110,8 +95,6 @@ void PlatformerController::Jump()
 {
 	const float jumpPower = 20.0f;	// 점프 시 가해질 임펄스 세기
 
-	auto player = std::make_shared<Player>();
-
 	// RigidBody 컴포넌트 획득
 	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 
@@ -124,6 +107,96 @@ void PlatformerController::Jump()
 	// 위 방향으로 임펄스 적용
 	b2Vec2 impulse(0.0f, jumpPower);
 	b2Body_ApplyLinearImpulseToCenter(rigidBody->GetBodyId(), impulse, true);
+}
+
+// 몬스터와 충돌 시 피격 처리 수행
+void PlatformerController::Hit()
+{
+	const float pushPower = 10.0f;
+
+	// HitEvents 컴포넌트 가져오기
+	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
+
+	// 무적 타이머 갱신
+	if (invincibleTimer > 10.0f)
+		invincibleTimer = 10.0f;	// 과도한 증가 방지
+	else
+		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
+
+	// 몬스터와 충돌 중인지 확인
+	if (hitEvent->IsCollidingWith(CollisionLayer::Monster))
+	{
+		// 무적 시간이 끝났을 때만 피격 처리
+		if (invincibleTimer >= invincibleCooldown)
+		{
+			auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
+
+			// 기존 수평 속도 제거 (넉백 방향 명확화)
+			b2Vec2 velocity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
+			velocity.x = 0.0f;
+			b2Body_SetLinearVelocity(rigidBody->GetBodyId(), velocity);
+
+			// 몬스터 위치 기반 넉백 방향 계산
+			b2Vec2 monsterPos = hitEvent->GetMonsterPosition();
+			b2Vec2 ownerPos = b2Body_GetPosition(rigidBody->GetBodyId());
+
+			// 플레이어 - 몬스터 방향 벡터
+			float dirVec = ownerPos.x - monsterPos.x;
+
+			// 좌/우 넉백 방향 결정
+			float dir = (dirVec > 0) ? 1.0f : -1.0f;
+
+			// 위 + 좌우 방향 임펄스 적용
+			b2Vec2 impulse(dir * pushPower, pushPower - 5.0f);
+			b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
+			
+			// 무적 시간 (타이머 초기화)
+			invincibleTimer = 0.0f;
+		}
+	}
+}
+
+// 현재 플레이어 상황을 기반으로 최종 State를 하나의 규칙으로 결정
+void PlatformerController::UpdateState()
+{
+	// Owner 객체에 붙어있는 Collider 컴포넌트를 가져옴
+	auto collider = GetOwner()->GetComponent<Collider>("Collider");
+	
+	// 지면 충돌 확인
+	bool grounded = collider->CheckGrounded();
+	
+	// 현재 상태 저장
+	Player::State newState;
+
+	// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
+	if (!grounded)
+	{
+		// 공중 상태일 때
+
+		// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
+		newState = Player::State::JUMPING;
+	}
+	else
+	{
+		// 지면에 닿아 있는 상태
+
+		if (invincibleTimer > invincibleCooldown)
+		{
+			// 무적 시간이 끝났다면 기본 대기 상태
+			newState = Player::State::STANDING;
+		}
+		else
+		{
+			// 무적 시간 진행 중 -> 피격 상태 유지
+			newState = Player::State::HITTING;
+		}
+	}
+
+	// 현재 상태가 newState와 다르면 newState 상태로 변경
+	if (player->GetState() != newState)
+	{
+		player->SetState(newState);
+	}
 }
 
 
@@ -145,10 +218,19 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 		// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
 		if (dir.x != 0.0f)
 			animator->Play(L"Move");
-		// 이동 입력이 없으면 Stand(Idle) 애니메이션 재생
 		else
 		{
-			animator->Play(L"Stand");
+			// 이동하지 않는 경우 상태 기반 애니메이션 선택
+			if (player->GetState() == Player::State::HITTING)
+			{
+				// 피격 중
+				animator->Play(L"Hit");
+			}
+			else
+			{
+				// 기본 대기 상태
+				animator->Play(L"Stand");
+			}
 		}
 	}
 }

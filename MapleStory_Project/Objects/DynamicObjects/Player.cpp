@@ -66,6 +66,9 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 
 	// Player의 충돌 판정을 위한 HitEvents 추가
 	player->AddComponent(std::make_shared<HitEvents>());
+
+	// 생성 시 State STANDING으로 설정
+	currentState = State::STANDING;
 }
 
 Player::~Player()
@@ -75,11 +78,7 @@ Player::~Player()
 
 void Player::Update()
 {
-	// Player가 Monster와 충돌 중인지 확인
-	if (player->GetComponent<HitEvents>("HitEvents")->IsCollidingWith(CollisionLayer::Monster))
-		std::cout << "Hit\n";
-	else
-		std::cout << "UnHit\n";
+
 }
 
 //=====================================

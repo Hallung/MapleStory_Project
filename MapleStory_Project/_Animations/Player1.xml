@@ -2,4 +2,5 @@
 	<Clip name="Stand" x="680" y="140" w="520" h="120" count="4" loop="true" speed="0.3"/>
 	<Clip name="Move" x="680" y="400" w="524" h="120" count="4" loop="true" speed="0.2"/>
 	<Clip name="Jump" x="10" y="400" w="120" h="120" count="1" loop="true" speed="1.0"/>
+	<Clip name="Hit" x="10" y="10" w="390" h="120" count="3" loop="true" speed="0.3"/>
 </Texture>
