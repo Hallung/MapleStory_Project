@@ -10,11 +10,18 @@ public:
 	void Update() override;
 	void Render() override;
 
+	// 마우스 입력을 처리하여 타일맵 편집 수행
+	void HandleMouseInput();
+	// TileMap Editor 전용 ImGui UI 렌더링
+	void DrawEditorUI();
+
 private:
 	// 테스트용 TileMap
 	std::shared_ptr<class TileMap> tileMap;
 	// 현재 선택된 타일 위치를 표시하기 위한 커서 오브젝트
-	std::shared_ptr<class Object> cursorObject; 
+	std::shared_ptr<class Object> cursorObject;
+	// 커서 오브젝트의 머티리얼
+	std::shared_ptr<class Material> cursorObjectMaterial;
 	// 타일 인덱스를 저장하는 변수
 	UINT paintTileIndex = 0;
 
@@ -22,4 +29,6 @@ private:
 	DirectX::SimpleMath::Vector2 currentGridIndex;
 	// 마우스의 월드 좌표
 	DirectX::SimpleMath::Vector2 mouseWorldPos;
+	// 마우스의 화면 좌표
+	DirectX::SimpleMath::Vector2 mouseScreenPos;
 };

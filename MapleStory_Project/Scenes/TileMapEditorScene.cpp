@@ -11,24 +11,29 @@
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
 
+namespace
+{
+// 타일셋 구성 정보
+constexpr UINT tileCols = 10;
+constexpr UINT tileRows = 18;
+constexpr UINT maxTilesInTileset = tileCols * tileRows;
+
+// 테스트용 맵 크기 (타일셋 크기와 동일하게 생성)
+constexpr UINT mapWidth = maxTilesInTileset;
+constexpr UINT mapHeight = maxTilesInTileset;
+}
+
 void TileMapEditorScene::Init()
 {
-	// 타일셋 구성 정보
-	constexpr UINT tileCols = 10;
-	constexpr UINT tileRows = 18;
-	constexpr UINT maxTilesInTileset = tileCols * tileRows;
-
-	// 테스트용 맵 크기 (타일셋 크기와 동일하게 생성)
-	constexpr UINT mapWidth = maxTilesInTileset;
-	constexpr UINT mapHeight = maxTilesInTileset;
-
 	// Instancing 기반 TileMap 생성
 	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/tiles.jpg", tileCols, tileRows);
 
 	// 현재 선택된 타일을 시각적으로 보여주기 위한 반투명 사각형
-	// 이후 Tile Palette 기능 추가 시 선택 타일 미리보기로 사용할 예정
 	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
-	cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f });
+	cursorObjectMaterial = cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial(); // 커서 오브젝트의 Material 참조
+	cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // 반투명 표시
+	cursorObjectMaterial->SetAtlasGrid(tileCols, tileRows); // 타일셋 Atlas 정보 설정
+	cursorObjectMaterial->SetAtlasIndex(paintTileIndex); // 현재 선택된 타일 표시
 	AddObject(cursorObject);
 
 	Camera::main->AddComponent(std::make_shared<CameraController>());
@@ -45,8 +50,26 @@ void TileMapEditorScene::Update()
 {
 	__super::Update();
 
+	// 마우스 입력을 처리하여 타일맵 편집 (그리드 계산, 커서 스냅, 타일 페인팅)
+	HandleMouseInput();
+	// TileMap Editor UI 및 디버그 창 렌더링
+	DrawEditorUI();
+}
+
+void TileMapEditorScene::Render()
+{
+	// TileMap Instancing 렌더링
+	if (tileMap)
+		tileMap->Render();
+
+	__super::Render();
+}
+
+void TileMapEditorScene::HandleMouseInput()
+{
+	cursorObjectMaterial->SetAtlasIndex(paintTileIndex);
 	// 마우스의 화면 좌표 가져오기
-	DirectX::SimpleMath::Vector2 mouseScreenPos = InputManager::GetInstance().GetMousePos();
+	mouseScreenPos = InputManager::GetInstance().GetMousePos();
 
 	// 화면 좌표 -> 월드 좌표 변환 (카메라 기준)
 	if (Camera::main)
@@ -57,17 +80,13 @@ void TileMapEditorScene::Update()
 
 	// 다시 그리드 -> 월드 중앙 좌표로 변환 (스냅 효과)
 	DirectX::SimpleMath::Vector2 snappedWorldPos = tileMap->GridToWorld((int)currentGridIndex.x, (int)currentGridIndex.y);
-	
+
 	// 커서를 해당 타일 중앙으로 이동
 	cursorObject->GetTransform()->SetPosition(snappedWorldPos);
 
 	// ImGui UI 위에 마우스가 올라가 있는 경우 타일맵 편집 입력이 동시에 발생하지 않도록 마우스 입력을 차단
 	if (ImGuiManager::GetInstance().WantCaptureMouse() == false)
 	{
-		// 마우스 눌렀을 때 한번만 랜덤 생성
-		if (InputManager::GetInstance().GetKeyDown(VK_LBUTTON))
-			paintTileIndex = Random::Range(0, 179);
-
 		// 좌클릭 시 현재 그리드 위치에 타일 생성 (textureIndex = paintTileIndex)
 		if (InputManager::GetInstance().GetKeyPress(VK_LBUTTON))
 			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, paintTileIndex);
@@ -76,7 +95,10 @@ void TileMapEditorScene::Update()
 		if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
 			tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
 	}
+}
 
+void TileMapEditorScene::DrawEditorUI()
+{
 	// TileMap 좌표 변환 확인용 디버그 창
 	ImGui::Begin("TileMap Editor Debug");
 	ImGui::Text("Mouse Screen : %.1f, %.1f", mouseScreenPos.x, mouseScreenPos.y);
@@ -117,14 +139,30 @@ void TileMapEditorScene::Update()
 			tileMap->Load(path);
 	}
 
+	ImGui::Separator();
+
+	// 타일 선택 창
+	ImGui::Text("Tile Palette");
+	// 현재 선택된 타일 인덱스
+	ImGui::Text("Selected Tile : %d", paintTileIndex);
+
+	// 타일셋에 포함된 모든 타일 인덱스를 버튼 형태로 출력
+	for (UINT i = 0; i < maxTilesInTileset; ++i)
+	{
+		// 현재 타일 인덱스를 문자열로 변환하여 사용
+		char label[16];
+		sprintf_s(label, "%d", i);
+
+		// 버튼 클릭 시 현재 페인팅에 사용할 타일 인덱스 변경
+		if (ImGui::Button(label, ImVec2(40, 40)))
+		{
+			paintTileIndex = i;
+		}
+
+		// tileCols 개수마다 줄바꿈하여 타일셋과 동일한 그리드 형태로 배치
+		if ((i + 1) % tileCols != 0)
+			ImGui::SameLine();
+	}
+
 	ImGui::End();
-}
-
-void TileMapEditorScene::Render()
-{
-	__super::Render();
-
-	// TileMap Instancing 렌더링
-	if (tileMap)
-		tileMap->Render();
 }
