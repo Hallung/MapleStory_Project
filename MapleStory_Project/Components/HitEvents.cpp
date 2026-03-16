@@ -32,13 +32,16 @@ void HitEvents::OnCollisionEnter(Collider* other)
 {
 	if (!other) return;
 
+	// TODO: enum 연산자 오버로드(&) 추가하기
+	// 추가 후 CollisionLayer() == 를 변경
+	
 	// Ground Collider은 등록 X
 	if (other->GetCollisionLayer() == CollisionLayer::Ground) return;
 
 	// 현재 충돌 중인 Collider 등록
 	currentColliders.insert(other);	// 충돌 중인 Collider 목록에 추가
 
-	// Monster와 충돌한경움나 처리
+	// Monster와 충돌한경움나 처리 
 	if (other->GetCollisionLayer() == CollisionLayer::Monster)
 	{
 		auto otherId = other->GetOwner()->GetComponent<RigidBody>("RigidBody")->GetBodyId();
