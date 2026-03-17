@@ -161,7 +161,9 @@
     <ClCompile Include="Components\Animator.cpp" />
     <ClCompile Include="Components\BoxCollider.cpp" />
     <ClCompile Include="Components\CameraController.cpp" />
+    <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Components\Collider.cpp" />
+    <ClCompile Include="Components\HitEvents.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
@@ -174,6 +176,7 @@
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
     <ClCompile Include="Objects\TileMap.cpp" />
+    <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
     <ClCompile Include="Renders\IA\InstanceBuffer.cpp" />
@@ -207,8 +210,10 @@
     <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\BoxCollider.h" />
     <ClInclude Include="Components\CameraController.h" />
+    <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Components\Collider.h" />
     <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\HitEvents.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
     <ClInclude Include="Components\PlatformerController.h" />
     <ClInclude Include="Components\RigidBody.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\Object.h" />
     <ClInclude Include="Objects\TileMap.h" />
+    <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
     <ClInclude Include="Renders\IA\IndexBuffer.h" />

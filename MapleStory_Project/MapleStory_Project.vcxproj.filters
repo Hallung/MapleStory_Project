@@ -100,6 +100,9 @@
     <ClCompile Include="Components\CameraController.cpp" />
     <ClCompile Include="Utilities\Random.cpp" />
     <ClCompile Include="Renders\IA\InstanceBuffer.cpp" />
+    <ClCompile Include="Components\ChainCollider.cpp" />
+    <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
+    <ClCompile Include="Components\HitEvents.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -226,6 +229,9 @@
     <ClInclude Include="Components\CameraController.h" />
     <ClInclude Include="Utilities\Random.h" />
     <ClInclude Include="Renders\IA\InstanceBuffer.h" />
+    <ClInclude Include="Components\ChainCollider.h" />
+    <ClInclude Include="Objects\StaticObjects\Ground.h" />
+    <ClInclude Include="Components\HitEvents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

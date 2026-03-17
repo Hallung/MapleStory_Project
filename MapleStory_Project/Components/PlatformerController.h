@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+
+
 //=======================================
 // 2D 플렛폼 캐릭터 이동 컨트롤러 컴포넌트
 // 좌우 이동입력 처리 및 속도 적용
@@ -13,7 +15,7 @@ public:
 	// 기본 이동 속도를 가지는 컨트롤러 생성
 	// Component 이름을 "PlatformerController"로 설정
 	//===============================================
-	PlatformerController(float moveSpeed = 200.0f) : Component("PlatformerController"), moveSpeed(moveSpeed) {}
+	PlatformerController(float moveSpeed = 150.0f);
 
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;
@@ -28,4 +30,7 @@ private:
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
 
 	float moveSpeed = 0.0f;	// 이동 속도
+
+	// Player 객체를 공유 포인터로 생성
+	std::shared_ptr<class Player> player;
 };

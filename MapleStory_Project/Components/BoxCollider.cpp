@@ -6,7 +6,7 @@
 // Object의 scale 값을 기반으로 Box2D Polygon Shape 생성
 // Box2D는 "미터 단위"를 사용하므로, 화면 픽셀 단위를 Physics 월드 단위로 변환해야 함
 //==============================================================================
-b2ShapeId BoxCollider::CreateShapeInternal(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale)
+void BoxCollider::CreateShapes(b2BodyId bodyId, const b2ShapeDef& def, DirectX::SimpleMath::Vector2 scale)
 {
 	//=================================================================
 	// Box의 Half Extents 계산
@@ -23,6 +23,6 @@ b2ShapeId BoxCollider::CreateShapeInternal(b2BodyId bodyId, const b2ShapeDef& de
 	// Box Shape 생성
 	const b2Polygon box = b2MakeOffsetBox(halfScaleX, halfScaleY, center, b2MakeRot(0.0f));
 
-	// Box2D Shape 생성 후 반환
-	return b2CreatePolygonShape(bodyId, &def, &box);
+	// Box2D Shape 생성 후 shapeIds에 넣기
+	shapeIds.push_back(b2CreatePolygonShape(bodyId, &def, &box));
 }

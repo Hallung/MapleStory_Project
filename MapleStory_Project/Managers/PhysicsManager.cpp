@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "PhysicsManager.h"
 #include "TimeManager.h"
-#include "Components/Collider.h"
 #include "Objects/Object.h"
+#include "Utilities/PhysicsUtils.h"
 
 PhysicsManager::PhysicsManager() {}
 
@@ -70,6 +70,65 @@ void PhysicsManager::SetGravity(DirectX::SimpleMath::Vector2 gravity)
 {
 	if (b2World_IsValid(worldId))
 		b2World_SetGravity(worldId, { gravity.x, gravity.y });
+}
+
+RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, const DirectX::SimpleMath::Vector2& dir, float distance, uint32_t layerMask)
+{
+	RaycastHit hit;
+	hit.hit = false;	// 기본값: 충돌 없음
+
+	// Ray 방향 정규화(방향 벡터 크기를 1로 만들어 distance와 정확히 곱해지도록 함)
+	DirectX::SimpleMath::Vector2 ndir = dir;
+	ndir.Normalize();
+
+	// Screen 좌표 → Box2D World 좌표 변환
+	b2Vec2 p1 = PhysicsUtils::ScreenToWorld(origin);
+
+	// Ray 이동 벡터 계산
+	b2Vec2 translation = { ndir.x * distance, ndir.y * distance };
+	
+	// Raycast 필터 설정(maskBits : 어떤 Collision Layer를 검사할지 결정)
+	// 추후 Utilities/CollisionLayer에 Raycast 추가 시 filter.categoryBits에 등록 예정 
+	b2QueryFilter filter = b2DefaultQueryFilter();
+	filter.maskBits = layerMask;
+	
+	// Box2D Raycast 실행
+	b2RayResult result = b2World_CastRayClosest(worldId, p1, translation, filter);
+	
+	// Ray가 무언가에 충돌한 경우
+	if (result.hit)
+	{
+		// Shape에 저장해둔 UserData → 엔진 Collider 복원
+		Collider* col = (Collider*)b2Shape_GetUserData(result.shapeId);
+
+		// Collider 존재 + LayerMask 검사 통과 확인
+		if (col && (layerMask & (uint32_t)col->GetCollisionLayer()))
+		{
+			hit.hit = true;
+			hit.collider = col;
+			// World → Screen 좌표 변환
+			hit.point = PhysicsUtils::WorldToScreen(result.point);
+			// 충돌 표면의 법선 벡터
+			hit.normal = { result.normal.x, result.normal.y };
+			// Ray 진행률 (충돌 위치 비율)
+			hit.fraction = result.fraction;
+
+			// 디버깅용 로그(필요 시 활성화)
+			//std::cout << "★ GROUND HIT! fraction: " << result.fraction
+			//	<< " at (" << hit.point.x << ", " << hit.point.y << ")\n";
+		}
+	}
+	else
+	{
+		// Ray가 아무것도 맞추지 못한 경우
+
+		// 디버깅용 로그(필요 시 활성화)
+		//std::cout << "No hit - ray missed ground\n";
+		//std::cout << "[DEBUG Ray] p1: " << p1.x << ", " << p1.y
+		//	<< " → p2: " << p1.x + translation.x << ", " << p1.y + translation.y << '\n';
+	}
+
+	return hit;
 }
 
 // Box2D에서 발생한 Sensor / Contact 이벤트를 처리하는 내부 함수
