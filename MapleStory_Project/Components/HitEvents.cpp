@@ -41,7 +41,7 @@ void HitEvents::OnCollisionEnter(Collider* other)
 	// 현재 충돌 중인 Collider 등록
 	currentColliders.insert(other);	// 충돌 중인 Collider 목록에 추가
 
-	// Monster와 충돌한경움나 처리 
+	// Monster와 충돌한경우만 처리 
 	if (other->GetCollisionLayer() == CollisionLayer::Monster)
 	{
 		auto otherId = other->GetOwner()->GetComponent<RigidBody>("RigidBody")->GetBodyId();

@@ -23,7 +23,7 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	
 	// RigidBody 추가 (물리 설정)
 	auto monsterRB = std::make_shared<RigidBody>();
-	// 몬스터가 충돌 시 넘어짖 않도록 회전 고정
+	// 몬스터가 충돌 시 넘어지지 않도록 회전 고정
 	monsterRB->SetFixedRotation(true);
 	monster->AddComponent(monsterRB);
 
