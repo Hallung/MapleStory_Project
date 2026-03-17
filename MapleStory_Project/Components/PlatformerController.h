@@ -24,13 +24,25 @@ private:
 	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 워치 갱신
 	void Move(DirectX::SimpleMath::Vector2 dir);
 
+	// 점프 처리 (Y축 방향)에 jumpPower만큼 Impulse
 	void Jump();
+
+	// 피격 처리 함수(몬스터와 충돌 시 넉백 및 무적 시간 갱신 처리
+	void Hit();
+
+	void UpdateState();
 	
 	// 애니메이션 상태 업데이트(이동 방향에 따라 상태 변경)
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
 
+private:
 	float moveSpeed = 0.0f;	// 이동 속도
 
 	// Player 객체를 공유 포인터로 생성
 	std::shared_ptr<class Player> player;
+
+	// 현재 무적 타이머
+	float invincibleTimer = 3.0f;
+	// 피격 후 다시 데미지를 받을 수 있기까지의 무적 지속 시간
+	const float invincibleCooldown = 2.0f;
 };

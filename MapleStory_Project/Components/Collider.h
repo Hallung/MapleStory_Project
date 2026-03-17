@@ -80,5 +80,4 @@ protected:
 
 	// Collider 전용 Scale 값(기본값 (0,0)은 Transform Scale 사용을 의미)
 	DirectX::SimpleMath::Vector2 scale = { 0.0f,0.0f };
-
 };

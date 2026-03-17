@@ -13,7 +13,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	: bodyType(bodyType), texturePath(texturePath)
 {
 	// Sprite Objet 생성 (렌더 가능한 기본 Player 형태)
-	auto player = ObjectFactory::CreateSprite(
+	player = ObjectFactory::CreateSprite(
 			DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f),
 			DirectX::SimpleMath::Vector2(scale),
 			rotation,
@@ -44,10 +44,14 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player가 충돌할 수 있는 레이어 설정
 	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
 	//=================================================
-	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+	playerCol->SetCollisionMask((uint32_t)CollisionLayer::Ground | (uint32_t)CollisionLayer::Monster);
 
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
+
+	// 충돌 이벤트를 확인하는 HitEvents 추가
+	auto playerHitEvents = std::make_shared<HitEvents>();
+	player->AddComponent(playerHitEvents);
 
 	// 플랫폼 이동 컨트롤러 추가
 	player->AddComponent(std::make_shared<PlatformerController>());
@@ -63,14 +67,18 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player의 충돌 판정을 위한 HitEvents 추가
 	player->AddComponent(std::make_shared<HitEvents>());
 
-	// 내부 Player Object 캐싱
-	cachPlayer = player;
+	// 생성 시 State STANDING으로 설정
+	currentState = State::STANDING;
 }
 
-// Player 제거 시 내부 Object 참조 해제
 Player::~Player()
 {
-	cachPlayer = nullptr;
+
+}
+
+void Player::Update()
+{
+
 }
 
 //=====================================

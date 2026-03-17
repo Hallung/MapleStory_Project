@@ -35,6 +35,8 @@ public:
 	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/testPos.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
 	~Player();
 
+	void Update();
+
 	// Player 상태
 	enum class State
 	{
@@ -70,7 +72,7 @@ public:
 	// 내부 Object 반환
 	// 씬에 등록할 실제 렌더 대상
 	//===========================
-	std::shared_ptr<Object> GetPlayer() const { return cachPlayer; }
+	std::shared_ptr<Object> GetPlayer() const { return player; }
 
 	// 현재 생성중인 객체의 텍스처 반환
 	std::wstring GetCurrentTexture() const { return texturePath; }
@@ -80,7 +82,7 @@ public:
 
 private:
 	// Player가 실제로 사용하는 게임 오브젝트
-	std::shared_ptr<Object> cachPlayer;
+	std::shared_ptr<Object> player;
 
 	//플레이어 능력치 데이터
 	AbilityData abilityData;

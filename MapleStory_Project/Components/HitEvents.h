@@ -28,10 +28,19 @@ public:
 	// 특정 CollisionLayer와 현재 충돌 중인지 확인하는 함수
 	bool IsCollidingWith(CollisionLayer layer) const;
 
+	b2Vec2 GetMonsterPosition() const { return nearestMonsterPos; }
+
 private:
 	// 현재 충돌 중인 Collider들을 저장하는 컨테이너
 	// unordered_set을 사용하여
 	// - 중복 저장 방지
 	// - 빠른 삽입 / 삭제
 	std::unordered_set<Collider*> currentColliders;
+	
+	// 유효한 대상이 없을 때 사용하는 초기화 좌표
+	b2Vec2 kInvalidPosition = { -9999.0f, -9999.0f };
+	// 현재 플레이어와 가장 가까운 Monster의 BodyId
+	b2BodyId nearestMonsterId = b2_nullBodyId;
+	// nearestMonsterId에 해당하는 Monster의 월드 위치
+	b2Vec2 nearestMonsterPos = kInvalidPosition;
 };
