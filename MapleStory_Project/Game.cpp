@@ -31,7 +31,7 @@ void Game::Init()
 	Random::Init();
 
 	// SandboxScene 생성 및 Scene 목록에 추가
-	//sceneList.push_back(std::make_shared<SandboxScene>());
+	sceneList.push_back(std::make_shared<SandboxScene>());
 	
 	// TileMapEditorScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<TileMapEditorScene>());
@@ -46,6 +46,16 @@ void Game::Update()
 {
 	// ImGui 프레임 시작
 	ImGuiManager::GetInstance().Update();
+
+	// Scene 전환
+	if (InputManager::GetInstance().GetKeyDown(VK_F1))
+	{
+		SwitchScene(0);
+	}
+	else if (InputManager::GetInstance().GetKeyDown(VK_F2))
+	{
+		SwitchScene(1);
+	}
 
 	currentScene->Update();
 	mainCamera->Update();

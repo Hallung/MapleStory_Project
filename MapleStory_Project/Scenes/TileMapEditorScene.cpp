@@ -3,19 +3,19 @@
 #include "Utilities/ObjectFactory.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/FileDialog.h"
-#include "Utilities/Random.h"
 #include "Components/Transform.h"
 #include "Components/CameraController.h"
 #include "Components/MeshRenderer.h"
 #include "Resources/Material.h"
+#include "Resources/Texture.h"
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
 
 namespace
 {
 // 타일셋 구성 정보
-constexpr UINT tileCols = 10;
-constexpr UINT tileRows = 18;
+constexpr UINT tileCols = 4;
+constexpr UINT tileRows = 4;
 constexpr UINT maxTilesInTileset = tileCols * tileRows;
 
 // 테스트용 맵 크기 (타일셋 크기와 동일하게 생성)
@@ -26,10 +26,10 @@ constexpr UINT mapHeight = maxTilesInTileset;
 void TileMapEditorScene::Init()
 {
 	// Instancing 기반 TileMap 생성
-	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/tiles.jpg", tileCols, tileRows);
+	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/MapleTile.png", tileCols, tileRows);
 
 	// 현재 선택된 타일을 시각적으로 보여주기 위한 반투명 사각형
-	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/tiles.jpg");
+	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/MapleTile.png");
 	cursorObjectMaterial = cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial(); // 커서 오브젝트의 Material 참조
 	cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // 반투명 표시
 	cursorObjectMaterial->SetAtlasGrid(tileCols, tileRows); // 타일셋 Atlas 정보 설정
@@ -143,23 +143,82 @@ void TileMapEditorScene::DrawEditorUI()
 
 	// 타일 선택 창
 	ImGui::Text("Tile Palette");
-	// 현재 선택된 타일 인덱스
-	ImGui::Text("Selected Tile : %d", paintTileIndex);
 
-	// 타일셋에 포함된 모든 타일 인덱스를 버튼 형태로 출력
+	// 현재 선택된 타일 미리보기
+	ImGui::Text("Selected Tile");
+
+	// 타일 팔레트에 사용할 텍스처 가져오기
+	auto texture = cursorObjectMaterial->GetTexture();
+	if (!texture) return;
+
+	// ImGui ImageButton에서 사용할 ShaderResourceView 포인터
+	auto srv = texture->GetSRV().Get();
+
+	// 현재 선택된 타일 인덱스를 Atlas 그리드 좌표로 변환
+	UINT x = paintTileIndex % tileCols;
+	UINT y = paintTileIndex / tileCols;
+
+	// Atlas에서 타일 하나가 차지하는 UV 크기 계산
+	float uvWidth = 1.0f / tileCols;
+	float uvHeight = 1.0f / tileRows;
+
+	// 현재 선택된 타일의 UV 시작/끝 좌표
+	ImVec2 uv0 = { x * uvWidth, y * uvHeight };
+	ImVec2 uv1 = { uv0.x + uvWidth, uv0.y + uvHeight };
+
+	// Atlas의 특정 UV 영역을 잘라서 Image 출력
+	ImGui::Image((ImTextureID)srv, ImVec2(80, 80), uv0, uv1);
+
+	// 현재 선택된 타일 인덱스
+	ImGui::Text("Index : %d", paintTileIndex);
+
+	ImGui::Separator();
+
+	// 타일셋에 포함된 모든 타일을 ImageButton 형태로 출력
 	for (UINT i = 0; i < maxTilesInTileset; ++i)
 	{
-		// 현재 타일 인덱스를 문자열로 변환하여 사용
-		char label[16];
-		sprintf_s(label, "%d", i);
+		// 현재 타일 인덱스를 Atlas 그리드 좌표로 변환
+		UINT x = i % tileCols;
+		UINT y = i / tileCols;
 
-		// 버튼 클릭 시 현재 페인팅에 사용할 타일 인덱스 변경
-		if (ImGui::Button(label, ImVec2(40, 40)))
+		// Atlas에서 타일 하나가 차지하는 UV 크기 계산
+		float uvWidth = 1.0f / tileCols;
+		float uvHeight = 1.0f / tileRows;
+
+		// 현재 타일의 UV 시작/끝 좌표
+		ImVec2 uv0 = { x * uvWidth, y * uvHeight };
+		ImVec2 uv1 = { uv0.x + uvWidth, uv0.y + uvHeight };
+
+		// 현재 선택된 타일인지 여부
+		bool selected = (paintTileIndex == i);
+
+		// 선택된 타일은 버튼 색상과 테두리를 변경하여 강조 표시
+		if (selected)
 		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 1, 0, 1));
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 2.0f);
+		}
+
+		// 동일한 버튼 ID 충돌을 방지하기 위해 인덱스를 ID 스택에 추가
+		ImGui::PushID(i);
+
+		// Atlas의 특정 UV 영역을 잘라서 ImageButton으로 출력
+		if (ImGui::ImageButton("Tile", (ImTextureID)srv, ImVec2(40, 40), uv0, uv1))
+		{
+			// 클릭 시 해당 타일을 현재 페인트 타일로 선택
 			paintTileIndex = i;
 		}
 
-		// tileCols 개수마다 줄바꿈하여 타일셋과 동일한 그리드 형태로 배치
+		ImGui::PopID();
+
+		// 선택 강조 스타일 복원
+		if (selected)
+		{
+			ImGui::PopStyleColor();
+			ImGui::PopStyleVar();
+		}
+
+		// 한 줄에 tileCols 개씩 배치
 		if ((i + 1) % tileCols != 0)
 			ImGui::SameLine();
 	}

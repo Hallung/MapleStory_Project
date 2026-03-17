@@ -25,6 +25,8 @@ public:
 	// 머티리얼 셰이더 상태를 렌더링 파이프라인에 바인딩
 	void Bind();
 
+	std::shared_ptr<Texture> GetTexture() const { return texture; }
+
 	//=================================
 	// 텍스처 설정
 	// 머티리얼에 사용할 Texture 지정
