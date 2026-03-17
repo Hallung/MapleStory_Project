@@ -2,10 +2,14 @@
 #include "Game.h"
 #include "Scenes/SceneList.h"
 #include "Objects/Camera.h"
+#include "Utilities/Random.h"
 
 Game::Game()
 {
 	mainCamera = std::make_shared<Camera>(); // Main Camera 생성
+	
+	// 생성된 Main Camera의 실제 주소를 static main 포인터에 등록
+	Camera::main = mainCamera.get();
 }
 
 Game::~Game()
@@ -23,8 +27,14 @@ void Game::Init()
 	// ImGui 시스템 초기화
 	ImGuiManager::GetInstance().Init();
 
+	// 랜덤 생성기 초기화 (seed 설정)
+	Random::Init();
+
 	// SandboxScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<SandboxScene>());
+	
+	// TileMapEditorScene 생성 및 Scene 목록에 추가
+	sceneList.push_back(std::make_shared<TileMapEditorScene>());
 
 	currentScene = sceneList[0]; // 첫 번째 Scene을 현재 Scene으로 설정
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
@@ -36,6 +46,16 @@ void Game::Update()
 {
 	// ImGui 프레임 시작
 	ImGuiManager::GetInstance().Update();
+
+	// Scene 전환
+	if (InputManager::GetInstance().GetKeyDown(VK_F1))
+	{
+		SwitchScene(0);
+	}
+	else if (InputManager::GetInstance().GetKeyDown(VK_F2))
+	{
+		SwitchScene(1);
+	}
 
 	currentScene->Update();
 	mainCamera->Update();

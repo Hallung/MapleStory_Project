@@ -2,6 +2,9 @@
 #include "Camera.h"
 #include "Components/Transform.h"
 
+// 초기 상태에서는 메인 카메라가 없으므로 nullptr로 설정
+Camera* Camera::main = nullptr;
+
 Camera::Camera()
 	: Object("MainCamera")
 {

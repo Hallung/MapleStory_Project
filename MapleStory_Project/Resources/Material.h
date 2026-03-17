@@ -25,6 +25,8 @@ public:
 	// 머티리얼 셰이더 상태를 렌더링 파이프라인에 바인딩
 	void Bind();
 
+	std::shared_ptr<Texture> GetTexture() const { return texture; }
+
 	//=================================
 	// 텍스처 설정
 	// 머티리얼에 사용할 Texture 지정
@@ -45,6 +47,42 @@ public:
 	void SetColor(DirectX::SimpleMath::Color color)
 	{
 		if (colorBuffer) colorBuffer->SetColor(color);
+	}
+
+	// Texture Atlas의 타일 그리드 정보 설정 (atlasIndex -> UV 좌표 계산에 사용)
+	void SetAtlasGrid(UINT cols, UINT rows)
+	{
+		atlasCols = cols;
+		atlasRows = rows;
+	}
+
+	int GetAtlasIndex() const { return atlasIndex; }
+
+	// Atlas 타일 인덱스 설정
+	void SetAtlasIndex(int index) 
+	{ 
+		// 현재 사용할 Atlas 타일 인덱스 저장
+		atlasIndex = index;
+
+		// FrameBuffer가 없거나 Atlas 정보가 설정되지 않은 경우 처리하지 않음
+		if (!frameBuffer) return;
+		if (atlasCols == 0 || atlasRows == 0) return;
+
+		// Atlas 인덱스를 타일 그리드 좌표(x, y)로 변환
+		UINT x = atlasIndex % atlasCols;
+		UINT y = atlasIndex / atlasCols;
+
+		// Atlas 한 칸의 UV 크기 계산
+		float uvWidth = 1.0f / atlasCols;
+		float uvHeight = 1.0f / atlasRows;
+
+		// 해당 타일의 UV 시작 위치 계산
+		DirectX::SimpleMath::Vector2 offset = { x * uvWidth, y * uvHeight };
+		// 해당 타일의 UV 영역 크기
+		DirectX::SimpleMath::Vector2 size = { uvWidth, uvHeight };
+
+		// 계산된 UV 정보를 FrameBuffer에 전달하여 셰이더에서 사용
+		frameBuffer->SetFrameData(offset, size);
 	}
 
 	//======================================
@@ -71,4 +109,8 @@ private:
 	std::unique_ptr<ColorBuffer> colorBuffer;	// 머티리얼 색상 정보를 GUP에 전달하는 상수 버퍼
 
 	bool bPointSampling = false;	// 현재 샘플러 필터링 모드 상태
+
+	UINT atlasCols = 1; // 타일셋의 가로 타일 개수
+	UINT atlasRows = 1; // 타일셋의 세로 타일 개수
+	int atlasIndex = 0; // 현재 사용할 타일 인덱스
 };

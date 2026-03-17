@@ -9,6 +9,8 @@
 class Camera : public Object
 {
 public:
+	static Camera* main; // 현재 Scene에서 사용되는 Main Camera를 가리키는 정적 포인터 (참조용 포인터)
+
 	Camera();
 
 	void Update() override; // Transform 변경 시 View Matrix 갱신
