@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="Components\Animator.cpp" />
     <ClCompile Include="Components\BoxCollider.cpp" />
+    <ClCompile Include="Components\CameraController.cpp" />
     <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Components\Collider.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
@@ -176,9 +177,11 @@
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\TileMap.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
+    <ClCompile Include="Renders\IA\InstanceBuffer.cpp" />
     <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
     <ClCompile Include="Renders\Shaders\PixelShader.cpp" />
     <ClCompile Include="Renders\Shaders\Shader.cpp" />
@@ -192,6 +195,7 @@
     <ClCompile Include="Resources\VertexType.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Scenes\SandboxScene.cpp" />
+    <ClCompile Include="Scenes\TileMapEditorScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -200,11 +204,14 @@
     </ClCompile>
     <ClCompile Include="Systems\Graphics.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Utilities\FileDialog.cpp" />
     <ClCompile Include="Utilities\ObjectFactory.cpp" />
+    <ClCompile Include="Utilities\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\BoxCollider.h" />
+    <ClInclude Include="Components\CameraController.h" />
     <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Components\Collider.h" />
     <ClInclude Include="Components\Component.h" />
@@ -221,11 +228,13 @@
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
     <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\TileMap.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />
     <ClInclude Include="Renders\ConstantBuffers\GlobalBuffers.h" />
     <ClInclude Include="Renders\IA\IndexBuffer.h" />
     <ClInclude Include="Renders\IA\InputLayout.h" />
+    <ClInclude Include="Renders\IA\InstanceBuffer.h" />
     <ClInclude Include="Renders\IA\VertexBuffer.h" />
     <ClInclude Include="Renders\Shaders\PixelShader.h" />
     <ClInclude Include="Renders\Shaders\Shader.h" />
@@ -241,12 +250,15 @@
     <ClInclude Include="Scenes\SandboxScene.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Scenes\SceneList.h" />
+    <ClInclude Include="Scenes\TileMapEditorScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
     <ClInclude Include="Utilities\CollisionLayer.h" />
+    <ClInclude Include="Utilities\FileDialog.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
     <ClInclude Include="Utilities\PhysicsUtils.h" />
+    <ClInclude Include="Utilities\Random.h" />
     <ClInclude Include="Utilities\VirtualKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

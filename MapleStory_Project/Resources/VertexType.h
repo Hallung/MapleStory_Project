@@ -39,3 +39,19 @@ struct VertexTexture
 	//==============================================
 	static std::vector<D3D11_INPUT_ELEMENT_DESC> descs;
 };
+
+//==============================
+// 인스턴싱 데이터 타입
+// GPU Instancing 렌더링을 위한 인스턴스 데이터 구조
+//==============================
+struct VertexInstancing
+{
+	DirectX::SimpleMath::Matrix world; // 각 인스턴스의 월드 변환 행렬
+	int textureIndex = 0;			   // 사용할 스프라이트 Atlas 인덱스
+
+	//==============================================
+	// 인스턴스 입력 레이아웃 정의 (InputLayout 생성용)
+	// Matrix 타입은 직접 전달할 수 없으므로 float4 4개로 분리하여 전달
+	//==============================================
+	static std::vector<D3D11_INPUT_ELEMENT_DESC> descs;
+};
