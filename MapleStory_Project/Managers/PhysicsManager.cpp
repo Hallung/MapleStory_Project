@@ -87,9 +87,11 @@ RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, c
 	// Ray 이동 벡터 계산
 	b2Vec2 translation = { ndir.x * distance, ndir.y * distance };
 	
-	// Raycast 필터 설정(maskBits : 어떤 Collision Layer를 검사할지 결정)
-	// 추후 Utilities/CollisionLayer에 Raycast 추가 시 filter.categoryBits에 등록 예정 
+	// Raycast 필터 설정
+	// (castegoryBits : 필터링 단계에서 불필요한 충돌 검사 방지)
+	// (maskBits : 어떤 Collision Layer를 검사할지 결정)
 	b2QueryFilter filter = b2DefaultQueryFilter();
+	filter.categoryBits = static_cast<uint32_t>(CollisionLayer::Raycast);
 	filter.maskBits = layerMask;
 	
 	// Box2D Raycast 실행

@@ -31,6 +31,9 @@ public:
 	b2Vec2 GetMonsterPosition() const { return nearestMonsterPos; }
 
 private:
+	bool HasLayer(CollisionLayer a, CollisionLayer b);
+
+private:
 	// 현재 충돌 중인 Collider들을 저장하는 컨테이너
 	// unordered_set을 사용하여
 	// - 중복 저장 방지

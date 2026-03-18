@@ -12,6 +12,8 @@ enum class CollisionLayer : uint32_t
 	Monster = 0x0008, // 몬스터 (0000 1000)
 	Bullet = 0x0010,  // 총알 (0001 0000)
 	UI = 0x0020,      // UI (0010 0000)
+	Raycast = 0x0040, // Raycast (0100 0000)
+	Weapon = 0x0080,  // 무기 (1000 0000)
 };
 
 // 두 개의 CollisionLayer를 OR 연산하여 여러 레이어를 동시에 표현할 수 있도록 지원
@@ -24,4 +26,16 @@ inline uint32_t operator|(CollisionLayer a, CollisionLayer b)
 inline uint32_t operator|(uint32_t a, CollisionLayer b)
 {
 	return a | static_cast<uint32_t>(b);
+}
+
+// CollisionLayer enum을 비트 플래그처럼 사용하기 위해 '&' 연산자를 정의
+inline uint32_t operator&(CollisionLayer a, CollisionLayer b) 
+{
+	return static_cast<uint32_t>(a) & static_cast<uint32_t>(b);
+}
+
+// uint32_t 값과 CollisionLayer를 바로 비교할 수 있도록 연산자 정의
+inline uint32_t operator&(uint32_t a, CollisionLayer b)
+{
+	return a & static_cast<uint32_t>(b);
 }

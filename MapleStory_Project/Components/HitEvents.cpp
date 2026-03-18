@@ -36,13 +36,13 @@ void HitEvents::OnCollisionEnter(Collider* other)
 	// 추가 후 CollisionLayer() == 를 변경
 	
 	// Ground Collider은 등록 X
-	if (other->GetCollisionLayer() == CollisionLayer::Ground) return;
+	if (HasLayer(other->GetCollisionLayer(), CollisionLayer::Ground)) return;
 
 	// 현재 충돌 중인 Collider 등록
 	currentColliders.insert(other);	// 충돌 중인 Collider 목록에 추가
 
 	// Monster와 충돌한경우만 처리 
-	if (other->GetCollisionLayer() == CollisionLayer::Monster)
+	if (HasLayer(other->GetCollisionLayer(), CollisionLayer::Monster))
 	{
 		auto otherId = other->GetOwner()->GetComponent<RigidBody>("RigidBody")->GetBodyId();
 		b2Vec2 otherPos = b2Body_GetPosition(otherId);
@@ -107,4 +107,13 @@ bool HitEvents::IsCollidingWith(CollisionLayer layer) const
 		}
 	}
 	return false;	// 해당 Layer와 충돌 중인 Collider가 없음
+}
+
+//=======================================================================
+// Layer 포함 여부 검사 함수
+// CollisionLayer를 비트 플래그로 취급하여 특정 Layer가 포함되어 있는지 확인
+//=======================================================================
+bool HitEvents::HasLayer(CollisionLayer a, CollisionLayer b)
+{
+	return (a & b) != 0;
 }

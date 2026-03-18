@@ -107,7 +107,7 @@ void Ground::SetChain(GroundName name)
 		CollisionLayer::Player |
 		CollisionLayer::Bullet |
 		CollisionLayer::Monster |
-		0xFFFFFFFF		// 임시 RayCast Mask 추후 Utilities/CollisionLayer에 추가 예정
+		CollisionLayer::Raycast
 	);
 	
 	// 생성한 Chain Collider를 Ground Object에 컴포넌트로 추가
