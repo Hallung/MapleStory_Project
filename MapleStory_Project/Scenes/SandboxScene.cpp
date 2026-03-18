@@ -54,6 +54,8 @@ void SandboxScene::Init()
 void SandboxScene::Destroy()
 {
 	objects.clear();
+	player = nullptr;
+	worldPlayer = nullptr;
 }
 
 // Scene의 기본 Object Update 수행, 필요 시 Sandbox 전용 테스트 로직 추가 가능
