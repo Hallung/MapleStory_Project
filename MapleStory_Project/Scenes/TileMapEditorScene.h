@@ -54,4 +54,7 @@ private:
 	std::vector<DirectX::SimpleMath::Vector2> chainPoints;
 	// 생성된 Chain 오브젝트들을 관리하는 컨테이너
 	std::vector<std::shared_ptr<Object>> chainObjects;
+
+	std::shared_ptr<class Player> player;
+	std::shared_ptr<Object> worldPlayer;
 };

@@ -31,7 +31,7 @@ void Game::Init()
 	Random::Init();
 
 	// SandboxScene 생성 및 Scene 목록에 추가
-	//sceneList.push_back(std::make_shared<SandboxScene>());
+	sceneList.push_back(std::make_shared<SandboxScene>());
 	
 	// TileMapEditorScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<TileMapEditorScene>());

@@ -13,6 +13,8 @@
 #include "Objects/TileMap.h"
 #include "Objects/Camera.h"
 
+#include "Objects/DynamicObjects/Player.h"
+
 namespace
 {
 // 타일셋 구성 정보
@@ -20,9 +22,18 @@ constexpr UINT tileCols = 4;
 constexpr UINT tileRows = 4;
 constexpr UINT maxTilesInTileset = tileCols * tileRows;
 
-// 테스트용 맵 크기 (타일셋 크기와 동일하게 생성)
-constexpr UINT mapWidth = maxTilesInTileset;
-constexpr UINT mapHeight = maxTilesInTileset;
+// 테스트용 맵 크기
+constexpr UINT mapWidth = 20;
+constexpr UINT mapHeight = 20;
+}
+
+// 테스트용 플레이어 정보 (삭제 예정)
+namespace
+{
+constexpr DirectX::SimpleMath::Vector2 scale = { 120.0f, 120.0f };
+constexpr float offsetPos = 200.0f;
+constexpr float rotation = 0.0f;
+constexpr float halfValue = 0.5f;
 }
 
 void TileMapEditorScene::Init()
@@ -48,6 +59,8 @@ void TileMapEditorScene::Destroy()
 	cursorObject = nullptr;
 	chainPoints.clear();
 	chainObjects.clear();
+	player = nullptr;
+	worldPlayer = nullptr;
 }
 
 void TileMapEditorScene::Update()
@@ -60,6 +73,29 @@ void TileMapEditorScene::Update()
 	DrawEditorUI();
 	// 체인 생성 전, 입력된 점들을 화면에 미리보기로 렌더링
 	DrawChainPreview();
+
+	// 테스트용 플레이어 생성 (삭제 예정)
+	PhysicsManager::GetInstance().Update();
+	if (player != nullptr)
+	{
+		player->Update();
+	}
+	if (InputManager::GetInstance().GetKeyDown(VK_P))
+	{
+		if (player == nullptr)
+		{
+			// 화면 중앙 위치에 Player 객체 생성
+			player = std::make_shared<Player>(
+				DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
+				DirectX::SimpleMath::Vector2(scale),
+				rotation
+			);
+			// Player가 관리하는 실제 게임 Object를 씬에 등록
+			AddObject(player->GetPlayer());
+
+			worldPlayer = player->GetPlayer();
+		}
+	}
 }
 
 void TileMapEditorScene::Render()
@@ -183,8 +219,19 @@ void TileMapEditorScene::CreateChainObject()
 	auto obj = ObjectFactory::CreateChainLine(finalPoints);
 	// 정적인 물리 바디 추가
 	obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
+
+	// ChainCollider 레이어 설정
+	auto chain = std::make_shared<ChainCollider>(finalPoints);
+	chain->SetCollisionLayer(CollisionLayer::Ground);
+	chain->SetCollisionMask(
+		CollisionLayer::Player |
+		CollisionLayer::Bullet |
+		CollisionLayer::Monster |
+		0xFFFFFFFF		// 임시 RayCast Mask (추후 분리 예정)
+	);
+
 	// ChainCollider 추가
-	obj->AddComponent(std::make_shared<ChainCollider>(finalPoints));
+	obj->AddComponent(chain);
 
 	// Scene에 추가 및 관리 리스트에 저장
 	AddObject(obj);
@@ -249,7 +296,11 @@ void TileMapEditorScene::DrawEditorUI()
 
 		// 사용자가 경로를 선택한 경우에만 저장 실행
 		if (!path.empty())
+		{
+			// 현재 chainObjects 에 있는 Chain 정보 저장
+			tileMap->SetChainData(chainObjects);
 			tileMap->Save(path);
+		}
 	}
 
 	ImGui::SameLine();
@@ -262,7 +313,11 @@ void TileMapEditorScene::DrawEditorUI()
 
 		// 경로가 선택되면 TileMap 로드
 		if (!path.empty())
-			tileMap->Load(path);
+		{
+			// 현재 chainObjects 에 있는 Chain 정보 정리
+			chainObjects.clear();
+			tileMap->Load(path, this);
+		}
 	}
 
 	ImGui::Separator();

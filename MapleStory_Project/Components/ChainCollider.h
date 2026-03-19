@@ -17,6 +17,8 @@ public:
 		const b2ShapeDef& def,
 		DirectX::SimpleMath::Vector2 scale) override;
 
+	const std::vector<DirectX::SimpleMath::Vector2>& GetPoints() const { return points; }
+
 private:
 	// Box2D Chain 식별자(체인이 생성되지 않았을 경우 b2_nullChainId 상태)
 	b2ChainId chainId = b2_nullChainId;
