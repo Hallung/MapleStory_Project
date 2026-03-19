@@ -4,6 +4,9 @@
 #include "tinyxml2.h"
 #include <filesystem>
 
+#include "Scenes/Scene.h"
+#include "Components/RigidBody.h"
+#include "Components/ChainCollider.h"
 #include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Renders/IA/InstanceBuffer.h"
 #include "Utilities/ObjectFactory.h"
@@ -167,6 +170,23 @@ const TileInfo* TileMap::GetTile(int gridX, int gridY) const
 	return &tiles[gridY * width + gridX];
 }
 
+// Scene에서 관리 중인 ChainObject들을 순회하며 ChainCollider의 점 데이터를 추출하여 chainDatas에 저장
+void TileMap::SetChainData(const std::vector<std::shared_ptr<Object>>& chainObjects)
+{
+	// 기존 저장된 Chain 데이터 초기화
+	chainDatas.clear();
+
+	for (auto& obj : chainObjects)
+	{
+		// ChainCollider 컴포넌트 가져오기
+		auto collider = obj->GetComponent<ChainCollider>("ChainCollider");
+		if (!collider) continue;
+
+		// ChainCollider 내부 points 데이터 저장
+		chainDatas.push_back(collider->GetPoints());
+	}
+}
+
 // 현재 타일맵 상태를 XML 파일로 저장, 맵 크기 정보와 배치된 타일 정보만 기록
 void TileMap::Save(const std::wstring& path)
 {
@@ -204,13 +224,38 @@ void TileMap::Save(const std::wstring& path)
 		}
 	}
 
+	// Chain 데이터를 XML 형태로 저장
+	// Chains -> Chain -> Point(x, y) 구조로 구성
+	auto chainsNode = doc.NewElement("Chains");
+
+	for (auto& chain : chainDatas)
+	{
+		// 개별 Chain 노드 생성
+		auto chainNode = doc.NewElement("Chain");
+
+		for (auto& p : chain)
+		{
+			// 각 정점을 Point 노드로 저장
+			auto pointNode = doc.NewElement("Point");
+			pointNode->SetAttribute("x", p.x);
+			pointNode->SetAttribute("y", p.y);
+
+			chainNode->InsertEndChild(pointNode);
+		}
+
+		chainsNode->InsertEndChild(chainNode);
+	}
+
+	// 최상위 노드에 Chains 추가
+	root->InsertEndChild(chainsNode);
+
 	// 유니코드(한글 등) 경로 대응을 위해 std::filesystem으로 경로 처리
 	std::filesystem::path savePath(path);
 	doc.SaveFile(savePath.string().c_str());
 }
 
 // XML 파일로부터 타일맵 데이터를 불러옴, 기존 타일 데이터는 초기화 후 새로 구성
-void TileMap::Load(const std::wstring& path)
+void TileMap::Load(const std::wstring& path, Scene* scene)
 {
 	tinyxml2::XMLDocument doc;
 
@@ -260,6 +305,65 @@ void TileMap::Load(const std::wstring& path)
 		}
 
 		tileNode = tileNode->NextSiblingElement("Tile");
+	}
+
+	// 기존 Chain 데이터 초기화 후 XML에서 다시 로드
+	chainDatas.clear();
+
+	// Chains 노드 탐색
+	auto chainsNode = root->FirstChildElement("Chains");
+
+	if (chainsNode)
+	{
+		auto chainNode = chainsNode->FirstChildElement("Chain");
+
+		while (chainNode)
+		{
+			std::vector<DirectX::SimpleMath::Vector2> points;
+
+			// 각 Chain의 Point 노드 순회
+			auto pointNode = chainNode->FirstChildElement("Point");
+
+			while (pointNode)
+			{
+				// XML 속성값을 읽어 Vector2로 변환
+				float x = pointNode->FloatAttribute("x");
+				float y = pointNode->FloatAttribute("y");
+
+				points.push_back({ x, y });
+
+				pointNode = pointNode->NextSiblingElement("Point");
+			}
+
+			// 하나의 Chain 데이터를 저장
+			chainDatas.push_back(points);
+
+			chainNode = chainNode->NextSiblingElement("Chain");
+		}
+	}
+
+	// 로드된 Chain 데이터를 기반으로 Scene에 실제 오브젝트 생성
+	for (auto& points : chainDatas)
+	{
+		// Chain 라인 렌더링용 오브젝트 생성
+		auto obj = ObjectFactory::CreateChainLine(points);
+		// 정적인 물리 바디 추가
+		obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
+
+		// ChainCollider 레이어 설정
+		auto chain = std::make_shared<ChainCollider>(points);
+		chain->SetCollisionLayer(CollisionLayer::Ground);
+		chain->SetCollisionMask(
+			CollisionLayer::Player |
+			CollisionLayer::Bullet |
+			CollisionLayer::Monster |
+			0xFFFFFFFF		// 임시 RayCast Mask (추후 분리 예정)
+		);
+
+		obj->AddComponent(chain);
+
+		// Scene에 추가
+		scene->AddObject(obj);
 	}
 
 	bDirty = true;

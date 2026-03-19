@@ -38,10 +38,17 @@ public:
 	TileInfo* GetTile(int gridX, int gridY);
 	const TileInfo* GetTile(int gridX, int gridY) const;
 
+	// Chain 정보 저장 함수
+	void SetChainData(const std::vector<std::shared_ptr<Object>>& chainObjects);
+
 	// 타일맵 데이터를 파일로 저장
-	void Save(const std::wstring& path); // path : 저장할 XML 파일 경로
+	// path : 저장할 XML 파일 경로
+	void Save(const std::wstring& path);
+
 	// XML 파일로부터 타일맵 데이터를 불러옴
-	void Load(const std::wstring& path); // path : 불러올 XML 파일 경로
+	// path : 불러올 XML 파일 경로
+	// scene : 로드된 데이터를 기반으로 오브젝트를 생성할 Scene
+	void Load(const std::wstring& path, class Scene* scene);
 
 	UINT GetWidth() const { return width; }
 	UINT GetHeight() const { return height; }
@@ -54,6 +61,9 @@ private:
 
 	// 2차원 타일 데이터를 1차원 배열로 저장 (index = y * width + x 방식 사용)
 	std::vector<TileInfo> tiles;
+
+	// Chain 저장용 데이터
+	std::vector<std::vector<DirectX::SimpleMath::Vector2>> chainDatas;
 
 	// InstanceBuffer 데이터를 재생성
 	void UpdateInstances();
