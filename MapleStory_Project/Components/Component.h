@@ -33,9 +33,9 @@ public:
 	virtual void Render() {}
 
 	// Object로부터 전달받는 충돌 시작 이벤트
-	virtual void OnCollisionEnter(Collider* other) {}
+	virtual void OnCollisionEnter(Collider* self, Collider* other) {}
 	// Object로부터 전달받는 충돌 종료 이벤트
-	virtual void OnCollisionExit(Collider* other) {}
+	virtual void OnCollisionExit(Collider* self, Collider* other) {}
 
 	// 컴포넌트 이름 반환
 	std::string GetName() const { return name; }

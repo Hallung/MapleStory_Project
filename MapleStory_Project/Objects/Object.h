@@ -17,8 +17,8 @@ public:
 	virtual void Update(); // 매 프레임 호출
 	virtual void Render(); // 렌더링 단계에서 호출
 
-	void OnCollisionEnter(Collider* other); // 다른 Collider와 충돌 시작 시 호출
-	void OnCollisionExit(Collider* other); // 다른 Collider와 충돌 종료 시 호출
+	void OnCollisionEnter(Collider* self, Collider* other); // 다른 Collider와 충돌 시작 시 호출
+	void OnCollisionExit(Collider* self, Collider* other); // 다른 Collider와 충돌 종료 시 호출
 
 	// Component를 Object에 등록하고 Owner 설정
 	void AddComponent(const std::shared_ptr<Component>& component);
@@ -36,6 +36,9 @@ public:
 
 	Transform* GetTransform() { return transform.get(); } // Object는 Transform을 항상 보유, 별도 검색 없이 빠르게 접근하기 위한 전용 Getter
 
+	void Destroy() { _isDead = true; }
+	bool IsDead() const { return _isDead; }
+
 protected:
 	std::string name; // Object 이름
 	std::shared_ptr<Transform> transform; // Object의 공간 정보(위치, 회전, 스케일) 담당, 항상 존재하는 핵심 Component
@@ -44,4 +47,6 @@ protected:
 	std::unordered_map<std::string, std::shared_ptr<Component>> components;
 	// Update / Render 순회용 리스트, 순서 기반 실행을 위해 별도 관리
 	std::vector<std::shared_ptr<Component>> updateList;
+
+	bool _isDead = false;
 };
