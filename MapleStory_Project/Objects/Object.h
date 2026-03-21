@@ -61,6 +61,14 @@ public:
 	void Destroy() { _isDead = true; }
 	bool IsDead() const { return _isDead; }
 
+	void OnDestroy()
+	{
+		for (auto& [name, comp] : components)
+		{
+			comp->OnDestroy();
+		}
+	}
+
 protected:
 	std::string name; // Object 이름
 	std::shared_ptr<Transform> transform; // Object의 공간 정보(위치, 회전, 스케일) 담당, 항상 존재하는 핵심 Component

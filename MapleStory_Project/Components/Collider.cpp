@@ -36,6 +36,15 @@ void Collider::Update()
 		RefreshShape();
 }
 
+void Collider::OnDestroy()
+{
+	for (auto& shapeId : shapeIds)
+	{
+		if (b2Shape_IsValid(shapeId))
+			b2DestroyShape(shapeId, true);
+	}
+}
+
 void Collider::SetCollisionLayer(CollisionLayer layer)
 {
 	// 동일한 값이면 불필요한 업데이트 방지

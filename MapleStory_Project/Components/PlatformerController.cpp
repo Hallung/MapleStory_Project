@@ -141,6 +141,8 @@ void PlatformerController::Hit()
 
 	auto ownerCollider = GetOwner()->GetComponent<Collider>("PlayerCollider");
 
+	//auto nearsetTarget = hitEvent->GetNearestTarget(ownerCollider.get(), CollisionLayer::Monster);
+
 	// 무적 타이머 갱신
 	if (invincibleTimer > 10.0f)
 		invincibleTimer = 10.0f;	// 과도한 증가 방지
@@ -193,19 +195,17 @@ void PlatformerController::Attack()
 {
 	auto animator = GetOwner()->GetComponent<Animator>("Animator");
 	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
+	auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
+	auto nearsetTarget = hitEvent->GetNearestTarget(attackCol.get(), CollisionLayer::Monster);
 
 	UINT clipCurrentIndex = animator->GetCurrentFrameIndex();
 	std::wstring clipName = animator->GetCurrentClip()->GetName();
 
 	if (clipName == L"Attack" && clipCurrentIndex == 2)
 	{
-		auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
-
-		auto target = hitEvent->GetNearestTarget(attackCol.get(), CollisionLayer::Monster);
-
-		if (target && canAttack)
+		if (nearsetTarget && canAttack)
 		{
-			ApplyDamage(target);
+			ApplyDamage(nearsetTarget);
 			canAttack = false;
 		}
 
@@ -324,6 +324,8 @@ void PlatformerController::ApplyDamage(Collider* target)
 {
 	auto ability = target->GetOwner()->GetComponent<MonsterAbility>("MonsterAbility");
 
+	auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
+
 	if (ability)
-		ability->TakeDamage(100);
+		ability->TakeDamage(attackCol.get(), 100);
 }

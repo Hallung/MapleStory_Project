@@ -20,6 +20,10 @@ void HitEvents::Update()
 	
 }
 
+void HitEvents::OnDestroy()
+{
+}
+
 //=================================================
 // 충돌 시작 이벤트
 // 다른 Collider와 충돌이 시작될 때 호출된다.

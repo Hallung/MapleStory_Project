@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Collider.h"
 
 class MonsterAbility : public Component
 {
@@ -16,7 +17,7 @@ public:
 	void SetAttackPower(UINT power);
 	UINT GetAttackPower() const { return _attackPower; }
 
-	void TakeDamage(UINT damage);
+	void TakeDamage(Collider* other, UINT damage);
 
 private:
 	UINT _hp = 100;

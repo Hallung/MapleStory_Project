@@ -21,6 +21,8 @@ public:
 	void Awake() override;
 	// 매 프레임 호출되는 업데이트 함수
 	void Update() override;
+
+	void OnDestroy() override;
 	// 충돌이 시작될 때 호출되는 이벤트
 	void OnCollisionEnter(Collider* self, Collider* other) override;
 	// 충돌이 종료될 때 호출되는 이벤트

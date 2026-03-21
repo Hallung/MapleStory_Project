@@ -20,6 +20,7 @@ public:
 
 	void Awake() override; // Owner의 Rigidbody를 기반으로 Shape를 생성
 	void Update() override; // Transform Scale 변경 감지 시 Shape를 갱신
+	void OnDestroy() override;
 
 	// Collider Offset 설정, Offset 변경 시 Shape를 재생성
 	void SetOffset(DirectX::SimpleMath::Vector2 val)
@@ -48,6 +49,9 @@ public:
 	DirectX::SimpleMath::Vector2 GetColliderScale() const { return scale; }	// 현재 설정된 Collider Scale 반환
 
 	bool CheckGrounded();
+
+	void SetIsAlive(bool alive) { isAlive = alive; }
+	bool GetIsAlive() const { return isAlive; }
 
 protected:
 	// 실제 Shape 생성 함수, 각 Collider 타입에서 구현
@@ -80,4 +84,6 @@ protected:
 
 	// Collider 전용 Scale 값(기본값 (0,0)은 Transform Scale 사용을 의미)
 	DirectX::SimpleMath::Vector2 scale = { 0.0f,0.0f };
+
+	bool isAlive = true;
 };

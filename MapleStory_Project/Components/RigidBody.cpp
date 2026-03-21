@@ -63,6 +63,15 @@ void RigidBody::Update()
 	transform->SetRotationRadian(-angle);
 }
 
+void RigidBody::OnDestroy()
+{
+	if (b2Body_IsValid(bodyId)) // 또는 유효성 체크 함수
+	{
+		b2DestroyBody(bodyId);
+		bodyId = b2_nullBodyId; // 재사용 방지
+	}
+}
+
 // 화면 좌표 속도를 물리 월드 좌표로 변환하여 적용
 void RigidBody::SetVelocity(DirectX::SimpleMath::Vector2 velocity)
 {
