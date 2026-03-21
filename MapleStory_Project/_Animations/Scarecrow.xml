@@ -1,5 +1,5 @@
 <Texture path="_Textures/Scarecrow.png">
 	<Clip name="Stand" x="10" y="230" w="660" h="100" count="6" loop="true" speed="0.2"/>
 	<Clip name="Die" x="10" y="10" w="660" h="100" count="6" loop="false" speed="0.2"/>
-	<Clip name="Hit" x="10" y="120" w="100" h="100" count="1" loop="true" speed="1.0"/>
+	<Clip name="Hit" x="10" y="120" w="100" h="100" count="1" loop="false" speed="0.3"/>
 </Texture>
