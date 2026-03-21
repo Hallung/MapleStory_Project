@@ -27,7 +27,7 @@ public:
 		if (offset != val)
 		{
 			offset = val;
-			RefreshShape();
+			//RefreshShape();
 		}
 	}
 	DirectX::SimpleMath::Vector2 GetOffset() const { return offset; } // Offset ¹ÝÈ¯

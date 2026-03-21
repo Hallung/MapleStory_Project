@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "Collider.h"
 #include "Objects/Object.h"
-#include "Components/Transform.h"
-#include "Components/RigidBody.h"
+#include "Transform.h"
+#include "RigidBody.h"
+#include "HitEvents.h"
 
 namespace
 {
@@ -99,9 +100,19 @@ void Collider::RefreshShape()
 
 	// Shape 기본 설정
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
-	shapeDef.density = 1.0f;
-	shapeDef.material.friction = 0.5f;
-	shapeDef.material.restitution = 0.0f;
+
+	if (isSensor)
+	{
+		shapeDef.density = 0.0f;
+		shapeDef.material.friction = 0.0f;
+		shapeDef.material.restitution = 0.0f;
+	}
+	else
+	{
+		shapeDef.density = 1.0f;
+		shapeDef.material.friction = 0.5f;
+		shapeDef.material.restitution = 0.0f;
+	}
 
 	// UserData에 Collider 저장, Collision 이벤트에서 사용
 	shapeDef.userData = this;
@@ -121,7 +132,10 @@ void Collider::RefreshShape()
 	shapeDef.filter.maskBits = mask;
 
 	// 실제 Shape 생성
-	CreateShapes(rb->GetBodyId(), shapeDef, Collider::scale);
+	if (scale.x <= 0.0f || scale.y <= 0.0f)
+		CreateShapes(rb->GetBodyId(), shapeDef, ownerScale);
+	else
+		CreateShapes(rb->GetBodyId(), shapeDef, Collider::scale);
 
 	// Body 깨우기
 	b2Body_SetAwake(rb->GetBodyId(), true);
@@ -141,16 +155,16 @@ void Collider::DestroyShapes()
 // Shape 제거 시 호출되는 Callback, 기존 충돌 상태를 종료시키기 위한 Exit 이벤트 전달
 bool Collider::NotifyExitCallback(b2ShapeId otherShapeId, void* context)
 {
-	Collider* me = (Collider*)context;
+	Collider* me = static_cast<Collider*>(context);
 
 	if (!b2Shape_IsValid(otherShapeId)) return true;
 
-	Collider* other = (Collider*)b2Shape_GetUserData(otherShapeId);
+	Collider* other = static_cast<Collider*>(b2Shape_GetUserData(otherShapeId));
 
 	// 상대 Collider가 존재하면 Exit 이벤트 전달
 	if (other && other->GetOwner())
 	{
-		other->GetOwner()->OnCollisionExit(me); // 상대 Object 입장에서 Exit 호출
+		other->GetOwner()->OnCollisionExit(other, me); // 상대 Object 입장에서 Exit 호출
 	}
 
 	return false;
@@ -176,17 +190,18 @@ void Collider::ApplyFilter() const
 bool Collider::CheckGrounded()
 {
 	// Owner 객체의 Transform Scale 및 Position을 가져오기
-	auto ownerScale = GetOwner()->GetTransform()->GetScale();
 	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
 
 	// 객체 높이의 절반 (캐릭터 중심 기준으로 발 위치를 계산할 때 사용)
-	float halfHeight = ownerScale.y * 0.5f;
-
-	// RayCast 시작 위치
-	DirectX::SimpleMath::Vector2 origin = ownerPosition;
+	float halfHeight = scale.y * 0.5f;
+	float halfWidth = scale.x * 0.5f;
 
 	// Ray가 검사할 최대 거리
-	float totalDistance = 1.2f;
+	float totalDistance = 0.2f;
+
+	// RayCast 시작 위치
+	DirectX::SimpleMath::Vector2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + totalDistance };
+
 
 	//=============================================================
 	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
@@ -195,9 +210,20 @@ bool Collider::CheckGrounded()
 	// totalDistance : Ray 길이
 	// CollisionLayer::Ground : Ground 레이어만 충돌 검사
 	//=============================================================
-	RaycastHit hit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+	RaycastHit centerHit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	DirectX::SimpleMath::Vector2 rightOrigin = { origin.x + halfWidth, origin.y };
+	RaycastHit rightHit = PhysicsManager::GetInstance().Raycast(rightOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	DirectX::SimpleMath::Vector2 leftOrigin = { origin.x - halfWidth, origin.y };
+	RaycastHit leftHit = PhysicsManager::GetInstance().Raycast(leftOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	bool hit = false;
+
+	if (centerHit.hit || rightHit.hit || leftHit.hit) hit = true;
+	else hit = false;
 
 	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
 	// 충돌이 없으면 false (공중 상태)
-	return hit.hit;
+	return hit;
 }
