@@ -23,6 +23,28 @@ public:
 	// Component를 Object에 등록하고 Owner 설정
 	void AddComponent(const std::shared_ptr<Component>& component);
 
+	// 특정 타입의 컴포넌트를 찾아 제거하는 템플릿 함수
+	template<typename T>
+	void RemoveComponent()
+	{
+		// Transform은 제거 불가 (필수 컴포넌트)
+		if (std::is_same<T, Transform>::value) return;
+
+		// 등록된 모든 컴포넌트를 순회
+		for (auto it = components.begin(); it != components.end(); ++it)
+		{
+			// 현재 컴포넌트가 제거하려는 타입인지 확인
+			// dynamic_cast를 사용하여 런타임 타입 체크
+			if (dynamic_cast<T*>(it->second.get()))
+			{
+				it->second->OnDestroy(); // 컴포넌트 제거 전 정리 작업 수행
+				it->second->SetOwner(nullptr); // Owner와의 연결 해제
+				components.erase(it); // 컨테이너에서 컴포넌트 제거
+				return;
+			}
+		}
+	}
+
 	// 이름 기반으로 Component 반환
 	template<typename T>
 	std::shared_ptr<T> GetComponent(const std::string& compName) const
