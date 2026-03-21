@@ -6,8 +6,10 @@
 
 void CameraController::Update()
 {
-    // 메인 카메라 및 Transform 참조
-    auto camera = Camera::main;
+    // 카메라 오너 및 Transform 참조
+    auto camera = dynamic_cast<Camera*>(GetOwner());
+    if (!camera) return;
+
     auto transform = camera->GetTransform();
 
     // 현재 마우스 위치
