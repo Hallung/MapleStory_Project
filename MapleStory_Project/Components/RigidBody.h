@@ -29,6 +29,8 @@ public:
 	// 매 프레임 Box2D 바디 상태를 Transform에 반영
 	void Update() override;
 
+	void OnDestroy() override;
+
 	// 속도 설정, 물리 기반 이동
 	void SetVelocity(DirectX::SimpleMath::Vector2 velocity);
 	// 감쇠 설정, linear: 이동 감쇠, angular: 회전 감쇠

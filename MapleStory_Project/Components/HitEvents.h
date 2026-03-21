@@ -21,21 +21,42 @@ public:
 	void Awake() override;
 	// 매 프레임 호출되는 업데이트 함수
 	void Update() override;
-	// 충돌이 시작될 때 호출되는 이벤트
-	void OnCollisionEnter(Collider* other) override;
-	// 충돌이 종료될 때 호출되는 이벤트
-	void OnCollisionExit(Collider* other) override;
-	// 특정 CollisionLayer와 현재 충돌 중인지 확인하는 함수
-	bool IsCollidingWith(CollisionLayer layer) const;
 
+	void OnDestroy() override;
+	// 충돌이 시작될 때 호출되는 이벤트
+	void OnCollisionEnter(Collider* self, Collider* other) override;
+	// 충돌이 종료될 때 호출되는 이벤트
+	void OnCollisionExit(Collider* self, Collider* other) override;
+	// 특정 CollisionLayer와 현재 충돌 중인지 확인하는 함수
+	//bool IsCollidingWith(CollisionLayer layer) const;
+
+	bool IsColliding(Collider* self, CollisionLayer otherLayer);
+
+	b2BodyId GetMonsterId() const { return nearestMonsterId; }
 	b2Vec2 GetMonsterPosition() const { return nearestMonsterPos; }
+
+	b2BodyId GetCanAttackMonsterId() const { return canAttackMonsterId; }
+	b2Vec2 GetCanAttackMonsterPos() const { return canAttackMonsterPos; }
+
+	Collider* GetCanAttackMonster() const { return canAttackMonster; }
+
+	Collider* GetNearestTarget(Collider* self, CollisionLayer targetLayer);
+
+	void RemoveCollider(Collider* col);
+
+private:
+	bool HasLayer(CollisionLayer a, CollisionLayer b);
+
+	void ApplyWeaponDamage(Collider* weapon, Collider* target);
 
 private:
 	// 현재 충돌 중인 Collider들을 저장하는 컨테이너
 	// unordered_set을 사용하여
 	// - 중복 저장 방지
 	// - 빠른 삽입 / 삭제
-	std::unordered_set<Collider*> currentColliders;
+	//std::unordered_set<Collider*> currentOtherColliders;
+
+	std::unordered_map<Collider*, std::unordered_set<Collider*>> collidingMap;
 	
 	// 유효한 대상이 없을 때 사용하는 초기화 좌표
 	b2Vec2 kInvalidPosition = { -9999.0f, -9999.0f };
@@ -43,4 +64,8 @@ private:
 	b2BodyId nearestMonsterId = b2_nullBodyId;
 	// nearestMonsterId에 해당하는 Monster의 월드 위치
 	b2Vec2 nearestMonsterPos = kInvalidPosition;
+
+	Collider* canAttackMonster = nullptr;
+	b2BodyId canAttackMonsterId = b2_nullBodyId;
+	b2Vec2 canAttackMonsterPos = kInvalidPosition;
 };

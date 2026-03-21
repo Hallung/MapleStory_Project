@@ -5,6 +5,8 @@
 #include "Components/RigidBody.h"
 #include "Components/BoxCollider.h"
 #include "Components/Animator.h"
+#include "Components/MonsterAbility.h"
+#include "Components/MonsterState.h"
 #include "Resources/Material.h"
 
 Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
@@ -35,13 +37,13 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	auto monsterSensorCol = std::make_shared<BoxCollider>("SensorCollider");
 
 	// Sensor 충돌 영역 크기 설정(플레이어 감지를 위한 범위)
-	monsterSensorCol->SetColliderScale(DirectX::SimpleMath::Vector2(70.0f, 80.0f));
+	monsterSensorCol->SetColliderScale(DirectX::SimpleMath::Vector2(60.0f, 80.0f));
 	// 물리 충돌이 아닌 Sensor 이벤트로 동작하도록 설정
 	monsterSensorCol->SetIsSensor(true);
 	// Monster 레이어로 설정
 	monsterSensorCol->SetCollisionLayer(CollisionLayer::Monster);
 	// Player 레이어와만 충돌 감지하도록 설정
-	monsterSensorCol->SetCollisionMask((uint32_t)CollisionLayer::Player);
+	monsterSensorCol->SetCollisionMask(CollisionLayer::Player | CollisionLayer::Weapon);
 	// 몬스터 Object에 Sensor Collider 추가
 	monster->AddComponent(monsterSensorCol);
 
@@ -53,8 +55,11 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	// 충돌 레이어 : Monster
 	monsterCol->SetCollisionLayer(CollisionLayer::Monster);
 	// 충돌 대상 : Player, Ground
-	monsterCol->SetCollisionMask((uint32_t)CollisionLayer::Ground);
+	monsterCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Ground));
 	monster->AddComponent(monsterCol);
+
+	monster->AddComponent(std::make_shared<MonsterState>());
+	monster->AddComponent(std::make_shared<MonsterAbility>());
 
 	// Animator 추가 (애니메이션 시스템)
 	auto monsterAni = std::make_shared<Animator>();

@@ -17,11 +17,33 @@ public:
 	virtual void Update(); // 매 프레임 호출
 	virtual void Render(); // 렌더링 단계에서 호출
 
-	void OnCollisionEnter(Collider* other); // 다른 Collider와 충돌 시작 시 호출
-	void OnCollisionExit(Collider* other); // 다른 Collider와 충돌 종료 시 호출
+	void OnCollisionEnter(Collider* self, Collider* other); // 다른 Collider와 충돌 시작 시 호출
+	void OnCollisionExit(Collider* self, Collider* other); // 다른 Collider와 충돌 종료 시 호출
 
 	// Component를 Object에 등록하고 Owner 설정
 	void AddComponent(const std::shared_ptr<Component>& component);
+
+	// 특정 타입의 컴포넌트를 찾아 제거하는 템플릿 함수
+	template<typename T>
+	void RemoveComponent()
+	{
+		// Transform은 제거 불가 (필수 컴포넌트)
+		if (std::is_same<T, Transform>::value) return;
+
+		// 등록된 모든 컴포넌트를 순회
+		for (auto it = components.begin(); it != components.end(); ++it)
+		{
+			// 현재 컴포넌트가 제거하려는 타입인지 확인
+			// dynamic_cast를 사용하여 런타임 타입 체크
+			if (dynamic_cast<T*>(it->second.get()))
+			{
+				it->second->OnDestroy(); // 컴포넌트 제거 전 정리 작업 수행
+				it->second->SetOwner(nullptr); // Owner와의 연결 해제
+				components.erase(it); // 컨테이너에서 컴포넌트 제거
+				return;
+			}
+		}
+	}
 
 	// 이름 기반으로 Component 반환
 	template<typename T>
@@ -36,6 +58,17 @@ public:
 
 	Transform* GetTransform() { return transform.get(); } // Object는 Transform을 항상 보유, 별도 검색 없이 빠르게 접근하기 위한 전용 Getter
 
+	void Destroy() { _isDead = true; }
+	bool IsDead() const { return _isDead; }
+
+	void OnDestroy()
+	{
+		for (auto& [name, comp] : components)
+		{
+			comp->OnDestroy();
+		}
+	}
+
 protected:
 	std::string name; // Object 이름
 	std::shared_ptr<Transform> transform; // Object의 공간 정보(위치, 회전, 스케일) 담당, 항상 존재하는 핵심 Component
@@ -44,4 +77,6 @@ protected:
 	std::unordered_map<std::string, std::shared_ptr<Component>> components;
 	// Update / Render 순회용 리스트, 순서 기반 실행을 위해 별도 관리
 	std::vector<std::shared_ptr<Component>> updateList;
+
+	bool _isDead = false;
 };

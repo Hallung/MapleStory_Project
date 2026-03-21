@@ -112,6 +112,10 @@
     <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
+    <ClCompile Include="Components\MonsterState.cpp" />
+    <ClCompile Include="Components\MonsterAbility.cpp" />
+    <ClCompile Include="Components\PlayerState.cpp" />
+    <ClCompile Include="Components\PlayerAbility.cpp" />
     <ClCompile Include="Components\CameraController.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -268,6 +272,10 @@
     <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Components\HitEvents.h" />
+    <ClInclude Include="Components\MonsterState.h" />
+    <ClInclude Include="Components\MonsterAbility.h" />
+    <ClInclude Include="Components\PlayerState.h" />
+    <ClInclude Include="Components\PlayerAbility.h" />
     <ClInclude Include="Components\CameraController.h">
       <Filter>Components</Filter>
     </ClInclude>

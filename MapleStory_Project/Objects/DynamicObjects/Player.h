@@ -3,22 +3,6 @@
 #include "Components/RigidBody.h"
 
 //=========================================
-// 플레이어 능력치 데이터
-// 기본 스탯 값을 보관하는 구조체
-// 게임 진행 중 Player가 변경/성장 시키는 값
-//=========================================
-struct AbilityData
-{
-	UINT _hp = 100;
-	UINT _mp = 100;
-	UINT _moveSpeed = 200;
-	UINT _str = 4;
-	UINT _dex = 4;
-	UINT _int = 4;
-	UINT _luk = 4;
-};
-
-//=========================================
 // Player 관리 클래스
 // 실제 게임 오브젝트를 내부에 생성/보관
 // 능력치/상태/로직을 관리하는 컨트롤러 역할
@@ -31,7 +15,7 @@ public:
 	// Player 생성
 	// Sprite Object를 생성하고 Player 구성 컴포넌트 부착
 	//==================================================
-	Player() {}	// 상태나 능력치를 가져올 때 사용할 기본 생성자
+	//Player() {}	// 상태나 능력치를 가져올 때 사용할 기본 생성자
 	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/testPos.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
 	~Player();
 
@@ -44,29 +28,15 @@ public:
 		CLIMBING,
 		ATTACKING,
 		JUMPING,
-		STANDING,
-		NONE
+		STANDING
 	};
 
 	// Player 능력치 종류
 	enum class Ability
 	{
 		HP, MP, SPEED,
-		STR, DEX, INT, LUK,
-		NONE
+		STR, DEX, INT, LUK
 	};
-
-	//=====================================
-	// 능력치 증가
-	// Ability 종류에 따라 해당 스탯 값 누적
-	//=====================================
-	void SetAbility(Ability ablilty, UINT value);
-	// 현재 능력치 반환
-	AbilityData GetAbility() const { return abilityData; }
-
-	// 상태 설정 / 조회
-	void SetState(State state) { currentState = state; }
-	State GetState() const { return currentState; }
 
 	//===========================
 	// 내부 Object 반환
@@ -83,12 +53,6 @@ public:
 private:
 	// Player가 실제로 사용하는 게임 오브젝트
 	std::shared_ptr<Object> player;
-
-	//플레이어 능력치 데이터
-	AbilityData abilityData;
-
-	// 현재 상태
-	State currentState = State::NONE;
 
 	// 생성 시 설정값 보관
 	BodyType bodyType;
