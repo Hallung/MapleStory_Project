@@ -156,10 +156,18 @@ LRESULT Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return 0;
     }
     case WM_DESTROY:
+    {
         PostQuitMessage(0); // Window 종료 시 프로그램 종료 메시지 전달
 
         return 0;
     }
+    case WM_SYSKEYDOWN:
+    {
+        if (wParam == VK_MENU) // Alt
+            return 0; // 메뉴 포커스 막기
+    }
+    }
+
 
     return DefWindowProc(hWnd, message, wParam, lParam);
 }

@@ -6,16 +6,15 @@
 #include "Transform.h"
 #include "Animator.h"
 #include "HitEvents.h"
+#include "PlayerState.h"
+#include "PlayerAbility.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/PhysicsUtils.h"
 
-PlatformerController::PlatformerController(float moveSpeed)
-	: Component("PlatformerController"), moveSpeed(moveSpeed)
+PlatformerController::PlatformerController()
+	: Component("PlatformerController")
 {
-	// PlatformerController 생성 시 Player 관리 클래스 객체 생성
-	player = std::make_shared<Player>();
 }
-
 //===================================
 // 매 프레임 입력 기반 이동 처리
 // A/D 키 입력으로 좌우 방향 벡터 생성
@@ -30,36 +29,51 @@ void PlatformerController::Update()
 	UpdateState();
 
 	DirectX::SimpleMath::Vector2 dir;
-	// 오른쪽 이동 입력
-	if (InputManager::GetInstance().GetKeyPress(VK_D)) 
-	{
-		dir.x += 1.0f;
 
-		auto transform = GetOwner()->GetTransform();
-		DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-		float absScaleX = fabsf(scale.x);
-		if (scale.x > 0.0f)
-			transform->SetScale({ -absScaleX, scale.y });
+	if (InputManager::GetInstance().GetKeyPress(VK_LCONTROL))
+	{
+		if (!attackSignal)
+		{
+			attackSignal = true;
+		}			
 	}
-	// 왼쪽 이동 입력
-	if (InputManager::GetInstance().GetKeyPress(VK_A)) 
+	else if (!attackSignal)
 	{
-		dir.x -= 1.0f;
+		// 오른쪽 이동 입력
+		if (InputManager::GetInstance().GetKeyPress(VK_RIGHT))
+		{
+			dir.x += 1.0f;
 
-		auto transform = owner->GetTransform();
-		DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-		float absScaleX = fabsf(scale.x);
-		if (scale.x < 0.0f)
-			transform->SetScale({ absScaleX, scale.y });
+			auto transform = GetOwner()->GetTransform();
+			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+			float absScaleX = fabsf(scale.x);
+			if (scale.x > 0.0f)
+				transform->SetScale({ -absScaleX, scale.y });
+		}
+		// 왼쪽 이동 입력
+		if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
+		{
+			dir.x -= 1.0f;
+
+			auto transform = owner->GetTransform();
+			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+			float absScaleX = fabsf(scale.x);
+			if (scale.x < 0.0f)
+				transform->SetScale({ absScaleX, scale.y });
+		}
+
+		if (InputManager::GetInstance().GetKeyPress(VK_LMENU))
+		{
+			auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
+
+			// Player 상태 확인 (이미 점프 중이면 중복 점프 방지)
+			if (ownerState->GetState() != Player::State::JUMPING && !isJump)
+				Jump();
+		}
 	}
 	Move(dir);
 
-	if (InputManager::GetInstance().GetKeyPress(VK_SPACE))
-	{
-		// Player 상태 확인 (이미 점프 중이면 중복 점프 방지)
-		if (player->GetState() != Player::State::JUMPING)
-			Jump();
-	}
+	Attack();
 
 	UpdateAnimation(dir);
 }
@@ -74,6 +88,10 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 	// Object에 부착된 RigidBody 컴포넌트 가져오기
 	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 
+	auto playerAbility = GetOwner()->GetComponent<PlayerAbility>("PlayerAbility");
+
+	
+
 	// 현재 Box2D 속도 조회 (중력 포함)
 	b2Vec2 gravity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
 
@@ -86,14 +104,15 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 		// 입력 방향(dir)에 이동 속도(moveSpeed)를 곱해 속도 설정
 		// 수직 속도는 기존 중력 값을 유지하여 자연스러운 낙하 유지
 		rigidBody->SetVelocity(
-			DirectX::SimpleMath::Vector2(dir.x * moveSpeed, gravityToScreen.y)
+			DirectX::SimpleMath::Vector2(dir.x * playerAbility->GetAbility(Player::Ability::SPEED) , gravityToScreen.y)
 		);
 	}
 }
 
+// TODO: 연속 점프 시 x축 방향 Velocity 유지되는 문제를 추후에 해결
 void PlatformerController::Jump()
 {
-	const float jumpPower = 20.0f;	// 점프 시 가해질 임펄스 세기
+	const float jumpPower = 12.0f;	// 점프 시 가해질 임펄스 세기
 
 	// RigidBody 컴포넌트 획득
 	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
@@ -112,10 +131,14 @@ void PlatformerController::Jump()
 // 몬스터와 충돌 시 피격 처리 수행
 void PlatformerController::Hit()
 {
-	const float pushPower = 10.0f;
+	const float pushPower = 8.0f;
 
 	// HitEvents 컴포넌트 가져오기
 	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
+
+	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
+
+	auto ownerCollider = GetOwner()->GetComponent<Collider>("PlayerCollider");
 
 	// 무적 타이머 갱신
 	if (invincibleTimer > 10.0f)
@@ -124,7 +147,7 @@ void PlatformerController::Hit()
 		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
 
 	// 몬스터와 충돌 중인지 확인
-	if (hitEvent->IsCollidingWith(CollisionLayer::Monster))
+	if (hitEvent->IsColliding(ownerCollider.get(), CollisionLayer::Monster))
 	{
 		// 무적 시간이 끝났을 때만 피격 처리
 		if (invincibleTimer >= invincibleCooldown)
@@ -146,9 +169,18 @@ void PlatformerController::Hit()
 			// 좌/우 넉백 방향 결정
 			float dir = (dirVec > 0) ? 1.0f : -1.0f;
 
+
 			// 위 + 좌우 방향 임펄스 적용
-			b2Vec2 impulse(dir * pushPower, pushPower - 5.0f);
-			b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
+			if (ownerState->GetState() == Player::State::JUMPING)
+			{
+				b2Vec2 impulse(dir * pushPower, 0.0f);
+				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
+			}
+			else
+			{
+				b2Vec2 impulse(dir * pushPower, pushPower - 5.0f);
+				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
+			}
 			
 			// 무적 시간 (타이머 초기화)
 			invincibleTimer = 0.0f;
@@ -156,11 +188,45 @@ void PlatformerController::Hit()
 	}
 }
 
+void PlatformerController::Attack()
+{
+	auto animator = GetOwner()->GetComponent<Animator>("Animator");
+	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
+
+	UINT clipCurrentIndex = animator->GetCurrentFrameIndex();
+	std::wstring clipName = animator->GetCurrentClip()->GetName();
+
+	if (clipName == L"Attack" && clipCurrentIndex == 2)
+	{
+		currClipRate += TimeManager::GetInstance().GetDeltaTime();
+
+		auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
+
+		if (hitEvent->IsColliding(attackCol.get(), CollisionLayer::Monster) &&
+			canAttack)
+		{
+			canAttack = false;
+		}
+
+		if (currClipRate >= 0.25f)
+		{
+			attackSignal = false;
+			currClipRate = 0.0f;
+		}
+	}
+	else
+	{
+		canAttack = true;
+	}
+}
+
 // 현재 플레이어 상황을 기반으로 최종 State를 하나의 규칙으로 결정
 void PlatformerController::UpdateState()
 {
 	// Owner 객체에 붙어있는 Collider 컴포넌트를 가져옴
-	auto collider = GetOwner()->GetComponent<Collider>("Collider");
+	auto collider = GetOwner()->GetComponent<Collider>("PlayerCollider");
+
+	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
 	
 	// 지면 충돌 확인
 	bool grounded = collider->CheckGrounded();
@@ -168,34 +234,43 @@ void PlatformerController::UpdateState()
 	// 현재 상태 저장
 	Player::State newState;
 
-	// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
-	if (!grounded)
-	{
-		// 공중 상태일 때
+	isJump = grounded ? false : true;
 
-		// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
-		newState = Player::State::JUMPING;
+	if (attackSignal)
+	{
+		newState = Player::State::ATTACKING;
 	}
 	else
 	{
-		// 지면에 닿아 있는 상태
-
-		if (invincibleTimer > invincibleCooldown)
+		// Collider의 CheckGrounded()를 통해 현재 플레이어가 지면에 닿아 있는지 여부를 확인
+		if (isJump)
 		{
-			// 무적 시간이 끝났다면 기본 대기 상태
-			newState = Player::State::STANDING;
+			// 공중 상태일 때
+
+			// 현재 상태가 이미 Jumping이 아니라면 상태를 Jumping으로 변경
+			newState = Player::State::JUMPING;
 		}
 		else
 		{
-			// 무적 시간 진행 중 -> 피격 상태 유지
-			newState = Player::State::HITTING;
+			// 지면에 닿아 있는 상태
+
+			if (invincibleTimer > invincibleCooldown)
+			{
+				// 무적 시간이 끝났다면 기본 대기 상태
+				newState = Player::State::STANDING;
+			}
+			else
+			{
+				// 무적 시간 진행 중 -> 피격 상태 유지
+				newState = Player::State::HITTING;
+			}
 		}
 	}
 
 	// 현재 상태가 newState와 다르면 newState 상태로 변경
-	if (player->GetState() != newState)
+	if (ownerState->GetState() != newState)
 	{
-		player->SetState(newState);
+		ownerState->SetState(newState);
 	}
 }
 
@@ -204,32 +279,42 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 {
 	// Object에 부착된 Animator 컴포넌트 가져오기
 	auto animator = GetOwner()->GetComponent<Animator>("Animator");
+
+	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
+
 	// Animator가 존재하지 않으면 애니메이션 업데이트 불가
 	if (animator == nullptr) return;
 
-	// Player 상태가 Jumping일 경우 Jump 애니메이션 재생
-	if (player->GetState() == Player::State::JUMPING)
+	if (ownerState->GetState() == Player::State::ATTACKING)
 	{
-		animator->Play(L"Jump");
+		animator->Play(L"Attack");
 	}
-	// Player 상태가 Jumping이 아니면 다른 애니메이션 재생
 	else
 	{
-		// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
-		if (dir.x != 0.0f)
-			animator->Play(L"Move");
+		// Player 상태가 Jumping일 경우 Jump 애니메이션 재생
+		if (ownerState->GetState() == Player::State::JUMPING)
+		{
+			animator->Play(L"Jump");
+		}
+		// Player 상태가 Jumping이 아니면 다른 애니메이션 재생
 		else
 		{
-			// 이동하지 않는 경우 상태 기반 애니메이션 선택
-			if (player->GetState() == Player::State::HITTING)
-			{
-				// 피격 중
-				animator->Play(L"Hit");
-			}
+			// 좌우 이동 입력이 존재하면 Move 애니메이션 재생
+			if (dir.x != 0.0f)
+				animator->Play(L"Move");
 			else
 			{
-				// 기본 대기 상태
-				animator->Play(L"Stand");
+				// 이동하지 않는 경우 상태 기반 애니메이션 선택
+				if (ownerState->GetState() == Player::State::HITTING)
+				{
+					// 피격 중
+					animator->Play(L"Hit");
+				}
+				else
+				{
+					// 기본 대기 상태
+					animator->Play(L"Stand");
+				}
 			}
 		}
 	}
