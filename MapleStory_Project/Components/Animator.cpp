@@ -262,3 +262,12 @@ void Animator::Play(const std::wstring& clipName)
 	// 재생 상태 활성화
 	bPlaying = true;
 }
+
+bool Animator::IsFinished() const
+{
+	if (!currentClip) return true;
+
+	if (currentClip->bLoop) return false;
+
+	return !bPlaying;
+}
