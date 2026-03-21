@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MonsterAbility.h"
+#include "MonsterState.h"
 #include "Objects/DynamicObjects/Monster.h"
 
 void MonsterAbility::SetHelthPoint(UINT hp)
@@ -26,7 +27,14 @@ void MonsterAbility::SetAttackPower(UINT power)
 
 void MonsterAbility::TakeDamage(UINT damage)
 {
-	UINT newhp = max(0, _hp - damage);
+	std::cout << "Take Damage: " << damage << '\n';
 
-	SetHelthPoint(newhp);
+	_hp = max(0, _hp - damage);
+
+	auto state = GetOwner()->GetComponent<MonsterState>("MonsterState");
+
+	if (_hp == 0)
+		state->SetState(Monster::State::DIE);
+	else
+		state->SetState(Monster::State::HITTING);
 }

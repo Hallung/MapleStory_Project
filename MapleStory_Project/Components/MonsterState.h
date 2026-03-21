@@ -5,12 +5,16 @@
 class MonsterState : public Component
 {
 public:
-	MonsterState() : Component("MonaterState") {}
+	MonsterState() : Component("MonsterState") {}
+
+	void Update() override;
 
 	void SetState(Monster::State newState);
 	Monster::State GetState() const { return currentState; }
 
-	void UpdateAnimation(Monster::State next);
+	void UpdateHitState();
+
+	void UpdateAnimation();
 	
 private:
 	Monster::State currentState = Monster::State::STANDING;
