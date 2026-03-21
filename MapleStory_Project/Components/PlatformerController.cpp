@@ -8,6 +8,7 @@
 #include "HitEvents.h"
 #include "PlayerState.h"
 #include "PlayerAbility.h"
+#include "MonsterAbility.h"
 #include "Utilities/VirtualKey.h"
 #include "Utilities/PhysicsUtils.h"
 
@@ -198,20 +199,19 @@ void PlatformerController::Attack()
 
 	if (clipName == L"Attack" && clipCurrentIndex == 2)
 	{
-		currClipRate += TimeManager::GetInstance().GetDeltaTime();
-
 		auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
 
-		if (hitEvent->IsColliding(attackCol.get(), CollisionLayer::Monster) &&
-			canAttack)
+		auto target = hitEvent->GetNearestTarget(attackCol.get(), CollisionLayer::Monster);
+
+		if (target && canAttack)
 		{
+			ApplyDamage(target);
 			canAttack = false;
 		}
 
-		if (currClipRate >= 0.25f)
+		if (animator->IsFinished())
 		{
 			attackSignal = false;
-			currClipRate = 0.0f;
 		}
 	}
 	else
@@ -318,4 +318,12 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 			}
 		}
 	}
+}
+
+void PlatformerController::ApplyDamage(Collider* target)
+{
+	auto ability = target->GetOwner()->GetComponent<MonsterAbility>("MonsterAbility");
+
+	if (ability)
+		ability->TakeDamage(100);
 }

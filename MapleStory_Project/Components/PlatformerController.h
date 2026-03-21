@@ -15,7 +15,7 @@ public:
 	// 기본 이동 속도를 가지는 컨트롤러 생성
 	// Component 이름을 "PlatformerController"로 설정
 	//===============================================
-	PlatformerController(float moveSpeed = 150.0f);
+	PlatformerController();
 
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;
@@ -30,19 +30,25 @@ private:
 	// 피격 처리 함수(몬스터와 충돌 시 넉백 및 무적 시간 갱신 처리
 	void Hit();
 
+	void Attack();
+
 	void UpdateState();
 	
 	// 애니메이션 상태 업데이트(이동 방향에 따라 상태 변경)
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
 
+	bool GetCanAttack() const { return canAttack; }
+
+	void ApplyDamage(Collider* target);
+
 private:
-	float moveSpeed = 0.0f;	// 이동 속도
-
-	// Player 객체를 공유 포인터로 생성
-	std::shared_ptr<class Player> player;
-
 	// 현재 무적 타이머
 	float invincibleTimer = 3.0f;
 	// 피격 후 다시 데미지를 받을 수 있기까지의 무적 지속 시간
 	const float invincibleCooldown = 2.0f;
+
+	bool isJump = false;
+
+	bool attackSignal = false;
+	bool canAttack = false;
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Objects/Object.h"
+#include "Components/HitEvents.h"
 
 //===========================================
 // Scene 베이스 클래스
@@ -18,6 +19,9 @@ public:
 
 	virtual void Update() // Scene에 등록된 모든 Object Update 호출
 	{
+		PreCleanupDestroyedObjects();
+		CleanupDestroyedObjects();
+
 		for (const auto& obj : objects)
 			obj->Update();
 	}
@@ -41,6 +45,34 @@ public:
 
 	// 디버그용 ImGui 출력 함수 (필요한 씬에서 override)
 	virtual void OnImGui() {}
+
+	void CleanupDestroyedObjects()
+	{
+		objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& obj)
+			{
+				return obj->IsDead();
+			}), 
+			objects.end());
+	}
+
+	void PreCleanupDestroyedObjects()
+	{
+		for (auto& obj : objects)
+		{
+			if (!obj->IsDead())
+				continue;
+
+			auto col = obj->GetComponent<Collider>("Collider");
+			if (!col) continue;
+
+			for (auto& other : objects)
+			{
+				auto hit = other->GetComponent<HitEvents>("HitEvents");
+				if (hit)
+					hit->RemoveCollider(col.get());
+			}
+		}
+	}
 
 protected:
 	//==========================
