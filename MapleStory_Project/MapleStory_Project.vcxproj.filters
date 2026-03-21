@@ -109,12 +109,6 @@
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp">
       <Filter>Objects\DynamicObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\TileMap.cpp" />
-    <ClCompile Include="Scenes\TileMapEditorScene.cpp" />
-    <ClCompile Include="Utilities\FileDialog.cpp" />
-    <ClCompile Include="Components\CameraController.cpp" />
-    <ClCompile Include="Utilities\Random.cpp" />
-    <ClCompile Include="Renders\IA\InstanceBuffer.cpp" />
     <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
@@ -122,6 +116,24 @@
     <ClCompile Include="Components\MonsterAbility.cpp" />
     <ClCompile Include="Components\PlayerState.cpp" />
     <ClCompile Include="Components\PlayerAbility.cpp" />
+    <ClCompile Include="Components\CameraController.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\FileDialog.cpp">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Random.cpp">
+      <Filter>Utilites</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\TileMap.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\TileMapEditorScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Renders\IA\InstanceBuffer.cpp">
+      <Filter>Renders\IA</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -257,12 +269,6 @@
     <ClInclude Include="Objects\DynamicObjects\Scarecrow.h">
       <Filter>Objects\DynamicObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\TileMap.h" />
-    <ClInclude Include="Scenes\TileMapEditorScene.h" />
-    <ClInclude Include="Utilities\FileDialog.h" />
-    <ClInclude Include="Components\CameraController.h" />
-    <ClInclude Include="Utilities\Random.h" />
-    <ClInclude Include="Renders\IA\InstanceBuffer.h" />
     <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Components\HitEvents.h" />
@@ -270,6 +276,24 @@
     <ClInclude Include="Components\MonsterAbility.h" />
     <ClInclude Include="Components\PlayerState.h" />
     <ClInclude Include="Components\PlayerAbility.h" />
+    <ClInclude Include="Components\CameraController.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\FileDialog.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Random.h">
+      <Filter>Utilites</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\TileMap.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\TileMapEditorScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Renders\IA\InstanceBuffer.h">
+      <Filter>Renders\IA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
