@@ -17,7 +17,9 @@ public:
 
 	void Bind(); // ViewProjectionBuffer를 Shader에 Bind
 
-	void SetPosition(DirectX::SimpleMath::Vector2 value); // Camera 위치 설정
+	void Reset(); // Camera 초기화
+
+	void SetPositionWithClamp(DirectX::SimpleMath::Vector2 targetPos, class TileMap* tileMap); // tileMap범위 안에서 target 중심 추적 이동 함수
 	void SetZoom(float value); // Camera Zoom 설정
 	float GetZoom(); // 현재 Zoom 반환
 
@@ -31,6 +33,9 @@ private:
 	DirectX::SimpleMath::Matrix view; // Camera View Matrix (Transform 기반 계산)
 	DirectX::SimpleMath::Matrix projection; // Camera Projection Matrix (Orthographic)
 	std::unique_ptr<class ViewProjectionBuffer> viewProjectionBuffer; // Shader에 전달할 ViewProjection ConstantBuffer
+
+	DirectX::SimpleMath::Vector2 defaultPosition = { 0, 0 }; // Camera 초기화 용 Position
+	DirectX::SimpleMath::Vector2 defaultScale = { 1, 1 }; // Camera 초기화 용 Scale
 
 	// Transform 변경 여부 확인용 Cache
 	DirectX::SimpleMath::Vector2 lastPos = { -9999.0f, -9999.0f };
