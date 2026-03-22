@@ -23,7 +23,7 @@ constexpr float halfValue = 0.5f;
 void SandboxScene::Init()
 {
 	// 화면 중앙 위치에 Player 객체 생성
-	player = std::make_shared<Player>(
+	auto player = std::make_shared<Player>(
 		DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
 		DirectX::SimpleMath::Vector2(scale),
 		rotation
@@ -54,6 +54,7 @@ void SandboxScene::Init()
 void SandboxScene::Destroy()
 {
 	objects.clear();
+	worldPlayer = nullptr;
 }
 
 // Scene의 기본 Object Update 수행, 필요 시 Sandbox 전용 테스트 로직 추가 가능
@@ -61,7 +62,6 @@ void SandboxScene::Update()
 {
 	__super::Update();
 	PhysicsManager::GetInstance().Update();
-	player->Update();
 }
 
 // Scene의 기본 Object Render 수행, 필요 시 디버그 렌더링 등 확장 가능

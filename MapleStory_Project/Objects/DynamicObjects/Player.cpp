@@ -7,7 +7,16 @@
 #include "Components/HitEvents.h"
 #include "Components/PlatformerController.h"
 #include "Components/Transform.h"
+#include "Components/PlayerState.h"
+#include "Components/PlayerAbility.h"
 #include "Utilities/ObjectFactory.h"
+
+namespace
+{
+constexpr float scaleX = 35.0f;
+constexpr float scaleY = 70.0f;
+constexpr DirectX::SimpleMath::Vector2 offset = { 30.0f, 0.0f };
+}
 
 Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
 	: bodyType(bodyType), texturePath(texturePath)
@@ -29,14 +38,14 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->AddComponent(playerRb);
 
 	// 바디에 맞춰서 쉐이프 추가
-	auto playerCol = std::make_shared<BoxCollider>();
+	auto playerCol = std::make_shared<BoxCollider>("PlayerCollider");
 
 	//===========================================
 	// Player Collider 크기 수동 설정
 	// Sprite 이미지 크기와 별개로 Collider 크기를 설정할 수 있도록 분리
 	// 이를 통해 렌더링 크기와 충돌 영역을 독립적으로 제어 가능
 	//===========================================
-	playerCol->SetColliderScale(DirectX::SimpleMath::Vector2(55.0f, 70.0f));
+	playerCol->SetColliderScale(DirectX::SimpleMath::Vector2(scaleX, scaleY));
 	// Player 객체를 Player Collision Layer에 설정
 	playerCol->SetCollisionLayer(CollisionLayer::Player);
 
@@ -44,14 +53,28 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player가 충돌할 수 있는 레이어 설정
 	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
 	//=================================================
-	playerCol->SetCollisionMask((uint32_t)CollisionLayer::Ground | (uint32_t)CollisionLayer::Monster);
+	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
 
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
 
+	auto playerAttackCol = std::make_shared <BoxCollider>("AttackCollider");
+
+	playerAttackCol->SetColliderScale(DirectX::SimpleMath::Vector2(scaleX * 0.5f, scaleY));
+	playerAttackCol->SetIsSensor(true);
+	playerAttackCol->SetCollisionLayer(CollisionLayer::Weapon);
+	playerAttackCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Monster));
+	playerAttackCol->SetOffset(offset);
+
+	player->AddComponent(playerAttackCol);
+
 	// 충돌 이벤트를 확인하는 HitEvents 추가
 	auto playerHitEvents = std::make_shared<HitEvents>();
 	player->AddComponent(playerHitEvents);
+
+	player->AddComponent(std::make_shared<PlayerState>());
+
+	player->AddComponent(std::make_shared<PlayerAbility>());
 
 	// 플랫폼 이동 컨트롤러 추가
 	player->AddComponent(std::make_shared<PlatformerController>());
@@ -67,8 +90,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player의 충돌 판정을 위한 HitEvents 추가
 	player->AddComponent(std::make_shared<HitEvents>());
 
-	// 생성 시 State STANDING으로 설정
-	currentState = State::STANDING;
+
 }
 
 Player::~Player()
@@ -78,41 +100,4 @@ Player::~Player()
 
 void Player::Update()
 {
-
-}
-
-//=====================================
-// 능력치 증가
-// Ability 종류에 따라 해당 스탯 값 누적
-//=====================================
-void Player::SetAbility(Ability ablilty, UINT value)
-{
-	switch (ablilty)
-	{
-	case Player::Ability::HP:
-		abilityData._hp += value;
-		break;
-	case Player::Ability::MP:
-		abilityData._mp += value;
-		break;
-	case Player::Ability::SPEED:
-		abilityData._moveSpeed += value;
-		break;
-	case Player::Ability::STR:
-		abilityData._str += value;
-		break;
-	case Player::Ability::DEX:
-		abilityData._dex += value;
-		break;
-	case Player::Ability::INT:
-		abilityData._int += value;
-		break;
-	case Player::Ability::LUK:
-		abilityData._luk += value;
-		break;
-	case Player::Ability::NONE:
-		break;
-	default:
-		break;
-	}
 }

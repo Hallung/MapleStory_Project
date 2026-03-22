@@ -87,9 +87,11 @@ RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, c
 	// Ray 이동 벡터 계산
 	b2Vec2 translation = { ndir.x * distance, ndir.y * distance };
 	
-	// Raycast 필터 설정(maskBits : 어떤 Collision Layer를 검사할지 결정)
-	// 추후 Utilities/CollisionLayer에 Raycast 추가 시 filter.categoryBits에 등록 예정 
+	// Raycast 필터 설정
+	// (castegoryBits : 필터링 단계에서 불필요한 충돌 검사 방지)
+	// (maskBits : 어떤 Collision Layer를 검사할지 결정)
 	b2QueryFilter filter = b2DefaultQueryFilter();
+	filter.categoryBits = static_cast<uint32_t>(CollisionLayer::Raycast);
 	filter.maskBits = layerMask;
 	
 	// Box2D Raycast 실행
@@ -158,11 +160,11 @@ void PhysicsManager::ProcessEvents()
 			{
 				// Sensor 소유 Object 이벤트 전달
 				if (auto owner = colSensor->GetOwner())
-					isBegin ? owner->OnCollisionEnter(colVisitor) : owner->OnCollisionExit(colVisitor);
+					isBegin ? owner->OnCollisionEnter(colSensor, colVisitor) : owner->OnCollisionExit(colSensor, colVisitor);
 
 				// Visitor 소유 Object 이벤트 전달
 				if (auto visitor = colVisitor->GetOwner())
-					isBegin ? visitor->OnCollisionEnter(colSensor) : visitor->OnCollisionExit(colSensor);
+					isBegin ? visitor->OnCollisionEnter(colVisitor, colSensor) : visitor->OnCollisionExit(colVisitor, colSensor);
 			}
 		};
 
@@ -202,11 +204,11 @@ void PhysicsManager::ProcessEvents()
 			{
 				// Collider A 소유 Object 이벤트 전달
 				if (auto ownerA = colA->GetOwner())
-					isBegin ? ownerA->OnCollisionEnter(colB) : ownerA->OnCollisionExit(colB);
+					isBegin ? ownerA->OnCollisionEnter(colA, colB) : ownerA->OnCollisionExit(colA, colB);
 
 				// Collider B 소유 Object 이벤트 전달
 				if (auto ownerB = colB->GetOwner())
-					isBegin ? ownerB->OnCollisionEnter(colA) : ownerB->OnCollisionExit(colA);
+					isBegin ? ownerB->OnCollisionEnter(colB, colA) : ownerB->OnCollisionExit(colB, colA);
 			}
 		};
 

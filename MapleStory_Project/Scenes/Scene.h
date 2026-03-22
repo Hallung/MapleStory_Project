@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 #include "Objects/Object.h"
+#include "Components/Component.h"
+#include "Components/Animator.h"
 
 //===========================================
 // Scene 베이스 클래스
@@ -18,6 +20,16 @@ public:
 
 	virtual void Update() // Scene에 등록된 모든 Object Update 호출
 	{
+		PreCleanupDestroyedObjects();
+		if (deleteObject)
+		{
+			if (deleteObject->GetComponent<Animator>("Animator")->IsFinished())
+			{
+				CleanupDestroyedObjects();
+				deleteObject = nullptr;
+			}
+		}
+
 		for (const auto& obj : objects)
 			obj->Update();
 	}
@@ -42,10 +54,34 @@ public:
 	// 디버그용 ImGui 출력 함수 (필요한 씬에서 override)
 	virtual void OnImGui() {}
 
+	void CleanupDestroyedObjects()
+	{
+		objects.erase(std::remove_if(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& obj)
+			{
+				return obj->IsDead();
+			}), 
+			objects.end());
+	}
+
+	void PreCleanupDestroyedObjects()
+	{
+		for (auto& obj : objects)
+		{
+			if (obj->IsDead())
+			{
+				obj->OnDestroy();
+				deleteObject = obj;
+			}
+		}
+	}
+
 protected:
 	//==========================
 	// Scene이 소유한 Object 목록
 	// Scene 생명주기 동안 관리됨
 	//==========================
 	std::vector<std::shared_ptr<Object>> objects;
+
+	// TODO: 여러 Object가 사망 시 애니메이션 처리 함수 추후 구현 필요
+	std::shared_ptr<Object> deleteObject;
 };

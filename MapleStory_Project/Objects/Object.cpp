@@ -44,17 +44,17 @@ void Object::Render()
 }
 
 // Object가 소유한 모든 Component에게 충돌 시작 이벤트를 전달
-void Object::OnCollisionEnter(Collider* other)
+void Object::OnCollisionEnter(Collider* self, Collider* other)
 {
 	for (const auto& comp : updateList)
-		comp->OnCollisionEnter(other);
+		comp->OnCollisionEnter(self, other);
 }
 
 // Object가 소유한 모든 Component에게 충돌 종료 이벤트를 전달
-void Object::OnCollisionExit(Collider* other)
+void Object::OnCollisionExit(Collider* self, Collider* other)
 {
 	for (const auto& comp : updateList)
-		comp->OnCollisionExit(other);
+		comp->OnCollisionExit(self, other);
 }
 
 //====================================================
@@ -77,3 +77,4 @@ void Object::AddComponent(const std::shared_ptr<Component>& component)
 		component->SetOwner(this); // Component의 Owner를 현재 Object로 설정
 	}
 }
+

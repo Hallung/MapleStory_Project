@@ -165,7 +165,11 @@
     <ClCompile Include="Components\Collider.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
+    <ClCompile Include="Components\MonsterAbility.cpp" />
+    <ClCompile Include="Components\MonsterState.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
+    <ClCompile Include="Components\PlayerAbility.cpp" />
+    <ClCompile Include="Components\PlayerState.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -217,7 +221,11 @@
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\HitEvents.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
+    <ClInclude Include="Components\MonsterAbility.h" />
+    <ClInclude Include="Components\MonsterState.h" />
     <ClInclude Include="Components\PlatformerController.h" />
+    <ClInclude Include="Components\PlayerAbility.h" />
+    <ClInclude Include="Components\PlayerState.h" />
     <ClInclude Include="Components\RigidBody.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Managers\ImGuiManager.h" />
