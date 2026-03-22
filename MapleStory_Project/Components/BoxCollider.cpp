@@ -18,7 +18,7 @@ void BoxCollider::CreateShapes(b2BodyId bodyId, const b2ShapeDef& def, DirectX::
 	const float halfScaleY = (abs(scale.y) * 0.5f) / PhysicsUtils::PTM_RATIO;
 
 	// Collider Offset 적용
-	const b2Vec2 center = PhysicsUtils::ScreenToWorld(GetOffset());
+	const b2Vec2 center = PhysicsUtils::ScreenToWorld(GetOffsetData());
 
 	// Box Shape 생성
 	const b2Polygon box = b2MakeOffsetBox(halfScaleX, halfScaleY, center, b2MakeRot(0.0f));

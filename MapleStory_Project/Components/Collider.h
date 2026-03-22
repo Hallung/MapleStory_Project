@@ -28,10 +28,12 @@ public:
 		if (offset != val)
 		{
 			offset = val;
-			//RefreshShape();
+			RefreshShape();
 		}
 	}
-	DirectX::SimpleMath::Vector2 GetOffset() const { return offset; } // Offset 반환
+
+	void SetOffsetData(DirectX::SimpleMath::Vector2 val) { if (offset != val) offset = val; }
+	DirectX::SimpleMath::Vector2 GetOffsetData() const { return offset; } // Offset 반환
 
 	void SetCollisionLayer(CollisionLayer layer); // 이 Collider가 속할 CollisionLayer 를 설정
 	void SetCollisionMask(uint32_t mask); // 이 Collider가 충돌을 허용할 레이어 Mask 설정

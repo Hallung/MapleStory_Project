@@ -45,22 +45,38 @@ void PlatformerController::Update()
 		{
 			dir.x += 1.0f;
 
+			auto collider = GetOwner()->GetComponent<Collider>("AttackCollider");
+			DirectX::SimpleMath::Vector2 offset = collider->GetOffsetData();
 			auto transform = GetOwner()->GetTransform();
 			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 			float absScaleX = fabsf(scale.x);
 			if (scale.x > 0.0f)
+			{
 				transform->SetScale({ -absScaleX, scale.y });
+			}
+			if (offset.x < 0.0f)
+			{
+				collider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+			}
 		}
 		// 왼쪽 이동 입력
 		if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
 		{
 			dir.x -= 1.0f;
 
+			auto collider = GetOwner()->GetComponent<Collider>("AttackCollider");
+			DirectX::SimpleMath::Vector2 offset = collider->GetOffsetData();
 			auto transform = owner->GetTransform();
 			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 			float absScaleX = fabsf(scale.x);
 			if (scale.x < 0.0f)
+			{
 				transform->SetScale({ absScaleX, scale.y });
+			}
+			if (offset.x > 0.0f)
+			{
+				collider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+			}
 		}
 
 		if (InputManager::GetInstance().GetKeyPress(VK_LMENU))
@@ -77,6 +93,8 @@ void PlatformerController::Update()
 	Attack();
 
 	UpdateAnimation(dir);
+
+	ApplyAirControl(dir);
 }
 
 
@@ -110,7 +128,6 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 	}
 }
 
-// TODO: 연속 점프 시 x축 방향 Velocity 유지되는 문제를 추후에 해결
 void PlatformerController::Jump()
 {
 	const float jumpPower = 12.0f;	// 점프 시 가해질 임펄스 세기
@@ -328,4 +345,23 @@ void PlatformerController::ApplyDamage(Collider* target)
 
 	if (ability)
 		ability->TakeDamage(attackCol.get(), 100);
+}
+
+void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
+{
+	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
+
+	if (!isJump) return;
+
+	b2Vec2 vel = b2Body_GetLinearVelocity(ownerRb->GetBodyId());
+
+	if (abs(dir.x) < 0.01f)
+	{
+		const float airDrag = 1.0f;
+		float deltaTime = TimeManager::GetInstance().GetDeltaTime();
+
+		vel.x = vel.x + (0.0f - vel.x) * airDrag * deltaTime;
+	}
+
+	b2Body_SetLinearVelocity(ownerRb->GetBodyId(), vel);
 }

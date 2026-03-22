@@ -41,6 +41,8 @@ private:
 
 	void ApplyDamage(Collider* target);
 
+	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
+
 private:
 	// 현재 무적 타이머
 	float invincibleTimer = 3.0f;
