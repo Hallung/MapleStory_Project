@@ -64,7 +64,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	playerAttackCol->SetIsSensor(true);
 	playerAttackCol->SetCollisionLayer(CollisionLayer::Weapon);
 	playerAttackCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Monster));
-	playerAttackCol->SetOffset(offset);
+	playerAttackCol->SetOffsetData(offset);
 
 	player->AddComponent(playerAttackCol);
 
