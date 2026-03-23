@@ -76,6 +76,7 @@ public:
 	bool IsPlaying() const { return bPlaying; }
 	void SetPlaying(bool playing) { bPlaying = playing; }
 
+	// 애니메이션 재생 종료 여부 반환
 	bool IsFinished() const;
 
 	// 현재 클립의 전체 프레임 수 반환

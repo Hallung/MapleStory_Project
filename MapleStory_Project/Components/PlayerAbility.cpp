@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PlayerAbility.h"
 
+// Ability enum 타입에 따라 해당 능력치 값을 설정
 void PlayerAbility::SetAbility(Player::Ability ability, float value)
 {
 	switch (ability)
@@ -15,21 +16,22 @@ void PlayerAbility::SetAbility(Player::Ability ability, float value)
 		_moveSpeed = value;
 		break;
 	case Player::Ability::STR:
-		_str = 0;
+		_str = value;
 		break;
 	case Player::Ability::DEX:
-		_dex = 0;
+		_dex = value;
 		break;
 	case Player::Ability::INT:
-		_int = 0;
+		_int = value;
 		break;
 	case Player::Ability::LUK:
-		_luk = 0;
+		_luk = value;
 		break;
 	}
 }
 
-UINT PlayerAbility::GetAbility(Player::Ability ability)
+// Ability enum을 기반으로 능력치 값을 반환
+UINT PlayerAbility::GetAbility(Player::Ability ability) const
 {
 	UINT abilityValue = 0;
 

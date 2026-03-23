@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Objects/Object.h"
 #include "Components/RigidBody.h"
 
@@ -16,11 +17,12 @@ public:
 	// name : 몬스터 이름
 	//=================================================
 	Monster(
-		const std::wstring& texturePath = L"_Textures/testPos.png", 
-		BodyType bodyType = BodyType::Dynamic, 
-		const std::string& name = "Monster");
+		const std::wstring& texturePath = L"_Textures/testPos.png",
+		BodyType bodyType = BodyType::Dynamic,
+		const std::string& name = "Monster")
+		: texturePath(texturePath), bodyType(bodyType), name(name) {}
 	// 소멸자
-	~Monster();
+	~Monster() = default;
 
 	// 몬스터 상태 정의
 	enum class State
@@ -47,5 +49,6 @@ public:
 protected:
 	std::shared_ptr<Object> monster;	// 실제 씬에 존재하는 몬스터 Object
 	std::wstring texturePath;				// 몬스터 텍스처 경로
+	BodyType bodyType;
 	std::string name;						// 몬스터 이름
 };

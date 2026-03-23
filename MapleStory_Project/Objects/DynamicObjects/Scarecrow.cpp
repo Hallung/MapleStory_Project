@@ -58,7 +58,9 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	monsterCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Ground));
 	monster->AddComponent(monsterCol);
 
+	// State를 관리하는 컴포넌트 추가
 	monster->AddComponent(std::make_shared<MonsterState>());
+	// Ability를 관리하는 컴포넌트 추가
 	monster->AddComponent(std::make_shared<MonsterAbility>());
 
 	// Animator 추가 (애니메이션 시스템)

@@ -30,17 +30,22 @@ private:
 	// 피격 처리 함수(몬스터와 충돌 시 넉백 및 무적 시간 갱신 처리
 	void Hit();
 
+	// 공격 시스템을 처리하는 함수
 	void Attack();
 
+	// 상태를 업데이트 하는 함수
 	void UpdateState();
 	
 	// 애니메이션 상태 업데이트(이동 방향에 따라 상태 변경)
 	void UpdateAnimation(DirectX::SimpleMath::Vector2 dir);
 
+	// 공격 가능 여부 반환
 	bool GetCanAttack() const { return canAttack; }
 
+	// target에 Damage를 주는 함수
 	void ApplyDamage(Collider* target);
 
+	// 공중 상태에서 플레이어의 수평 이동 감속 처리
 	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
 
 private:
@@ -49,8 +54,8 @@ private:
 	// 피격 후 다시 데미지를 받을 수 있기까지의 무적 지속 시간
 	const float invincibleCooldown = 2.0f;
 
-	bool isJump = false;
+	bool isJump = false;	// 공중에 있는지 확인
 
-	bool attackSignal = false;
-	bool canAttack = false;
+	bool attackSignal = false;	// 공격 신호 여부
+	bool canAttack = false;	// 공격 가능 여부
 };

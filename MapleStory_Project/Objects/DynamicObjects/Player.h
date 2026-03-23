@@ -17,9 +17,7 @@ public:
 	//==================================================
 	//Player() {}	// 상태나 능력치를 가져올 때 사용할 기본 생성자
 	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/testPos.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
-	~Player();
-
-	void Update();
+	~Player() = default;
 
 	// Player 상태
 	enum class State

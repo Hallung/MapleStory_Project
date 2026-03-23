@@ -103,9 +103,6 @@
     <ClCompile Include="Components\HitEvents.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\DynamicObjects\Monster.cpp">
-      <Filter>Objects\DynamicObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp">
       <Filter>Objects\DynamicObjects</Filter>
     </ClCompile>
