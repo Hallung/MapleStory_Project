@@ -38,6 +38,9 @@ constexpr float halfValue = 0.5f;
 
 void TileMapEditorScene::Init()
 {
+	//Scene 타입을 Editor로 변경
+	currentSceneType = SceneType::Editor;
+
 	// Instancing 기반 TileMap 생성
 	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/MapleTile.png", tileCols, tileRows);
 
@@ -61,6 +64,7 @@ void TileMapEditorScene::Destroy()
 	chainObjects.clear();
 	player = nullptr;
 	worldPlayer = nullptr;
+	Camera::main->RemoveComponent<CameraController>();
 }
 
 void TileMapEditorScene::Update()
@@ -227,7 +231,7 @@ void TileMapEditorScene::CreateChainObject()
 		CollisionLayer::Player |
 		CollisionLayer::Bullet |
 		CollisionLayer::Monster |
-		0xFFFFFFFF		// 임시 RayCast Mask (추후 분리 예정)
+		CollisionLayer::Raycast
 	);
 
 	// ChainCollider 추가
