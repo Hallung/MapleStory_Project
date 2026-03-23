@@ -110,6 +110,7 @@ void Collider::RefreshShape()
 	// Shape 기본 설정
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
 
+	// isSensor 상태에 따라 density, friction, restitution 설정
 	if (isSensor)
 	{
 		shapeDef.density = 0.0f;

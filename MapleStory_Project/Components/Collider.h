@@ -20,7 +20,7 @@ public:
 
 	void Awake() override; // Owner의 Rigidbody를 기반으로 Shape를 생성
 	void Update() override; // Transform Scale 변경 감지 시 Shape를 갱신
-	void OnDestroy() override;
+	void OnDestroy() override;	// 컴포넌트가 사라질 때 초기화
 
 	// Collider Offset 설정, Offset 변경 시 Shape를 재생성
 	void SetOffset(DirectX::SimpleMath::Vector2 val)
@@ -28,10 +28,12 @@ public:
 		if (offset != val)
 		{
 			offset = val;
-			//RefreshShape();
+			RefreshShape();
 		}
 	}
-	DirectX::SimpleMath::Vector2 GetOffset() const { return offset; } // Offset 반환
+
+	void SetOffsetData(DirectX::SimpleMath::Vector2 val) { if (offset != val) offset = val; }
+	DirectX::SimpleMath::Vector2 GetOffsetData() const { return offset; } // Offset 반환
 
 	void SetCollisionLayer(CollisionLayer layer); // 이 Collider가 속할 CollisionLayer 를 설정
 	void SetCollisionMask(uint32_t mask); // 이 Collider가 충돌을 허용할 레이어 Mask 설정

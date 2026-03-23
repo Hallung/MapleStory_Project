@@ -28,34 +28,30 @@ public:
 	// 충돌이 종료될 때 호출되는 이벤트
 	void OnCollisionExit(Collider* self, Collider* other) override;
 	// 특정 CollisionLayer와 현재 충돌 중인지 확인하는 함수
-	//bool IsCollidingWith(CollisionLayer layer) const;
-
 	bool IsColliding(Collider* self, CollisionLayer otherLayer);
-
+	// PlayerCollider과 가장 근접한 몬스터의 Id, Position
 	b2BodyId GetMonsterId() const { return nearestMonsterId; }
 	b2Vec2 GetMonsterPosition() const { return nearestMonsterPos; }
-
+	// AttackCollider과 가장 근접한 몬스터의 Id, Position, Collider
 	b2BodyId GetCanAttackMonsterId() const { return canAttackMonsterId; }
 	b2Vec2 GetCanAttackMonsterPos() const { return canAttackMonsterPos; }
-
 	Collider* GetCanAttackMonster() const { return canAttackMonster; }
 
+	// self와 가장 근접한 Collider
 	Collider* GetNearestTarget(Collider* self, CollisionLayer targetLayer);
 
+	// collidingMap 내부에 저장중인 Collider 정보 제거용
 	void RemoveCollider(Collider* col);
 
 private:
+	// CollisionLayer를 비교하여 같으면 true
 	bool HasLayer(CollisionLayer a, CollisionLayer b);
-
-	void ApplyWeaponDamage(Collider* weapon, Collider* target);
 
 private:
 	// 현재 충돌 중인 Collider들을 저장하는 컨테이너
 	// unordered_set을 사용하여
 	// - 중복 저장 방지
 	// - 빠른 삽입 / 삭제
-	//std::unordered_set<Collider*> currentOtherColliders;
-
 	std::unordered_map<Collider*, std::unordered_set<Collider*>> collidingMap;
 	
 	// 유효한 대상이 없을 때 사용하는 초기화 좌표
@@ -65,7 +61,7 @@ private:
 	// nearestMonsterId에 해당하는 Monster의 월드 위치
 	b2Vec2 nearestMonsterPos = kInvalidPosition;
 
-	Collider* canAttackMonster = nullptr;
-	b2BodyId canAttackMonsterId = b2_nullBodyId;
-	b2Vec2 canAttackMonsterPos = kInvalidPosition;
+	Collider* canAttackMonster = nullptr;	// 공격 가능 몬스터의 Collider 정보 저장
+	b2BodyId canAttackMonsterId = b2_nullBodyId;	// 공격 가능한 몬스터의 ID
+	b2Vec2 canAttackMonsterPos = kInvalidPosition;	// 공격 가능한 몬스터의 Position
 };

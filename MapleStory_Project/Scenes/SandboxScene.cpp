@@ -48,6 +48,14 @@ void SandboxScene::Init()
 	);
 	//Scarecrow가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(scarecrow->GetMonster());
+
+	auto scarecrow1 = std::make_shared<Scarecrow>(
+		DirectX::SimpleMath::Vector2(gWinWidth * halfValue - offsetPos, gWinHeight * halfValue),
+		DirectX::SimpleMath::Vector2(scale.x - 20.0f),
+		rotation
+	);
+
+	AddObject(scarecrow1->GetMonster());
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리

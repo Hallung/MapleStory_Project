@@ -41,11 +41,7 @@ void HitEvents::OnCollisionEnter(Collider* self, Collider* other)
 	if (HasLayer(other->GetCollisionLayer(), CollisionLayer::Ground)) return;
 
 	// 현재 충돌 중인 Collider 등록
-	//currentOtherColliders.insert(other);	// 충돌 중인 Collider 목록에 추가
-
 	collidingMap[self].insert(other);
-
-	std::cout << self->GetName() << '\n';
 
 	// Monster와 충돌한경우만 처리 
 	if (HasLayer(other->GetCollisionLayer(), CollisionLayer::Monster) &&
@@ -71,12 +67,6 @@ void HitEvents::OnCollisionEnter(Collider* self, Collider* other)
 			nearestMonsterPos = otherPos;
 		}
 	}
-
-	if (HasLayer(self->GetCollisionLayer(), CollisionLayer::Weapon) &&
-		HasLayer(other->GetCollisionLayer(), CollisionLayer::Monster))
-	{
-		ApplyWeaponDamage(self, other);
-	}
 }
 
 //======================================================================
@@ -90,12 +80,10 @@ void HitEvents::OnCollisionExit(Collider* self, Collider* other)
 {
 	if (!other || !self) return;
 
-	//currentOtherColliders.erase(other);	// 충돌 목록에서 제거
-
 	auto it = collidingMap.find(self);
 	if (it != collidingMap.end())
 	{
-		it->second.erase(other);
+		it->second.erase(other);	// 충돌 목록에서 제거
 
 		if (it->second.empty())
 			collidingMap.erase(it);
@@ -115,22 +103,9 @@ void HitEvents::OnCollisionExit(Collider* self, Collider* other)
 
 //======================================================================
 // 특정 CollisionLayer와 충돌 중인지 확인하는 함수
-// currentColliders에 저장된 Collider들을 순회하며
+// self 키값으로 currentColliders에 저장된 Collider들을 순회하며
 // 지정한 Layer와 동일한 Layer가 존재하는지 검사한다.
 //======================================================================
-//bool HitEvents::IsCollidingWith(CollisionLayer layer) const
-//{
-//	for (auto col : currentOtherColliders)
-//	{
-//		// Collider 존재 확인 후 Layer 비교
-//		if (col && col->GetCollisionLayer() == layer)
-//		{
-//			return true;
-//		}
-//	}
-//	return false;	// 해당 Layer와 충돌 중인 Collider가 없음
-//}
-
 bool HitEvents::IsColliding(Collider* self, CollisionLayer otherLayer)
 {
 	auto it = collidingMap.find(self);
@@ -155,40 +130,44 @@ bool HitEvents::HasLayer(CollisionLayer a, CollisionLayer b)
 	return (a & b) != 0;
 }
 
-void HitEvents::ApplyWeaponDamage(Collider* weapon, Collider* target)
-{
-	auto attacker = weapon->GetOwner();
-	auto victim = target->GetOwner();
-
-	auto attackAbility = attacker->GetComponent<MonsterAbility>("MonsterAbility");
-}
-
+//=========================================================================
+// self와 현재 충돌 중인 Collider들 중에서 특정 CollisionLayer에 속한 대상 중
+// 가장 가까운 Coillider를 반환하는 함수
+//=========================================================================
 Collider* HitEvents::GetNearestTarget(Collider* self, CollisionLayer targetLayer)
 {
+	// self가 충돌 중인 목록 조회
 	auto it = collidingMap.find(self);
+
+	// 충돌 정보가 없으면 대상 없음
 	if (it == collidingMap.end()) return nullptr;
 
 	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
-
+	// 플레이어의 물리 월드 위치
 	b2Vec2 ownerPos = b2Body_GetPosition(ownerRb->GetBodyId());
 
-	Collider* nearest = nullptr;
-	float minDistSq = FLT_MAX;
+	Collider* nearest = nullptr;	// 가장 가까운 대상
+	float minDistSq = FLT_MAX;		// 최소 거리 제곱값(초기값 매우 크게)
 
+	// 현재 self와 충돌 중인 모든 Collider 검사
 	for (auto col : it->second)
 	{
 		if (col)
 		{
+			// 대상의 원하는 충돌 레이어인지 확인
 			if (HasLayer(col->GetCollisionLayer(), targetLayer))
 			{
 				auto rb = col->GetOwner()->GetComponent<RigidBody>("RigidBody");
 
+				// 대상 위치
 				b2Vec2 pos = b2Body_GetPosition(rb->GetBodyId());
 
+				// 두 객체 간 거리 계산 (제곱 거리 사용 -> sqrt 연산 비용 절약)
 				float dx = pos.x - ownerPos.x;
 				float dy = pos.y - ownerPos.y;
 				float distSq = dx * dx + dy * dy;
 
+				// 현재까지 가장 가까운 대상인지 확인
 				if (distSq < minDistSq)
 				{
 					minDistSq = distSq;
@@ -197,22 +176,26 @@ Collider* HitEvents::GetNearestTarget(Collider* self, CollisionLayer targetLayer
 			}
 		}
 	}
-
-	return nearest;
+	return nearest;	// 가장 가까운 Collider 반환 (없으면 nullptr)
 }
 
+// collidingMap 내부에서 특정 Collider과 관련된 모든 충돌 정보를 제거하는 함수
 void HitEvents::RemoveCollider(Collider* col)
 {
+	// unordered_map 전체 순회
 	for (auto it = collidingMap.begin(); it != collidingMap.end(); )
 	{
+		// key 자체가 제거 대상이면 map에서 삭제
 		if (it->first == col)
 		{
 			it = collidingMap.erase(it);
 			continue;
 		}
 
+		// 내부에서도 해당 collider 제거
 		it->second.erase(col);
 
+		// 충돌 대상이 하나도 남지 않았다면 entery 제거
 		if (it->second.empty())
 			it = collidingMap.erase(it);
 		else

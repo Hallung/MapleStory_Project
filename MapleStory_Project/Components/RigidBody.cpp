@@ -63,6 +63,7 @@ void RigidBody::Update()
 	transform->SetRotationRadian(-angle);
 }
 
+// 컴포넌트가 사라질 때 World에 남아있는 데이터들 초기화
 void RigidBody::OnDestroy()
 {
 	if (b2Body_IsValid(bodyId)) // 또는 유효성 체크 함수
