@@ -4,6 +4,8 @@
 #include "Objects/TileMap.h"
 #include "Objects/DynamicObjects/Player.h"
 #include "Components/Transform.h"
+#include "Components/MeshRenderer.h"
+#include "Resources/Material.h"
 #include "Utilities/ObjectFactory.h"
 
 namespace
@@ -33,18 +35,27 @@ void ForestOfTrialsScene::Init()
 		DirectX::SimpleMath::Vector2(worldMapWidth * 0.5f, worldMapHeight * 0.5f),
 		DirectX::SimpleMath::Vector2(worldMapWidth, worldMapHeight),
 		0.0f,
-		L"_Textures/Map/back.1.png"
+		L"_Textures/Map/back.0.png"
 	);
+	backGroundImage1->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor(DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.8f));
 	
 	backGroundImage2 = ObjectFactory::CreateSprite(
-		DirectX::SimpleMath::Vector2(worldMapWidth * 0.5f, 0.0f),
+		DirectX::SimpleMath::Vector2(worldMapWidth * 0.5f, worldMapHeight * 0.5f),
+		DirectX::SimpleMath::Vector2(worldMapWidth, worldMapHeight),
+		0.0f,
+		L"_Textures/Map/back.1.png"
+	);
+
+	backGroundImage3 = ObjectFactory::CreateSprite(
+		DirectX::SimpleMath::Vector2(worldMapWidth * 0.5f, tileSize * 6.0f),
 		DirectX::SimpleMath::Vector2(worldMapWidth, worldMapHeight * 0.5f),
 		0.0f,
 		L"_Textures/Map/back.4.png"
 	);
-	
+	backGroundImage3->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor(DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.8f));
+
 	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, tileSize, L"_Textures/Map/MapleTile.png", tileCols, tileRows);
-	tileMap->Load(L"_XML/Test.xml", this);
+	tileMap->Load(L"_XML/ForestOfTrials.xml", this);
 
 	auto player = std::make_shared<Player>(
 		DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
@@ -63,14 +74,18 @@ void ForestOfTrialsScene::Destroy()
 	worldPlayer = nullptr;
 	backGroundImage1 = nullptr;
 	backGroundImage2 = nullptr;
+	backGroundImage3 = nullptr;
 }
 
 void ForestOfTrialsScene::Update()
 {
 	backGroundImage1->Update();
 	backGroundImage2->Update();
+	backGroundImage3->Update();
+
 	__super::Update();
 	PhysicsManager::GetInstance().Update();
+
 	Camera::main->SetPositionWithClamp(worldPlayer->GetTransform()->GetPosition(), tileMap.get());
 }
 
@@ -78,6 +93,8 @@ void ForestOfTrialsScene::Render()
 {
 	backGroundImage1->Render();
 	backGroundImage2->Render();
+	backGroundImage3->Render();
+
 	tileMap->Render();
 	__super::Render();
 

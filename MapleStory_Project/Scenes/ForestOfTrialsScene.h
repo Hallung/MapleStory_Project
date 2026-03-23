@@ -13,5 +13,6 @@ private:
 	std::shared_ptr<Object> worldPlayer;
 	std::shared_ptr<Object> backGroundImage1;
 	std::shared_ptr<Object> backGroundImage2;
+	std::shared_ptr<Object> backGroundImage3;
 	std::shared_ptr<class TileMap> tileMap;
 };

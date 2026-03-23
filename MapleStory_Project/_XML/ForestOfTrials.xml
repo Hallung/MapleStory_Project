@@ -1,0 +1,568 @@
+<Map>
+    <Size width="30" height="40" tileSize="64"/>
+    <Tile x="0" y="0" index="1" solid="true"/>
+    <Tile x="1" y="0" index="1" solid="true"/>
+    <Tile x="2" y="0" index="1" solid="true"/>
+    <Tile x="3" y="0" index="1" solid="true"/>
+    <Tile x="4" y="0" index="1" solid="true"/>
+    <Tile x="5" y="0" index="1" solid="true"/>
+    <Tile x="6" y="0" index="1" solid="true"/>
+    <Tile x="7" y="0" index="1" solid="true"/>
+    <Tile x="8" y="0" index="1" solid="true"/>
+    <Tile x="9" y="0" index="1" solid="true"/>
+    <Tile x="10" y="0" index="1" solid="true"/>
+    <Tile x="11" y="0" index="1" solid="true"/>
+    <Tile x="12" y="0" index="1" solid="true"/>
+    <Tile x="13" y="0" index="1" solid="true"/>
+    <Tile x="14" y="0" index="1" solid="true"/>
+    <Tile x="15" y="0" index="1" solid="true"/>
+    <Tile x="16" y="0" index="1" solid="true"/>
+    <Tile x="17" y="0" index="1" solid="true"/>
+    <Tile x="18" y="0" index="1" solid="true"/>
+    <Tile x="19" y="0" index="1" solid="true"/>
+    <Tile x="20" y="0" index="1" solid="true"/>
+    <Tile x="21" y="0" index="1" solid="true"/>
+    <Tile x="22" y="0" index="1" solid="true"/>
+    <Tile x="23" y="0" index="1" solid="true"/>
+    <Tile x="24" y="0" index="1" solid="true"/>
+    <Tile x="25" y="0" index="1" solid="true"/>
+    <Tile x="26" y="0" index="1" solid="true"/>
+    <Tile x="27" y="0" index="1" solid="true"/>
+    <Tile x="28" y="0" index="1" solid="true"/>
+    <Tile x="29" y="0" index="1" solid="true"/>
+    <Tile x="0" y="1" index="0" solid="true"/>
+    <Tile x="1" y="1" index="0" solid="true"/>
+    <Tile x="2" y="1" index="0" solid="true"/>
+    <Tile x="3" y="1" index="0" solid="true"/>
+    <Tile x="4" y="1" index="0" solid="true"/>
+    <Tile x="5" y="1" index="0" solid="true"/>
+    <Tile x="6" y="1" index="0" solid="true"/>
+    <Tile x="7" y="1" index="0" solid="true"/>
+    <Tile x="8" y="1" index="0" solid="true"/>
+    <Tile x="9" y="1" index="0" solid="true"/>
+    <Tile x="10" y="1" index="0" solid="true"/>
+    <Tile x="11" y="1" index="0" solid="true"/>
+    <Tile x="12" y="1" index="0" solid="true"/>
+    <Tile x="13" y="1" index="0" solid="true"/>
+    <Tile x="14" y="1" index="0" solid="true"/>
+    <Tile x="15" y="1" index="0" solid="true"/>
+    <Tile x="16" y="1" index="0" solid="true"/>
+    <Tile x="17" y="1" index="0" solid="true"/>
+    <Tile x="18" y="1" index="0" solid="true"/>
+    <Tile x="19" y="1" index="0" solid="true"/>
+    <Tile x="20" y="1" index="0" solid="true"/>
+    <Tile x="21" y="1" index="0" solid="true"/>
+    <Tile x="22" y="1" index="7" solid="true"/>
+    <Tile x="23" y="1" index="1" solid="true"/>
+    <Tile x="24" y="1" index="1" solid="true"/>
+    <Tile x="25" y="1" index="1" solid="true"/>
+    <Tile x="26" y="1" index="1" solid="true"/>
+    <Tile x="27" y="1" index="1" solid="true"/>
+    <Tile x="28" y="1" index="1" solid="true"/>
+    <Tile x="29" y="1" index="1" solid="true"/>
+    <Tile x="22" y="2" index="8" solid="true"/>
+    <Tile x="23" y="2" index="9" solid="true"/>
+    <Tile x="24" y="2" index="7" solid="true"/>
+    <Tile x="25" y="2" index="1" solid="true"/>
+    <Tile x="26" y="2" index="1" solid="true"/>
+    <Tile x="27" y="2" index="1" solid="true"/>
+    <Tile x="28" y="2" index="1" solid="true"/>
+    <Tile x="29" y="2" index="1" solid="true"/>
+    <Tile x="24" y="3" index="8" solid="true"/>
+    <Tile x="25" y="3" index="9" solid="true"/>
+    <Tile x="26" y="3" index="0" solid="true"/>
+    <Tile x="27" y="3" index="0" solid="true"/>
+    <Tile x="28" y="3" index="0" solid="true"/>
+    <Tile x="29" y="3" index="0" solid="true"/>
+    <Tile x="22" y="5" index="12" solid="true"/>
+    <Tile x="28" y="5" index="12" solid="true"/>
+    <Tile x="20" y="6" index="12" solid="true"/>
+    <Tile x="24" y="6" index="12" solid="true"/>
+    <Tile x="26" y="6" index="12" solid="true"/>
+    <Tile x="13" y="7" index="14" solid="true"/>
+    <Tile x="14" y="7" index="13" solid="true"/>
+    <Tile x="15" y="7" index="13" solid="true"/>
+    <Tile x="16" y="7" index="13" solid="true"/>
+    <Tile x="17" y="7" index="13" solid="true"/>
+    <Tile x="18" y="7" index="15" solid="true"/>
+    <Tile x="7" y="8" index="12" solid="true"/>
+    <Tile x="11" y="8" index="12" solid="true"/>
+    <Tile x="5" y="9" index="12" solid="true"/>
+    <Tile x="9" y="9" index="12" solid="true"/>
+    <Tile x="0" y="10" index="13" solid="true"/>
+    <Tile x="1" y="10" index="13" solid="true"/>
+    <Tile x="2" y="10" index="13" solid="true"/>
+    <Tile x="3" y="10" index="15" solid="true"/>
+    <Tile x="0" y="12" index="13" solid="true"/>
+    <Tile x="1" y="12" index="13" solid="true"/>
+    <Tile x="2" y="12" index="13" solid="true"/>
+    <Tile x="3" y="12" index="13" solid="true"/>
+    <Tile x="4" y="12" index="13" solid="true"/>
+    <Tile x="5" y="12" index="13" solid="true"/>
+    <Tile x="6" y="12" index="13" solid="true"/>
+    <Tile x="7" y="12" index="15" solid="true"/>
+    <Tile x="9" y="13" index="12" solid="true"/>
+    <Tile x="11" y="14" index="12" solid="true"/>
+    <Tile x="13" y="15" index="12" solid="true"/>
+    <Tile x="15" y="16" index="12" solid="true"/>
+    <Tile x="18" y="16" index="12" solid="true"/>
+    <Tile x="16" y="17" index="12" solid="true"/>
+    <Tile x="19" y="17" index="12" solid="true"/>
+    <Tile x="20" y="18" index="12" solid="true"/>
+    <Tile x="22" y="19" index="14" solid="true"/>
+    <Tile x="23" y="19" index="13" solid="true"/>
+    <Tile x="24" y="19" index="13" solid="true"/>
+    <Tile x="25" y="19" index="15" solid="true"/>
+    <Tile x="0" y="21" index="3" solid="true"/>
+    <Tile x="1" y="21" index="3" solid="true"/>
+    <Tile x="2" y="21" index="3" solid="true"/>
+    <Tile x="3" y="21" index="3" solid="true"/>
+    <Tile x="4" y="21" index="3" solid="true"/>
+    <Tile x="5" y="21" index="3" solid="true"/>
+    <Tile x="6" y="21" index="3" solid="true"/>
+    <Tile x="7" y="21" index="3" solid="true"/>
+    <Tile x="8" y="21" index="3" solid="true"/>
+    <Tile x="18" y="21" index="12" solid="true"/>
+    <Tile x="26" y="21" index="14" solid="true"/>
+    <Tile x="27" y="21" index="15" solid="true"/>
+    <Tile x="0" y="22" index="1" solid="true"/>
+    <Tile x="1" y="22" index="1" solid="true"/>
+    <Tile x="2" y="22" index="1" solid="true"/>
+    <Tile x="3" y="22" index="1" solid="true"/>
+    <Tile x="4" y="22" index="1" solid="true"/>
+    <Tile x="5" y="22" index="1" solid="true"/>
+    <Tile x="6" y="22" index="1" solid="true"/>
+    <Tile x="7" y="22" index="1" solid="true"/>
+    <Tile x="8" y="22" index="6" solid="true"/>
+    <Tile x="10" y="22" index="12" solid="true"/>
+    <Tile x="12" y="22" index="14" solid="true"/>
+    <Tile x="13" y="22" index="15" solid="true"/>
+    <Tile x="17" y="22" index="12" solid="true"/>
+    <Tile x="22" y="22" index="12" solid="true"/>
+    <Tile x="24" y="22" index="12" solid="true"/>
+    <Tile x="0" y="23" index="1" solid="true"/>
+    <Tile x="1" y="23" index="1" solid="true"/>
+    <Tile x="2" y="23" index="1" solid="true"/>
+    <Tile x="3" y="23" index="1" solid="true"/>
+    <Tile x="4" y="23" index="1" solid="true"/>
+    <Tile x="5" y="23" index="1" solid="true"/>
+    <Tile x="6" y="23" index="6" solid="true"/>
+    <Tile x="7" y="23" index="10" solid="true"/>
+    <Tile x="8" y="23" index="11" solid="true"/>
+    <Tile x="15" y="23" index="12" solid="true"/>
+    <Tile x="20" y="23" index="12" solid="true"/>
+    <Tile x="0" y="24" index="1" solid="true"/>
+    <Tile x="1" y="24" index="1" solid="true"/>
+    <Tile x="2" y="24" index="1" solid="true"/>
+    <Tile x="3" y="24" index="1" solid="true"/>
+    <Tile x="4" y="24" index="6" solid="true"/>
+    <Tile x="5" y="24" index="10" solid="true"/>
+    <Tile x="6" y="24" index="11" solid="true"/>
+    <Tile x="0" y="25" index="0" solid="true"/>
+    <Tile x="1" y="25" index="0" solid="true"/>
+    <Tile x="2" y="25" index="0" solid="true"/>
+    <Tile x="3" y="25" index="10" solid="true"/>
+    <Tile x="4" y="25" index="11" solid="true"/>
+    <Tile x="0" y="27" index="13" solid="true"/>
+    <Tile x="1" y="27" index="15" solid="true"/>
+    <Tile x="12" y="27" index="12" solid="true"/>
+    <Tile x="3" y="28" index="12" solid="true"/>
+    <Tile x="14" y="28" index="12" solid="true"/>
+    <Tile x="16" y="28" index="12" solid="true"/>
+    <Tile x="10" y="29" index="12" solid="true"/>
+    <Tile x="18" y="29" index="14" solid="true"/>
+    <Tile x="19" y="29" index="13" solid="true"/>
+    <Tile x="20" y="29" index="15" solid="true"/>
+    <Tile x="4" y="30" index="12" solid="true"/>
+    <Tile x="22" y="30" index="12" solid="true"/>
+    <Tile x="24" y="30" index="12" solid="true"/>
+    <Tile x="8" y="31" index="12" solid="true"/>
+    <Tile x="26" y="31" index="12" solid="true"/>
+    <Tile x="3" y="32" index="12" solid="true"/>
+    <Tile x="28" y="32" index="12" solid="true"/>
+    <Tile x="6" y="33" index="12" solid="true"/>
+    <Tile x="27" y="33" index="12" solid="true"/>
+    <Tile x="4" y="34" index="12" solid="true"/>
+    <Tile x="28" y="35" index="12" solid="true"/>
+    <Tile x="0" y="36" index="2" solid="true"/>
+    <Tile x="1" y="36" index="2" solid="true"/>
+    <Tile x="2" y="36" index="2" solid="true"/>
+    <Tile x="3" y="36" index="2" solid="true"/>
+    <Tile x="4" y="36" index="2" solid="true"/>
+    <Tile x="5" y="36" index="2" solid="true"/>
+    <Tile x="6" y="36" index="2" solid="true"/>
+    <Tile x="7" y="36" index="2" solid="true"/>
+    <Tile x="8" y="36" index="2" solid="true"/>
+    <Tile x="9" y="36" index="2" solid="true"/>
+    <Tile x="10" y="36" index="2" solid="true"/>
+    <Tile x="11" y="36" index="2" solid="true"/>
+    <Tile x="12" y="36" index="2" solid="true"/>
+    <Tile x="13" y="36" index="2" solid="true"/>
+    <Tile x="14" y="36" index="2" solid="true"/>
+    <Tile x="15" y="36" index="2" solid="true"/>
+    <Tile x="16" y="36" index="2" solid="true"/>
+    <Tile x="17" y="36" index="2" solid="true"/>
+    <Tile x="18" y="36" index="2" solid="true"/>
+    <Tile x="19" y="36" index="2" solid="true"/>
+    <Tile x="20" y="36" index="2" solid="true"/>
+    <Tile x="21" y="36" index="2" solid="true"/>
+    <Tile x="22" y="36" index="2" solid="true"/>
+    <Tile x="23" y="36" index="2" solid="true"/>
+    <Tile x="24" y="36" index="2" solid="true"/>
+    <Tile x="25" y="36" index="2" solid="true"/>
+    <Tile x="26" y="36" index="2" solid="true"/>
+    <Tile x="27" y="36" index="2" solid="true"/>
+    <Tile x="28" y="36" index="2" solid="true"/>
+    <Tile x="29" y="36" index="2" solid="true"/>
+    <Tile x="0" y="37" index="0" solid="true"/>
+    <Tile x="1" y="37" index="0" solid="true"/>
+    <Tile x="2" y="37" index="0" solid="true"/>
+    <Tile x="3" y="37" index="0" solid="true"/>
+    <Tile x="4" y="37" index="0" solid="true"/>
+    <Tile x="5" y="37" index="0" solid="true"/>
+    <Tile x="6" y="37" index="0" solid="true"/>
+    <Tile x="7" y="37" index="0" solid="true"/>
+    <Tile x="8" y="37" index="0" solid="true"/>
+    <Tile x="9" y="37" index="0" solid="true"/>
+    <Tile x="10" y="37" index="0" solid="true"/>
+    <Tile x="11" y="37" index="0" solid="true"/>
+    <Tile x="12" y="37" index="0" solid="true"/>
+    <Tile x="13" y="37" index="0" solid="true"/>
+    <Tile x="14" y="37" index="0" solid="true"/>
+    <Tile x="15" y="37" index="0" solid="true"/>
+    <Tile x="16" y="37" index="0" solid="true"/>
+    <Tile x="17" y="37" index="0" solid="true"/>
+    <Tile x="18" y="37" index="0" solid="true"/>
+    <Tile x="19" y="37" index="0" solid="true"/>
+    <Tile x="20" y="37" index="0" solid="true"/>
+    <Tile x="21" y="37" index="0" solid="true"/>
+    <Tile x="22" y="37" index="0" solid="true"/>
+    <Tile x="23" y="37" index="0" solid="true"/>
+    <Tile x="24" y="37" index="0" solid="true"/>
+    <Tile x="25" y="37" index="0" solid="true"/>
+    <Tile x="26" y="37" index="0" solid="true"/>
+    <Tile x="27" y="37" index="0" solid="true"/>
+    <Tile x="28" y="37" index="0" solid="true"/>
+    <Tile x="29" y="37" index="0" solid="true"/>
+    <Chains>
+        <Chain>
+            <Point x="-0.4584361" y="2730.1641"/>
+            <Point x="-0.45587158" y="2720.1641"/>
+            <Point x="0.20959473" y="125.28113"/>
+            <Point x="1410.2097" y="126.15614"/>
+            <Point x="1471.4597" y="150.53113"/>
+            <Point x="1531.4596" y="189.28113"/>
+            <Point x="1599.5846" y="213.03113"/>
+            <Point x="1659.5846" y="253.03113"/>
+            <Point x="1919.8346" y="254.53113"/>
+            <Point x="1919.7096" y="2719.0312"/>
+            <Point x="1919.7091" y="2729.0312"/>
+        </Chain>
+        <Chain>
+            <Point x="1802.6984" y="370.60742"/>
+            <Point x="1812.6984" y="370.60742"/>
+            <Point x="1835.365" y="370.60742"/>
+            <Point x="1845.365" y="370.60742"/>
+        </Chain>
+        <Chain>
+            <Point x="1674.0317" y="434.60739"/>
+            <Point x="1684.0317" y="434.60739"/>
+            <Point x="1707.365" y="434.60739"/>
+            <Point x="1717.365" y="434.60739"/>
+        </Chain>
+        <Chain>
+            <Point x="1544.5347" y="435.35123"/>
+            <Point x="1554.5317" y="435.10739"/>
+            <Point x="1580.1567" y="434.48239"/>
+            <Point x="1590.1538" y="434.23856"/>
+        </Chain>
+        <Chain>
+            <Point x="1417.0317" y="370.73239"/>
+            <Point x="1427.0317" y="370.73239"/>
+            <Point x="1450.1567" y="370.73239"/>
+            <Point x="1460.1567" y="370.73239"/>
+        </Chain>
+        <Chain>
+            <Point x="1289.2847" y="434.36356"/>
+            <Point x="1299.2817" y="434.60739"/>
+            <Point x="1324.9067" y="435.23239"/>
+            <Point x="1334.9038" y="435.47623"/>
+        </Chain>
+        <Chain>
+            <Point x="839.6568" y="502.50049"/>
+            <Point x="849.6568" y="502.48236"/>
+            <Point x="1194.6567" y="501.85736"/>
+            <Point x="1204.6567" y="501.83923"/>
+        </Chain>
+        <Chain>
+            <Point x="713.1604" y="563.2525"/>
+            <Point x="723.15674" y="562.98236"/>
+            <Point x="746.28174" y="562.35736"/>
+            <Point x="756.27808" y="562.08722"/>
+        </Chain>
+        <Chain>
+            <Point x="584.40674" y="626.73236"/>
+            <Point x="594.40674" y="626.73236"/>
+            <Point x="618.1568" y="626.73236"/>
+            <Point x="628.1568" y="626.73236"/>
+        </Chain>
+        <Chain>
+            <Point x="457.16089" y="562.07184"/>
+            <Point x="467.1568" y="562.35742"/>
+            <Point x="489.0318" y="562.98242"/>
+            <Point x="499.02771" y="563.26801"/>
+        </Chain>
+        <Chain>
+            <Point x="329.03525" y="625.5943"/>
+            <Point x="339.0318" y="625.85736"/>
+            <Point x="362.7818" y="626.48236"/>
+            <Point x="372.77835" y="626.74542"/>
+        </Chain>
+        <Chain>
+            <Point x="-10.093166" y="693.70605"/>
+            <Point x="-0.093200684" y="693.73236"/>
+            <Point x="237.40674" y="694.35736"/>
+            <Point x="247.40671" y="694.38367"/>
+        </Chain>
+        <Chain>
+            <Point x="-10.218189" y="822.9975"/>
+            <Point x="-0.21820068" y="822.98236"/>
+            <Point x="494.6568" y="822.23236"/>
+            <Point x="504.6568" y="822.21722"/>
+        </Chain>
+        <Chain>
+            <Point x="581.81635" y="882.67035"/>
+            <Point x="591.81396" y="882.8877"/>
+            <Point x="620.56396" y="883.5127"/>
+            <Point x="630.56158" y="883.73004"/>
+        </Chain>
+        <Chain>
+            <Point x="711.1889" y="946.6377"/>
+            <Point x="721.1889" y="946.6377"/>
+            <Point x="749.3139" y="946.6377"/>
+            <Point x="759.3139" y="946.6377"/>
+        </Chain>
+        <Chain>
+            <Point x="841.31396" y="1010.7627"/>
+            <Point x="851.31396" y="1010.7627"/>
+            <Point x="875.06396" y="1010.7627"/>
+            <Point x="885.06396" y="1010.7627"/>
+        </Chain>
+        <Chain>
+            <Point x="968.61847" y="1074.0409"/>
+            <Point x="978.61548" y="1074.2848"/>
+            <Point x="1002.7332" y="1074.873"/>
+            <Point x="1012.7302" y="1075.1169"/>
+        </Chain>
+        <Chain>
+            <Point x="1032.1449" y="1138.6377"/>
+            <Point x="1042.1449" y="1138.6377"/>
+            <Point x="1066.8508" y="1138.6377"/>
+            <Point x="1076.8508" y="1138.6377"/>
+        </Chain>
+        <Chain>
+            <Point x="1162.1488" y="1075.386"/>
+            <Point x="1172.1449" y="1075.1083"/>
+            <Point x="1193.3213" y="1074.52"/>
+            <Point x="1203.3174" y="1074.2423"/>
+        </Chain>
+        <Chain>
+            <Point x="1224.7332" y="1138.7554"/>
+            <Point x="1234.7332" y="1138.7554"/>
+            <Point x="1257.0861" y="1138.7554"/>
+            <Point x="1267.0861" y="1138.7554"/>
+        </Chain>
+        <Chain>
+            <Point x="1289.1449" y="1203.2848"/>
+            <Point x="1299.1449" y="1203.2848"/>
+            <Point x="1322.6743" y="1203.2848"/>
+            <Point x="1332.6743" y="1203.2848"/>
+        </Chain>
+        <Chain>
+            <Point x="1415.0862" y="1270.9264"/>
+            <Point x="1425.0861" y="1270.873"/>
+            <Point x="1645.6743" y="1269.6965"/>
+            <Point x="1655.6742" y="1269.6432"/>
+        </Chain>
+        <Chain>
+            <Point x="1672.3215" y="1397.2795"/>
+            <Point x="1682.3213" y="1397.3436"/>
+            <Point x="1774.0861" y="1397.9318"/>
+            <Point x="1784.0858" y="1397.9958"/>
+        </Chain>
+        <Chain>
+            <Point x="1542.9097" y="1457.9318"/>
+            <Point x="1552.9097" y="1457.9318"/>
+            <Point x="1580.5566" y="1457.9318"/>
+            <Point x="1590.5566" y="1457.9318"/>
+        </Chain>
+        <Chain>
+            <Point x="1416.5004" y="1458.1752"/>
+            <Point x="1426.4978" y="1458.4023"/>
+            <Point x="1452.3801" y="1458.9906"/>
+            <Point x="1462.3776" y="1459.2178"/>
+        </Chain>
+        <Chain>
+            <Point x="1288.439" y="1522.5789"/>
+            <Point x="1298.439" y="1522.5789"/>
+            <Point x="1323.1449" y="1522.5789"/>
+            <Point x="1333.1449" y="1522.5789"/>
+        </Chain>
+        <Chain>
+            <Point x="1160.2037" y="1395.0494"/>
+            <Point x="1170.2037" y="1395.0494"/>
+            <Point x="1196.0861" y="1395.0494"/>
+            <Point x="1206.0861" y="1395.0494"/>
+        </Chain>
+        <Chain>
+            <Point x="1095.4978" y="1457.9906"/>
+            <Point x="1105.4978" y="1457.9906"/>
+            <Point x="1132.5566" y="1457.9906"/>
+            <Point x="1142.5566" y="1457.9906"/>
+        </Chain>
+        <Chain>
+            <Point x="968.96838" y="1521.9318"/>
+            <Point x="978.96838" y="1521.9318"/>
+            <Point x="1003.6743" y="1521.9318"/>
+            <Point x="1013.6743" y="1521.9318"/>
+        </Chain>
+        <Chain>
+            <Point x="775.32159" y="1461.9857"/>
+            <Point x="785.32141" y="1462.0494"/>
+            <Point x="877.67432" y="1462.6377"/>
+            <Point x="887.67413" y="1462.7014"/>
+        </Chain>
+        <Chain>
+            <Point x="648.26483" y="1458.6738"/>
+            <Point x="658.26257" y="1458.4612"/>
+            <Point x="685.90961" y="1457.873"/>
+            <Point x="695.90735" y="1457.6604"/>
+        </Chain>
+        <Chain>
+            <Point x="-11.031375" y="1660.9894"/>
+            <Point x="-1.0315552" y="1661.0494"/>
+            <Point x="194.85077" y="1662.226"/>
+            <Point x="253.67432" y="1622.226"/>
+            <Point x="340.2037" y="1588.1671"/>
+            <Point x="379.61548" y="1558.1671"/>
+            <Point x="465.49783" y="1525.226"/>
+            <Point x="510.79193" y="1493.4612"/>
+            <Point x="574.90961" y="1469.9318"/>
+            <Point x="584.29742" y="1466.4867"/>
+        </Chain>
+        <Chain>
+            <Point x="-11.243467" y="1782.7351"/>
+            <Point x="-1.2439575" y="1782.6361"/>
+            <Point x="110.97824" y="1781.525"/>
+            <Point x="120.97775" y="1781.426"/>
+        </Chain>
+        <Chain>
+            <Point x="198.42462" y="1842.3877"/>
+            <Point x="208.4227" y="1842.1917"/>
+            <Point x="236.75604" y="1841.6361"/>
+            <Point x="246.75412" y="1841.4401"/>
+        </Chain>
+        <Chain>
+            <Point x="263.86908" y="1970.7211"/>
+            <Point x="273.86716" y="1970.525"/>
+            <Point x="302.20047" y="1969.9695"/>
+            <Point x="312.19855" y="1969.7734"/>
+        </Chain>
+        <Chain>
+            <Point x="199.75604" y="2098.1917"/>
+            <Point x="209.75604" y="2098.1917"/>
+            <Point x="238.08936" y="2098.1917"/>
+            <Point x="248.08936" y="2098.1917"/>
+        </Chain>
+        <Chain>
+            <Point x="263.42462" y="2226.3877"/>
+            <Point x="273.4227" y="2226.1917"/>
+            <Point x="301.75604" y="2225.6362"/>
+            <Point x="311.75412" y="2225.4402"/>
+        </Chain>
+        <Chain>
+            <Point x="391.43137" y="2163.3857"/>
+            <Point x="401.4227" y="2162.9695"/>
+            <Point x="428.08936" y="2161.8584"/>
+            <Point x="438.08069" y="2161.4421"/>
+        </Chain>
+        <Chain>
+            <Point x="519.3136" y="2033.9917"/>
+            <Point x="529.31158" y="2034.1917"/>
+            <Point x="557.08936" y="2034.7472"/>
+            <Point x="567.08734" y="2034.9471"/>
+        </Chain>
+        <Chain>
+            <Point x="647.2005" y="1906.9695"/>
+            <Point x="657.2005" y="1906.9695"/>
+            <Point x="684.42273" y="1906.9695"/>
+            <Point x="694.42273" y="1906.9695"/>
+        </Chain>
+        <Chain>
+            <Point x="777.20044" y="1778.6361"/>
+            <Point x="787.20044" y="1778.6361"/>
+            <Point x="810.53381" y="1778.6361"/>
+            <Point x="820.53381" y="1778.6361"/>
+        </Chain>
+        <Chain>
+            <Point x="903.31158" y="1841.9695"/>
+            <Point x="913.31158" y="1841.9695"/>
+            <Point x="938.86713" y="1841.9695"/>
+            <Point x="948.86713" y="1841.9695"/>
+        </Chain>
+        <Chain>
+            <Point x="1033.3142" y="1843.3131"/>
+            <Point x="1043.3115" y="1843.0806"/>
+            <Point x="1067.2004" y="1842.525"/>
+            <Point x="1077.1978" y="1842.2925"/>
+        </Chain>
+        <Chain>
+            <Point x="1160.7562" y="1909.8943"/>
+            <Point x="1170.7561" y="1909.8584"/>
+            <Point x="1325.7561" y="1909.3027"/>
+            <Point x="1335.756" y="1909.2668"/>
+        </Chain>
+        <Chain>
+            <Point x="1415.0894" y="1970.0806"/>
+            <Point x="1425.0894" y="1970.0806"/>
+            <Point x="1453.9783" y="1970.0806"/>
+            <Point x="1463.9783" y="1970.0806"/>
+        </Chain>
+        <Chain>
+            <Point x="1542.8749" y="1971.028"/>
+            <Point x="1552.8672" y="1970.6361"/>
+            <Point x="1581.2004" y="1969.525"/>
+            <Point x="1591.1927" y="1969.1332"/>
+        </Chain>
+        <Chain>
+            <Point x="1672.2025" y="2034.9432"/>
+            <Point x="1682.2006" y="2034.7472"/>
+            <Point x="1710.5339" y="2034.1917"/>
+            <Point x="1720.532" y="2033.9956"/>
+        </Chain>
+        <Chain>
+            <Point x="1798.4227" y="2097.4138"/>
+            <Point x="1808.4227" y="2097.4138"/>
+            <Point x="1838.4227" y="2097.4138"/>
+            <Point x="1848.4227" y="2097.4138"/>
+        </Chain>
+        <Chain>
+            <Point x="1735.645" y="2161.8584"/>
+            <Point x="1745.645" y="2161.8584"/>
+            <Point x="1772.3116" y="2161.8584"/>
+            <Point x="1782.3116" y="2161.8584"/>
+        </Chain>
+        <Chain>
+            <Point x="1798.7632" y="2291.2356"/>
+            <Point x="1808.7561" y="2290.8584"/>
+            <Point x="1838.2006" y="2289.7473"/>
+            <Point x="1848.1935" y="2289.3701"/>
+        </Chain>
+        <Chain>
+            <Point x="-10.477142" y="2431.0608"/>
+            <Point x="-0.47714233" y="2431.061"/>
+            <Point x="1920.1018" y="2431.1138"/>
+            <Point x="1930.1018" y="2431.114"/>
+        </Chain>
+    </Chains>
+</Map>

@@ -23,8 +23,8 @@ constexpr UINT tileRows = 4;
 constexpr UINT maxTilesInTileset = tileCols * tileRows;
 
 // 테스트용 맵 크기
-constexpr UINT mapWidth = 20;
-constexpr UINT mapHeight = 20;
+constexpr UINT mapWidth = 30;
+constexpr UINT mapHeight = 40;
 }
 
 // 테스트용 플레이어 정보 (삭제 예정)
