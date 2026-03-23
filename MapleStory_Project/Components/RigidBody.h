@@ -21,25 +21,17 @@ class RigidBody : public Component
 public:
 	// BodyType에 따라 Box2D 바디 종류를 설정
 	RigidBody(BodyType type = BodyType::Dynamic, const std::string& name = "RigidBody");
-	// 소멸 시 Box2D 월드에서 바디를 제거
-	~RigidBody() override;
+	~RigidBody() override;	// 소멸 시 Box2D 월드에서 바디를 제거
 
-	// 컴포넌트 초기화 단계, Box2D 바디를 생성/물리 월드에 등록
-	void Awake() override;
-	// 매 프레임 Box2D 바디 상태를 Transform에 반영
-	void Update() override;
+	void Awake() override;	// 컴포넌트 초기화 단계, Box2D 바디를 생성/물리 월드에 등록
+	void Update() override;	// 매 프레임 Box2D 바디 상태를 Transform에 반영
+	void OnDestroy() override;	// 컴포넌트가 사라질 때 내부 데이터 제거
 
-	void OnDestroy() override;
+	void SetVelocity(DirectX::SimpleMath::Vector2 velocity);	// 속도 설정, 물리 기반 이동
+	void SetDamping(float linear, float angular);	// 감쇠 설정, linear: 이동 감쇠, angular: 회전 감쇠
+	void SetFixedRotation(bool fixed);	// 회전 고정 여부 설정
 
-	// 속도 설정, 물리 기반 이동
-	void SetVelocity(DirectX::SimpleMath::Vector2 velocity);
-	// 감쇠 설정, linear: 이동 감쇠, angular: 회전 감쇠
-	void SetDamping(float linear, float angular);
-	// 회전 고정 여부 설정
-	void SetFixedRotation(bool fixed);
-
-	// BodyId 반환
-	b2BodyId GetBodyId() const { return bodyId; }
+	b2BodyId GetBodyId() const { return bodyId; }	// BodyId 반환
 
 private:
 	b2BodyId bodyId = b2_nullBodyId;	// Box2D 바디 식별자

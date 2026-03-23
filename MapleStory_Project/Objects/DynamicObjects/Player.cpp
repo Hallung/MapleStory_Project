@@ -58,22 +58,30 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
 
+	// 공격 가능 범위 지정
 	auto playerAttackCol = std::make_shared <BoxCollider>("AttackCollider");
-
 	playerAttackCol->SetColliderScale(DirectX::SimpleMath::Vector2(scaleX * 0.5f, scaleY));
+	// Sensor로 만들어서 물리적 연산x, 신호만 보내도록 설정
 	playerAttackCol->SetIsSensor(true);
+	//=========================================
+	// Collision Layer를 Weapon으로 설정
+	// Monster 레이어와만 충돌하도록 마스크 지정
+	//=========================================
 	playerAttackCol->SetCollisionLayer(CollisionLayer::Weapon);
 	playerAttackCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Monster));
-	playerAttackCol->SetOffset(offset);
-
+	// Body에서 일정범위 떨어진 위치에 Shape 생성을 위해 offset 설정
+	playerAttackCol->SetOffsetData(offset);
+	// Player Object에 AttackCollider 컴포넌트 추가
 	player->AddComponent(playerAttackCol);
 
 	// 충돌 이벤트를 확인하는 HitEvents 추가
 	auto playerHitEvents = std::make_shared<HitEvents>();
 	player->AddComponent(playerHitEvents);
 
+	// State를 관리하는 컴포넌트 추가
 	player->AddComponent(std::make_shared<PlayerState>());
 
+	// Ability를 관리하는 컴포넌트 추가
 	player->AddComponent(std::make_shared<PlayerAbility>());
 
 	// 플랫폼 이동 컨트롤러 추가
@@ -91,13 +99,4 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	player->AddComponent(std::make_shared<HitEvents>());
 
 
-}
-
-Player::~Player()
-{
-
-}
-
-void Player::Update()
-{
 }

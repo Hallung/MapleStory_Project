@@ -12,4 +12,5 @@ public:
 		const std::wstring& texturePath = L"_Textures/Scarecrow.png", 
 		BodyType bodyType = BodyType::Dynamic, 
 		const std::string& name = "Scarecrow");
+	~Scarecrow() = default;
 };

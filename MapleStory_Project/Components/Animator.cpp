@@ -263,6 +263,8 @@ void Animator::Play(const std::wstring& clipName)
 	bPlaying = true;
 }
 
+// currentClip이 없거나 bPlaying이 false일 경우 ture
+// 만약 bLoop가 true면 false 반환
 bool Animator::IsFinished() const
 {
 	if (!currentClip) return true;
