@@ -142,6 +142,9 @@
     <ClCompile Include="Components\PlayerState.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\SoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="Components\PlayerState.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\SoundManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
