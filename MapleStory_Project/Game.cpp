@@ -36,6 +36,9 @@ void Game::Init()
 	// TileMapEditorScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<TileMapEditorScene>());
 
+	// ForestOfTrialsScene 생성 및 Scene 목록에 추가
+	sceneList.push_back(std::make_shared<ForestOfTrialsScene>());
+
 	currentScene = sceneList[0]; // 첫 번째 Scene을 현재 Scene으로 설정
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
 	currentScene->Init(); // 현재 Scene 초기화
@@ -50,11 +53,15 @@ void Game::Update()
 	// Scene 전환
 	if (InputManager::GetInstance().GetKeyDown(VK_F1))
 	{
-		SwitchScene(0);
+		SwitchScene(0); // SandboxScene
 	}
 	else if (InputManager::GetInstance().GetKeyDown(VK_F2))
 	{
-		SwitchScene(1);
+		SwitchScene(1); // TileMapEditorScene
+	}
+	else if (InputManager::GetInstance().GetKeyDown(VK_F3))
+	{
+		SwitchScene(2); // ForestOfTrialsScene
 	}
 
 	currentScene->Update();

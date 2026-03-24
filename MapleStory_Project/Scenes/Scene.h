@@ -13,6 +13,14 @@
 class Scene
 {
 public:
+	// 현재 Scene의 동작 타입 구분
+	enum class SceneType
+	{
+		Standard, // 실제 게임 플레이용 Scene
+		Editor	  // 타일/체인 등을 편집하기 위한 에디터 Scene
+	};
+
+public:
 	virtual ~Scene() = default;
 
 	virtual void Init() = 0; // Scene 초기화, Object 생성 및 초기 상태 설정
@@ -75,6 +83,8 @@ public:
 		}
 	}
 
+	SceneType GetSceneType() const { return currentSceneType; }
+
 protected:
 	//==========================
 	// Scene이 소유한 Object 목록
@@ -84,4 +94,7 @@ protected:
 
 	// TODO: 여러 Object가 사망 시 애니메이션 처리 함수 추후 구현 필요
 	std::shared_ptr<Object> deleteObject;
+
+	// 현재 Scene의 타입 (기본값은 Standard)
+	SceneType currentSceneType = SceneType::Standard;
 };

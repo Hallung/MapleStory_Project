@@ -342,28 +342,61 @@ void TileMap::Load(const std::wstring& path, Scene* scene)
 		}
 	}
 
-	// 로드된 Chain 데이터를 기반으로 Scene에 실제 오브젝트 생성
-	for (auto& points : chainDatas)
+	// Scene 타입에 따라 Chain 생성 방식 분기
+	// Standard : 게임 플레이용 -> 보이지 않는 물리용 Chain만 생성
+	if (scene->GetSceneType() == Scene::SceneType::Standard)
 	{
-		// Chain 라인 렌더링용 오브젝트 생성
-		auto obj = ObjectFactory::CreateChainLine(points);
-		// 정적인 물리 바디 추가
-		obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
+		// 로드된 Chain 데이터를 기반으로 Scene에 실제 오브젝트 생성
+		for (auto& points : chainDatas)
+		{
+			// Chain을 소유할 기본 오브젝트 생성
+			auto obj = std::make_shared<Object>("Chain");
+			// 정적인 물리 바디 추가
+			obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
 
-		// ChainCollider 레이어 설정
-		auto chain = std::make_shared<ChainCollider>(points);
-		chain->SetCollisionLayer(CollisionLayer::Ground);
-		chain->SetCollisionMask(
-			CollisionLayer::Player |
-			CollisionLayer::Bullet |
-			CollisionLayer::Monster |
-			0xFFFFFFFF		// 임시 RayCast Mask (추후 분리 예정)
-		);
+			// ChainCollider 레이어 설정
+			auto chain = std::make_shared<ChainCollider>(points);
+			chain->SetCollisionLayer(CollisionLayer::Ground);
+			chain->SetCollisionMask(
+				CollisionLayer::Player |
+				CollisionLayer::Bullet |
+				CollisionLayer::Monster |
+				CollisionLayer::Raycast
+			);
 
-		obj->AddComponent(chain);
+			obj->AddComponent(chain);
 
-		// Scene에 추가
-		scene->AddObject(obj);
+			// Scene에 추가
+			scene->AddObject(obj);
+		}
+	}
+
+	// Editor : 편집용 -> 시각화된 Chain 라인 + 물리 처리
+	else if (scene->GetSceneType() == Scene::SceneType::Editor)
+	{
+		// 로드된 Chain 데이터를 기반으로 Scene에 실제 오브젝트 생성
+		for (auto& points : chainDatas)
+		{
+			// Chain 라인 렌더링용 오브젝트 생성
+			auto obj = ObjectFactory::CreateChainLine(points);
+			// 정적인 물리 바디 추가
+			obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
+
+			// ChainCollider 레이어 설정
+			auto chain = std::make_shared<ChainCollider>(points);
+			chain->SetCollisionLayer(CollisionLayer::Ground);
+			chain->SetCollisionMask(
+				CollisionLayer::Player |
+				CollisionLayer::Bullet |
+				CollisionLayer::Monster |
+				CollisionLayer::Raycast
+			);
+
+			obj->AddComponent(chain);
+
+			// Scene에 추가
+			scene->AddObject(obj);
+		}
 	}
 
 	bDirty = true;

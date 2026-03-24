@@ -109,10 +109,6 @@
     <ClCompile Include="Components\ChainCollider.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Components\HitEvents.cpp" />
-    <ClCompile Include="Components\MonsterState.cpp" />
-    <ClCompile Include="Components\MonsterAbility.cpp" />
-    <ClCompile Include="Components\PlayerState.cpp" />
-    <ClCompile Include="Components\PlayerAbility.cpp" />
     <ClCompile Include="Components\CameraController.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -130,6 +126,21 @@
     </ClCompile>
     <ClCompile Include="Renders\IA\InstanceBuffer.cpp">
       <Filter>Renders\IA</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\ForestOfTrialsScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MonsterAbility.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MonsterState.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayerAbility.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayerState.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,10 +280,6 @@
     <ClInclude Include="Components\ChainCollider.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Components\HitEvents.h" />
-    <ClInclude Include="Components\MonsterState.h" />
-    <ClInclude Include="Components\MonsterAbility.h" />
-    <ClInclude Include="Components\PlayerState.h" />
-    <ClInclude Include="Components\PlayerAbility.h" />
     <ClInclude Include="Components\CameraController.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -290,6 +297,21 @@
     </ClInclude>
     <ClInclude Include="Renders\IA\InstanceBuffer.h">
       <Filter>Renders\IA</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\ForestOfTrialsScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MonsterAbility.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MonsterState.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayerAbility.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayerState.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
