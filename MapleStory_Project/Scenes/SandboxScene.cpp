@@ -6,6 +6,7 @@
 #include "Objects/DynamicObjects/OrangeMushroom.h"
 #include "Objects/StaticObjects/Ground.h"
 #include "Objects/StaticObjects/Portal.h"
+#include "Objects/StaticObjects/ClearEffect.h"
 #include "Components/RigidBody.h"
 
 //=====================================
@@ -66,6 +67,13 @@ void SandboxScene::Init()
 	);
 
 	AddObject(portal->GetPortal());
+
+	auto clearEffect = std::make_shared<ClearEffect>(
+		DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
+		DirectX::SimpleMath::Vector2(scale.x + 430.0f, scale.y + 270.0f),
+		rotation
+	);
+	AddObject(clearEffect->GetClearEffect());
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리

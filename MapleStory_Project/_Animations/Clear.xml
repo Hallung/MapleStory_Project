@@ -1,0 +1,4 @@
+<Texture path="_Textures/Clear.png">
+	<Clip name="Play" x="10" y="10" w="3360" h="390" count="6" loop="false" speed="0.15"/>
+	<Clip name="Stop" x="10" y="10" w="550" h="390" count="1" loop="true" speed="1.0"/>
+</Texture>
