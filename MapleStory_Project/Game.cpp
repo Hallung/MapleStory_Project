@@ -36,10 +36,15 @@ void Game::Init()
 	// TileMapEditorScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<TileMapEditorScene>());
 
+	// TitleScene 생성 및 Scene 목록에 추가
+	sceneList.push_back(std::make_shared<TitleScene>());
+
 	// ForestOfTrialsScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<ForestOfTrialsScene>());
 
-	currentScene = sceneList[0]; // 첫 번째 Scene을 현재 Scene으로 설정
+	currentScene = sceneList[2]; // Title Scene을 현재 Scene으로 설정
+	currentSceneID = SceneID::Title; // currentSceneID를 Title로 설정
+
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
 	currentScene->Init(); // 현재 Scene 초기화
 }
@@ -61,7 +66,15 @@ void Game::Update()
 	}
 	else if (InputManager::GetInstance().GetKeyDown(VK_F3))
 	{
-		SwitchScene(2); // ForestOfTrialsScene
+		SwitchScene(2); // TitleScene
+	}
+
+	if (currentSceneID == SceneID::Title)
+	{
+		if (InputManager::GetInstance().GetKeyDown(VK_RETURN))
+		{
+			SwitchScene(SceneID::Forest);
+		}
 	}
 
 	currentScene->Update();
@@ -104,8 +117,14 @@ void Game::SwitchScene(size_t index)
 	PhysicsManager::GetInstance().Destroy(); // Physics 시스템 리소스 정리
 
 	currentScene = sceneList[index]; // Scene 변경
+	currentSceneID = static_cast<SceneID>(index); // SceneID 값 변경
 
 	mainCamera->Reset(); // 메인 카메라 포지션 및 줌 초기화
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
 	currentScene->Init(); // 새로운 Scene 초기화
+}
+
+void Game::SwitchScene(SceneID id)
+{
+	SwitchScene(static_cast<size_t>(id));
 }
