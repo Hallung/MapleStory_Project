@@ -1,0 +1,3 @@
+<Texture path="_Textures/Portal.png">
+	<Clip name="Portal" x="10" y="10" w="1040" h="160" count="8" loop="true" speed="0.1"/>
+</Texture>

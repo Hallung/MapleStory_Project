@@ -14,6 +14,7 @@ enum class CollisionLayer : uint32_t
 	UI = 0x0020,      // UI (0010 0000)
 	Raycast = 0x0040, // Raycast (0100 0000)
 	Weapon = 0x0080,  // 무기 (1000 0000)
+	Portal = 0x0100,  // 포탈 (0001 0000 0000)
 };
 
 // 두 개의 CollisionLayer를 OR 연산하여 여러 레이어를 동시에 표현할 수 있도록 지원

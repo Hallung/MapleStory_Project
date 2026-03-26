@@ -5,6 +5,7 @@
 #include "Objects/DynamicObjects/Scarecrow.h"
 #include "Objects/DynamicObjects/OrangeMushroom.h"
 #include "Objects/StaticObjects/Ground.h"
+#include "Objects/StaticObjects/Portal.h"
 #include "Components/RigidBody.h"
 
 //=====================================
@@ -57,6 +58,14 @@ void SandboxScene::Init()
 	);
 
 	AddObject(orangeMushroom->GetMonster());
+
+	auto portal = std::make_shared<Portal>(
+		DirectX::SimpleMath::Vector2(gWinWidth * halfValue + offsetPos + 100.0f, gWinHeight * halfValue - offsetPos - 60.0f),
+		DirectX::SimpleMath::Vector2(scale.x, scale.y + 40.0f),
+		rotation
+	);
+
+	AddObject(portal->GetPortal());
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리
