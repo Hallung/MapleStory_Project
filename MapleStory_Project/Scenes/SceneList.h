@@ -16,4 +16,5 @@
 #include "TileMapEditorScene.h"
 
 // 실제 게임 Scene
+#include "TitleScene.h"
 #include "ForestOfTrialsScene.h"

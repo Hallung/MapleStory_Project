@@ -209,6 +209,7 @@
     </ClCompile>
     <ClCompile Include="Systems\Graphics.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Scenes\TitleScene.cpp" />
     <ClCompile Include="Utilities\FileDialog.cpp" />
     <ClCompile Include="Utilities\ObjectFactory.cpp" />
     <ClCompile Include="Utilities\Random.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Systems\Graphics.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Scenes\TitleScene.h" />
     <ClInclude Include="Utilities\CollisionLayer.h" />
     <ClInclude Include="Utilities\FileDialog.h" />
     <ClInclude Include="Utilities\ObjectFactory.h" />
