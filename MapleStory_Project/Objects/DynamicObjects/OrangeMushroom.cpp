@@ -8,6 +8,7 @@
 #include "Components/HitEvents.h"
 #include "Components/MonsterMovement.h"
 #include "Components/MonsterAI.h"
+#include "Components/MonsterAggro.h"
 #include "Resources/Material.h"
 #include "Utilities/ObjectFactory.h"
 
@@ -63,7 +64,8 @@ OrangeMushroom::OrangeMushroom(DirectX::SimpleMath::Vector2 position, DirectX::S
 	// State를 관리하는 컴포넌트 추가
 	monster->AddComponent(std::make_shared<MonsterState>());
 	// Ability를 관리하는 컴포넌트 추가
-	monster->AddComponent(std::make_shared<MonsterAbility>());
+	auto monsterAbility = std::make_shared<MonsterAbility>();
+	monster->AddComponent(monsterAbility);
 
 	// Animator 추가 (애니메이션 시스템)
 	auto monsterAni = std::make_shared<Animator>();
@@ -72,10 +74,16 @@ OrangeMushroom::OrangeMushroom(DirectX::SimpleMath::Vector2 position, DirectX::S
 	// 기본 상태 : Stand 애니메이션 재생
 	monsterAni->Play(L"Stand");
 	monster->AddComponent(monsterAni);
-
+	// 몬스터 추적 기능 부여
+	monster->AddComponent(std::make_shared<MonsterAggro>());
+	// HitEvents를 부여하여 충돌된 Collider 확인
 	monster->AddComponent(std::make_shared<HitEvents>());
 
-	monster->AddComponent(std::make_shared<MonsterMovement>());
-
+	// 몬스터 움직임 부여
+	auto monsterMovement = std::make_shared<MonsterMovement>();
+	// Ability에 있는 MoveSpeed 적용
+	monsterMovement->SetMoveSpeed(monsterAbility->GetMoveSpeed());
+	monster->AddComponent(monsterMovement);
+	// 몬스터 AI 시스템 부여
 	monster->AddComponent(std::make_shared<MonsterAI>());
 }

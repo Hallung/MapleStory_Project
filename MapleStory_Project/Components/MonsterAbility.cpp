@@ -2,6 +2,7 @@
 #include "MonsterAbility.h"
 #include "MonsterState.h"
 #include "HitEvents.h"
+#include "MonsterAggro.h"
 #include "Objects/DynamicObjects/Monster.h"
 
 void MonsterAbility::SetHelthPoint(UINT hp)
@@ -37,6 +38,13 @@ void MonsterAbility::TakeDamage(Collider* other, UINT damage)
 	auto state = GetOwner()->GetComponent<MonsterState>("MonsterState");
 	auto hitEvent = other->GetOwner()->GetComponent<HitEvents>("HitEvents");
 	auto monsterCol = GetOwner()->GetComponent<Collider>("SensorCollider");
+	auto aggro = GetOwner()->GetComponent<MonsterAggro>("MonsterAggro");
+
+	// Damage가 들어오면 공격을 준 Collider 저장
+	if (aggro) 
+	{
+		aggro->SetAggro(other->GetOwner());
+	}
 
 	// 사망 처리
 	if (_hp == 0)

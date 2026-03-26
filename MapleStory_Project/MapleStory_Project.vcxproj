@@ -166,6 +166,9 @@
     <ClCompile Include="Components\HitEvents.cpp" />
     <ClCompile Include="Components\MeshRenderer.cpp" />
     <ClCompile Include="Components\MonsterAbility.cpp" />
+    <ClCompile Include="Components\MonsterAggro.cpp" />
+    <ClCompile Include="Components\MonsterAI.cpp" />
+    <ClCompile Include="Components\MonsterMovement.cpp" />
     <ClCompile Include="Components\MonsterState.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
     <ClCompile Include="Components\PlayerAbility.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Managers\TextureManager.cpp" />
     <ClCompile Include="Objects\Camera.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
@@ -213,6 +217,12 @@
     <ClCompile Include="Utilities\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BTNodes\BTNode.h" />
+    <ClInclude Include="BTNodes\ChasePlayerNode.h" />
+    <ClInclude Include="BTNodes\IdleNode.h" />
+    <ClInclude Include="BTNodes\Selector.h" />
+    <ClInclude Include="BTNodes\Sequence.h" />
+    <ClInclude Include="BTNodes\WanderNode.h" />
     <ClInclude Include="Components\Animator.h" />
     <ClInclude Include="Components\BoxCollider.h" />
     <ClInclude Include="Components\CameraController.h" />
@@ -222,6 +232,9 @@
     <ClInclude Include="Components\HitEvents.h" />
     <ClInclude Include="Components\MeshRenderer.h" />
     <ClInclude Include="Components\MonsterAbility.h" />
+    <ClInclude Include="Components\MonsterAggro.h" />
+    <ClInclude Include="Components\MonsterAI.h" />
+    <ClInclude Include="Components\MonsterMovement.h" />
     <ClInclude Include="Components\MonsterState.h" />
     <ClInclude Include="Components\PlatformerController.h" />
     <ClInclude Include="Components\PlayerAbility.h" />
@@ -233,6 +246,7 @@
     <ClInclude Include="Managers\TextureManager.h" />
     <ClInclude Include="Objects\Camera.h" />
     <ClInclude Include="Objects\DynamicObjects\Monster.h" />
+    <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h" />
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
     <ClInclude Include="Objects\Object.h" />

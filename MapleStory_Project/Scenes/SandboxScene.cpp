@@ -3,6 +3,7 @@
 #include "Objects/Object.h"
 #include "Objects/DynamicObjects/Player.h"
 #include "Objects/DynamicObjects/Scarecrow.h"
+#include "Objects/DynamicObjects/OrangeMushroom.h"
 #include "Objects/StaticObjects/Ground.h"
 #include "Components/RigidBody.h"
 
@@ -49,13 +50,13 @@ void SandboxScene::Init()
 	//Scarecrow가 관리하는 실제 게임 Object를 씬에 등록
 	AddObject(scarecrow->GetMonster());
 
-	auto scarecrow1 = std::make_shared<Scarecrow>(
+	auto orangeMushroom = std::make_shared<OrangeMushroom>(
 		DirectX::SimpleMath::Vector2(gWinWidth * halfValue - offsetPos, gWinHeight * halfValue),
-		DirectX::SimpleMath::Vector2(scale.x - 20.0f),
+		DirectX::SimpleMath::Vector2(scale.x - 40.0f),
 		rotation
 	);
 
-	AddObject(scarecrow1->GetMonster());
+	AddObject(orangeMushroom->GetMonster());
 }
 
 // Scene 종료 처리, Scene이 소유한 Object 목록 정리

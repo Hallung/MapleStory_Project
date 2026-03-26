@@ -32,6 +32,7 @@ public:
 		JUMPING,
 		STANDING,
 		MOVE,
+		CHASE,
 		DIE
 	};
 

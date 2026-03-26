@@ -68,6 +68,9 @@ void MonsterState::UpdateAnimation()
 	case Monster::State::MOVE:
 		animator->Play(L"Move");
 		break;
+	case Monster::State::CHASE:
+		animator->Play(L"Move");
+		break;
 	case Monster::State::DIE:
 		animator->Play(L"Die");
 		break;
