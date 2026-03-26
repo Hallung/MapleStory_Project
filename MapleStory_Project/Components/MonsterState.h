@@ -8,6 +8,8 @@ class MonsterState : public Component
 public:
 	MonsterState() : Component("MonsterState") {}
 
+	void Awake() override;
+
 	void Update() override;	// 매 프레임 호출 (상태에 따른 내부 로직 업데이트 수행)
 	
 	void SetState(Monster::State newState);	// 몬스터 상태 변경
@@ -20,4 +22,7 @@ public:
 	
 private:
 	Monster::State currentState = Monster::State::STANDING;	// 현재 몬스터 상태
+
+private:
+	std::shared_ptr<class Animator> animator;
 };

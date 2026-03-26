@@ -4,10 +4,14 @@
 #include "Transform.h"
 #include "Objects/Object.h"
 
+void MonsterMovement::Awake()
+{
+	rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
+}
+
 // 지정된 방향으로 몬스터 이동 처리
 void MonsterMovement::Move(float dir)
 {
-	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 	if (!rigidBody) return;
 
 	//==============================================
@@ -36,7 +40,6 @@ void MonsterMovement::Move(float dir)
 // 몬스터의 수평 이동 정지
 void MonsterMovement::Stop()
 {
-	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
 	if (!rigidBody) return;
 
 	b2Vec2 velocity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());

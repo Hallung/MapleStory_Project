@@ -142,6 +142,11 @@
     <ClCompile Include="Components\PlayerState.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\MonsterAggro.cpp" />
+    <ClCompile Include="Components\MonsterAI.cpp" />
+    <ClCompile Include="Components\MonsterMovement.cpp" />
+    <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp" />
+    <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -313,6 +318,17 @@
     <ClInclude Include="Components\PlayerState.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="BTNodes\BTNode.h" />
+    <ClInclude Include="BTNodes\ChasePlayerNode.h" />
+    <ClInclude Include="BTNodes\IdleNode.h" />
+    <ClInclude Include="BTNodes\Selector.h" />
+    <ClInclude Include="BTNodes\Sequence.h" />
+    <ClInclude Include="BTNodes\WanderNode.h" />
+    <ClInclude Include="Components\MonsterAggro.h" />
+    <ClInclude Include="Components\MonsterAI.h" />
+    <ClInclude Include="Components\MonsterMovement.h" />
+    <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h" />
+    <ClInclude Include="Objects\StaticObjects\Portal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

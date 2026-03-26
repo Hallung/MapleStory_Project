@@ -53,7 +53,11 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player가 충돌할 수 있는 레이어 설정
 	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
 	//=================================================
-	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+	playerCol->SetCollisionMask(
+		CollisionLayer::Ground | 
+		CollisionLayer::Monster |
+		CollisionLayer::Portal
+	);
 
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
@@ -94,9 +98,4 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	playerAnimator->Load(L"_Animations/Player1.xml");
 	// 초기 상태 설정
 	playerAnimator->Play(L"Stand");
-
-	// Player의 충돌 판정을 위한 HitEvents 추가
-	player->AddComponent(std::make_shared<HitEvents>());
-
-
 }

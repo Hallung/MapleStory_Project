@@ -28,8 +28,6 @@ void MonsterAI::Awake()
 // 매 프레임 Behavior Tree 실행
 void MonsterAI::Update()
 {
-	auto state = GetOwner()->GetComponent<MonsterState>("MonsterState");
-
 	// 피격 또는 사망 중에는 AI 정지
 	if (state->GetState() == Monster::State::HITTING ||
 		state->GetState() == Monster::State::DIE)

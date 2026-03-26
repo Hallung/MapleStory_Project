@@ -2,6 +2,11 @@
 #include "MonsterState.h"
 #include "Animator.h"
 
+void MonsterState::Awake()
+{
+	animator = GetOwner()->GetComponent<Animator>("Animator");
+}
+
 void MonsterState::Update()
 {
 	UpdateHitState();
@@ -31,8 +36,6 @@ void MonsterState::SetState(Monster::State newState)
 //=====================================================
 void MonsterState::UpdateHitState()
 {
-	auto animator = GetOwner()->GetComponent<Animator>("Animator");
-
 	if (!animator) return;
 
 	// 현재 피격 상태라면
@@ -47,8 +50,6 @@ void MonsterState::UpdateHitState()
 // 현재 상태에 맞는 애니메이션 재생
 void MonsterState::UpdateAnimation()
 {
-	auto animator = GetOwner()->GetComponent<Animator>("Animator");
-
 	if (!animator) return;
 
 	switch (currentState)

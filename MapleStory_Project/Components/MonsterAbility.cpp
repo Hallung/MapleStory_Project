@@ -5,6 +5,13 @@
 #include "MonsterAggro.h"
 #include "Objects/DynamicObjects/Monster.h"
 
+void MonsterAbility::Awake()
+{
+	monsterCollider = GetOwner()->GetComponent<Collider>("SensorCollider");
+	monsterState = GetOwner()->GetComponent<MonsterState>("MonsterState");
+	monsterAggro = GetOwner()->GetComponent<MonsterAggro>("MonsterAggro");
+}
+
 void MonsterAbility::SetHelthPoint(UINT hp)
 {
 	_hp = hp;
@@ -35,28 +42,25 @@ void MonsterAbility::TakeDamage(Collider* other, UINT damage)
 	// 체력 감소 (0 이하 방지)
 	_hp = max(0, _hp - damage);
 
-	auto state = GetOwner()->GetComponent<MonsterState>("MonsterState");
 	auto hitEvent = other->GetOwner()->GetComponent<HitEvents>("HitEvents");
-	auto monsterCol = GetOwner()->GetComponent<Collider>("SensorCollider");
-	auto aggro = GetOwner()->GetComponent<MonsterAggro>("MonsterAggro");
 
 	// Damage가 들어오면 공격을 준 Collider 저장
-	if (aggro) 
+	if (monsterAggro)
 	{
-		aggro->SetAggro(other->GetOwner());
+		monsterAggro->SetAggro(other->GetOwner());
 	}
 
 	// 사망 처리
 	if (_hp == 0)
 	{
 		// 충돌 목록에서 제거 (추가 피격 방지)
-		hitEvent->RemoveCollider(monsterCol.get());
+		hitEvent->RemoveCollider(monsterCollider.get());
 		// 사망 상태 진입
-		state->SetState(Monster::State::DIE);
+		monsterState->SetState(Monster::State::DIE);
 	}
 	else
 	{
 		// 피격 상태 진입
-		state->SetState(Monster::State::HITTING);
+		monsterState->SetState(Monster::State::HITTING);
 	}
 }

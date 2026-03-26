@@ -184,6 +184,7 @@
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
     <ClCompile Include="Objects\TileMap.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
     <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\StaticObjects\Portal.h" />
     <ClInclude Include="Objects\TileMap.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />
     <ClInclude Include="Renders\ConstantBuffers\ConstantBuffer.h" />

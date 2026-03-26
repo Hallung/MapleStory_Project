@@ -7,6 +7,8 @@ class MonsterMovement : public Component
 public:
 	MonsterMovement() : Component("MonsterMovement") {}
 
+	void Awake() override;
+
 	void SetMoveSpeed(float speed) { moveSpeed = speed; }	// 이동 속도 설정
 	float GetMoveSpeed() const { return moveSpeed; }	// 현재 이동 속도 반환
 
@@ -16,4 +18,7 @@ public:
 private:
 	float moveSpeed = 80.0f;	// 몬스터 이동 속도
 	float facingDir = 0.0f;		// 현재 바라보는 방향(스프라이트 반전용)
+
+private:
+	std::shared_ptr<class RigidBody> rigidBody;
 };

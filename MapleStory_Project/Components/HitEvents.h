@@ -17,12 +17,6 @@ class HitEvents : public Component
 public:
 	// 기본 생성자(Component 이름을 "HitEvents"로 설정)
 	HitEvents() : Component("HitEvents"){}
-	// 컴포넌트 초기화 시 호출
-	void Awake() override;
-	// 매 프레임 호출되는 업데이트 함수
-	void Update() override;
-
-	void OnDestroy() override;
 	// 충돌이 시작될 때 호출되는 이벤트
 	void OnCollisionEnter(Collider* self, Collider* other) override;
 	// 충돌이 종료될 때 호출되는 이벤트

@@ -8,6 +8,8 @@ class MonsterAbility : public Component
 public:
 	MonsterAbility() : Component("MonsterAbility") {}
 
+	void Awake() override;
+
 	void SetHelthPoint(UINT hp);	// 체력 설정
 	UINT GetHelthPoint() const { return _hp; }	// 현재 체력 반환
 
@@ -26,4 +28,9 @@ private:
 	float _moveSpeed = 150.0f;	// 이동 속도
 
 	float lastSpeed = 0.0f;	// 속도 변경 전 값 저장
+
+private:
+	std::shared_ptr<Collider> monsterCollider;
+	std::shared_ptr<class MonsterState> monsterState;
+	std::shared_ptr<class MonsterAggro> monsterAggro;
 };

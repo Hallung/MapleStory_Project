@@ -8,22 +8,6 @@
 #include "MonsterState.h"
 #include "PlatformerController.h"
 
-
-void HitEvents::Awake()
-{
-	// 현재 특별한 초기화 로직 없음
-	// 필요 시 초기 상태 설정 가능
-}
-
-void HitEvents::Update()
-{
-	
-}
-
-void HitEvents::OnDestroy()
-{
-}
-
 //=================================================
 // 충돌 시작 이벤트
 // 다른 Collider와 충돌이 시작될 때 호출된다.
