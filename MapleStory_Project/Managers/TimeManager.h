@@ -49,6 +49,8 @@ public:
 	void SetTargetFPS(double fps);
 	// 목표 프레임 시간까지 대기하여 FPS 제한
 	void WaitToTargetFrameRate();
+	// 초기화
+	void Reset();
 
 private:
 	TimePoint currentTime;	// 현재 프레임 시간

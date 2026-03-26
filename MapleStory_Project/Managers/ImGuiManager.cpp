@@ -114,6 +114,88 @@ void ImGuiManager::ShowFPSOverlay()
 	ImGui::End();
 }
 
+void ImGuiManager::ShowPlayTime()
+{
+	// 화면 가장자리와의 간격
+	constexpr float DISTANCE = 10.0f;
+
+	// 좌측 상단 위치 계산 (pivot을 이용해 왼쪽 정렬)
+	ImVec2 winPos = ImVec2(DISTANCE, DISTANCE);
+	ImVec2 winPosPivot = ImVec2(0.0f, 0.0f);
+
+	ImGui::SetNextWindowPos(winPos, ImGuiCond_Always, winPosPivot);
+
+	// 오버레이 창 옵션 설정
+	ImGuiWindowFlags winFlags = ImGuiWindowFlags_NoDecoration | // 타이틀바 및 테두리 제거
+		ImGuiWindowFlags_AlwaysAutoResize |						// 내용에 맞게 자동 크기 조절
+		ImGuiWindowFlags_NoSavedSettings |						// 위치/설정 저장하지 않음
+		ImGuiWindowFlags_NoFocusOnAppearing |					// 생성 시 포커스 가져가지 않음
+		ImGuiWindowFlags_NoNav |								// 키보드 네비게이션 비활성화
+		ImGuiWindowFlags_NoMove |								// 창 이동 불가
+		ImGuiWindowFlags_NoBackground;							// 배경 없이 텍스트만 표시
+
+	ImGui::Begin("PlayTime Overlay", nullptr, winFlags);
+
+	// 글자 크기 설정
+	ImGui::SetWindowFontScale(2.0f);
+
+	double time = TimeManager::GetInstance().GetWorldTime();
+
+	// WorldTime 값을 분/초 단위로 변환
+	int minutes = static_cast<int>(time) / 60;
+	int seconds = static_cast<int>(time) % 60;
+
+	// "Time : mm:ss" 형태의 문자열 생성
+	char timeText[64];
+	sprintf_s(timeText, "Time : %02d:%02d", minutes, seconds);
+
+	// 노란색 계열 색상으로 플레이 타임 출력
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), timeText);
+
+	ImGui::End();
+}
+
+void ImGuiManager::ShowClearTime(double time)
+{
+	// 화면 중앙 위치
+	ImVec2 winPos = ImVec2(gWinWidth * 0.5f, gWinHeight * 0.65f);
+	ImVec2 winPosPivot = ImVec2(0.5f, 0.5f);
+
+	ImGui::SetNextWindowPos(winPos, ImGuiCond_Always, winPosPivot);
+
+	// 오버레이 창 옵션 설정
+	ImGuiWindowFlags winFlags = ImGuiWindowFlags_NoDecoration | // 타이틀바 및 테두리 제거
+		ImGuiWindowFlags_AlwaysAutoResize |						// 내용에 맞게 자동 크기 조절
+		ImGuiWindowFlags_NoSavedSettings |						// 위치/설정 저장하지 않음
+		ImGuiWindowFlags_NoFocusOnAppearing |					// 생성 시 포커스 가져가지 않음
+		ImGuiWindowFlags_NoNav |								// 키보드 네비게이션 비활성화
+		ImGuiWindowFlags_NoMove |								// 창 이동 불가
+		ImGuiWindowFlags_NoBackground;							// 배경 없이 텍스트만 표시
+
+	ImGui::Begin("ClearTime Overlay", nullptr, winFlags);
+
+	// 글자 크기 설정
+	ImGui::SetWindowFontScale(4.0f);
+
+	// time 값을 분/초 단위로 변환
+	int minutes = static_cast<int>(time) / 60;
+	int seconds = static_cast<int>(time) % 60;
+
+	// "Time : mm:ss" 형태의 문자열 생성
+	char text[64];
+	sprintf_s(text, "CLEAR TIME : %02d:%02d", minutes, seconds);
+
+	// 중앙 정렬 (텍스트 기준)
+	float textWidth = ImGui::CalcTextSize(text).x;
+	float windowWidth = ImGui::GetWindowSize().x;
+	ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+
+	// 연두색 계열 색상으로 클리어 타임 출력
+	ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), text);
+
+	ImGui::End();
+}
+
 // 하나의 오브젝트에 대한 Inspector UI를 구성
 // 오브젝트 이름을 최상위 노드로 표시하고, 그 아래에 각 컴포넌트 UI를 출력
 void ImGuiManager::DrawObjectInspector(std::shared_ptr<Object> object, std::string name)

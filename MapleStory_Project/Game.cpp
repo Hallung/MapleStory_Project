@@ -121,6 +121,7 @@ void Game::SwitchScene(size_t index)
 
 	mainCamera->Reset(); // 메인 카메라 포지션 및 줌 초기화
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
+	TimeManager::GetInstance().Reset(); // Time 시스템 초기화
 	currentScene->Init(); // 새로운 Scene 초기화
 }
 
