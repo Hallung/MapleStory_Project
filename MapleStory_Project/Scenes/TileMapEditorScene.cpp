@@ -80,10 +80,7 @@ void TileMapEditorScene::Update()
 
 	// 테스트용 플레이어 생성 (삭제 예정)
 	PhysicsManager::GetInstance().Update();
-	if (player != nullptr)
-	{
-		player->Update();
-	}
+
 	if (InputManager::GetInstance().GetKeyDown(VK_P))
 	{
 		if (player == nullptr)
