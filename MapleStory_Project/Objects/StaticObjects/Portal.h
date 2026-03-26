@@ -1,5 +1,4 @@
 #pragma once
-#include "Objects/Object.h"
 #include "Components/RigidBody.h"
 
 class Portal

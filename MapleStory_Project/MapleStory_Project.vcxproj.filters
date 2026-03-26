@@ -147,6 +147,8 @@
     <ClCompile Include="Components\MonsterMovement.cpp" />
     <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp" />
     <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
+    <ClCompile Include="Objects\StaticObjects\ClearEffect.cpp" />
+    <ClCompile Include="Components\PlayEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -329,6 +331,8 @@
     <ClInclude Include="Components\MonsterMovement.h" />
     <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h" />
     <ClInclude Include="Objects\StaticObjects\Portal.h" />
+    <ClInclude Include="Objects\StaticObjects\ClearEffect.h" />
+    <ClInclude Include="Components\PlayEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

@@ -171,6 +171,7 @@
     <ClCompile Include="Components\MonsterMovement.cpp" />
     <ClCompile Include="Components\MonsterState.cpp" />
     <ClCompile Include="Components\PlatformerController.cpp" />
+    <ClCompile Include="Components\PlayEffect.cpp" />
     <ClCompile Include="Components\PlayerAbility.cpp" />
     <ClCompile Include="Components\PlayerState.cpp" />
     <ClCompile Include="Components\RigidBody.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Objects\DynamicObjects\Player.cpp" />
     <ClCompile Include="Objects\DynamicObjects\Scarecrow.cpp" />
     <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\StaticObjects\ClearEffect.cpp" />
     <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
     <ClCompile Include="Objects\TileMap.cpp" />
     <ClCompile Include="Objects\StaticObjects\Ground.cpp" />
@@ -238,6 +240,7 @@
     <ClInclude Include="Components\MonsterMovement.h" />
     <ClInclude Include="Components\MonsterState.h" />
     <ClInclude Include="Components\PlatformerController.h" />
+    <ClInclude Include="Components\PlayEffect.h" />
     <ClInclude Include="Components\PlayerAbility.h" />
     <ClInclude Include="Components\PlayerState.h" />
     <ClInclude Include="Components\RigidBody.h" />
@@ -251,6 +254,7 @@
     <ClInclude Include="Objects\DynamicObjects\Player.h" />
     <ClInclude Include="Objects\DynamicObjects\Scarecrow.h" />
     <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\StaticObjects\ClearEffect.h" />
     <ClInclude Include="Objects\StaticObjects\Portal.h" />
     <ClInclude Include="Objects\TileMap.h" />
     <ClInclude Include="Objects\StaticObjects\Ground.h" />

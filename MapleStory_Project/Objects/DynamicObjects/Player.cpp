@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Objects/Object.h"
 #include "Resources/Material.h"
 #include "Components/Animator.h"
 #include "Components/MeshRenderer.h"
@@ -15,7 +16,7 @@ namespace
 {
 constexpr float scaleX = 35.0f;
 constexpr float scaleY = 70.0f;
-constexpr DirectX::SimpleMath::Vector2 offset = { 30.0f, 0.0f };
+constexpr DirectX::SimpleMath::Vector2 offset = { 50.0f, 0.0f };
 }
 
 Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)

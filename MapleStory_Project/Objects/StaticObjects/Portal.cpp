@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Portal.h"
+#include "Objects/Object.h"
 #include "Components/BoxCollider.h"
 #include "Components/Animator.h"
 #include "Utilities/ObjectFactory.h"
