@@ -7,6 +7,7 @@
 #include "Components/MeshRenderer.h"
 #include "Resources/Material.h"
 #include "Utilities/ObjectFactory.h"
+#include "Utilities/VirtualKey.h"
 
 namespace
 {
@@ -28,6 +29,9 @@ constexpr float halfValue = 0.5f;
 
 void ForestOfTrialsScene::Init()
 {
+	isCleared = false;
+	clearTime = 0.0;
+
 	float worldMapWidth = mapWidth * tileSize;
 	float worldMapHeight = mapHeight * tileSize;
 
@@ -112,6 +116,19 @@ void ForestOfTrialsScene::Destroy()
 
 void ForestOfTrialsScene::Update()
 {
+	if (!isCleared)
+	ImGuiManager::GetInstance().ShowPlayTime();
+
+	if (!isCleared && InputManager::GetInstance().GetKeyDown(VK_F))
+	{
+		isCleared = true;
+		clearTime = TimeManager::GetInstance().GetWorldTime();
+	}
+	else if (isCleared)
+	{
+		ImGuiManager::GetInstance().ShowClearTime(clearTime);
+	}
+
 	backGroundImage1->Update();
 	backGroundImage2->Update();
 	backGroundImage3->Update();

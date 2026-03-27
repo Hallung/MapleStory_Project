@@ -40,6 +40,8 @@ public:
 	bool WantCaptureMouse() const { return ImGui::GetCurrentContext() ? ImGui::GetIO().WantCaptureMouse : false; }
 
 	void ShowFPSOverlay(); // 우측 상단에 FPS 및 Frame Time(ms)을 표시하는 오버레이 UI 출력 (디버그용 정보 표시 목적)
+	void ShowPlayTime(); // 좌측 상단에 Play Time을 표시하는 오버레이 UI 출력
+	void ShowClearTime(double time); // 중앙에 Clear Time을 표시하는 오버레이 UI 출력
 	void DrawObjectInspector(std::shared_ptr<Object> object, std::string name); // 오브젝트 전체 Inspector UI 출력
 
 	// 각 컴포넌트별 Inspector UI

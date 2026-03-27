@@ -60,3 +60,19 @@ void TimeManager::WaitToTargetFrameRate()
 		elapsed = now - currentTime;
 	}
 }
+
+void TimeManager::Reset()
+{
+	// 현재 시간을 기준으로 다시 시작
+	lastTime = Clock::now();
+	currentTime = lastTime;
+
+	// 시간 값 초기화
+	deltaTime = 0.0;
+	worldTime = 0.0;
+
+	// FPS 계산 관련 값 초기화
+	fps = 0;
+	frameCount = 0;
+	fpsTimeElapsed = 0.0;
+}
