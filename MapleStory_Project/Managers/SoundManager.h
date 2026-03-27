@@ -1,6 +1,7 @@
 #pragma once
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+#include <fmod.hpp>
 
 //==============================================
 // 싱글턴 기반 SoundManager 클래스
@@ -45,4 +46,14 @@ public:
 	{
 		PlaySound(NULL, 0, 0);
 	}
+
+	void TestFMOD()
+{
+    FMOD::System* system = nullptr;
+    FMOD::System_Create(&system);
+
+    system->init(32, FMOD_INIT_NORMAL, nullptr);
+
+    system->release();
+}
 };
