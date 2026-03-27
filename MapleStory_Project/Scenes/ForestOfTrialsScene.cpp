@@ -101,7 +101,7 @@ void ForestOfTrialsScene::Init()
 
 	worldPlayer = player->GetPlayer();
 
-	SoundManager::GetInstance().PlayBGM(L"_Sounds/BGM/FloralLife.wav");
+	SoundManager::GetInstance().PlayBGM("_Sounds/BGM/FloralLife.wav");
 }
 
 void ForestOfTrialsScene::Destroy()

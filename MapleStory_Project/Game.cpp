@@ -46,6 +46,7 @@ void Game::Init()
 	currentSceneID = SceneID::Title; // currentSceneID를 Title로 설정
 
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화
+	SoundManager::GetInstance().Init(); // Sound 시스템 초기화
 	currentScene->Init(); // 현재 Scene 초기화
 }
 
@@ -79,6 +80,9 @@ void Game::Update()
 
 	currentScene->Update();
 	mainCamera->Update();
+
+	// Sound 상태 갱신
+	SoundManager::GetInstance().Update();
 
 #ifdef _DEBUG
 	// 디버그 모드에서만 FPS 오버레이 출력
