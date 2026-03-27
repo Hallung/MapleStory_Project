@@ -32,7 +32,7 @@ void TitleScene::Init()
 	pressEnterTextMaterial = pressEnterText->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial();
 	AddObject(pressEnterText);
 
-	SoundManager::GetInstance().PlayBGM(L"_Sounds/BGM/Title.wav");
+	SoundManager::GetInstance().PlayBGM("_Sounds/BGM/Title.wav");
 }
 
 void TitleScene::Destroy()
