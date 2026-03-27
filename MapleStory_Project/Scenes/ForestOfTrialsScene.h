@@ -15,4 +15,7 @@ private:
 	std::shared_ptr<Object> backGroundImage2;
 	std::shared_ptr<Object> backGroundImage3;
 	std::shared_ptr<class TileMap> tileMap;
+
+	bool isCleared = false;
+	double clearTime = 0.0;
 };

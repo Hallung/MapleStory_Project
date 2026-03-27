@@ -17,17 +17,17 @@
 
 namespace
 {
-// Å¸ÀÏ¼Â ±¸¼º Á¤º¸
+// íƒ€ì¼ì…‹ êµ¬ì„± ì •ë³´
 constexpr UINT tileCols = 4;
 constexpr UINT tileRows = 4;
 constexpr UINT maxTilesInTileset = tileCols * tileRows;
 
-// Å×½ºÆ®¿ë ¸Ê Å©±â
+// í…ŒìŠ¤íŠ¸ìš© ë§µ í¬ê¸°
 constexpr UINT mapWidth = 30;
 constexpr UINT mapHeight = 40;
 }
 
-// Å×½ºÆ®¿ë ÇÃ·¹ÀÌ¾î Á¤º¸ (»èÁ¦ ¿¹Á¤)
+// í…ŒìŠ¤íŠ¸ìš© í”Œë ˆì´ì–´ ì •ë³´ (ì‚­ì œ ì˜ˆì •)
 namespace
 {
 constexpr DirectX::SimpleMath::Vector2 scale = { 120.0f, 120.0f };
@@ -38,18 +38,18 @@ constexpr float halfValue = 0.5f;
 
 void TileMapEditorScene::Init()
 {
-	//Scene Å¸ÀÔÀ» Editor·Î º¯°æ
+	//Scene íƒ€ì…ì„ Editorë¡œ ë³€ê²½
 	currentSceneType = SceneType::Editor;
 
-	// Instancing ±â¹İ TileMap »ı¼º
+	// Instancing ê¸°ë°˜ TileMap ìƒì„±
 	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, 64.0f, L"_Textures/Map/MapleTile.png", tileCols, tileRows);
 
-	// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏÀ» ½Ã°¢ÀûÀ¸·Î º¸¿©ÁÖ±â À§ÇÑ ¹İÅõ¸í »ç°¢Çü
+	// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ì„ ì‹œê°ì ìœ¼ë¡œ ë³´ì—¬ì£¼ê¸° ìœ„í•œ ë°˜íˆ¬ëª… ì‚¬ê°í˜•
 	cursorObject = ObjectFactory::CreateSprite(DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f), { 64, 64 }, 0.0f, L"_Textures/Map/MapleTile.png");
-	cursorObjectMaterial = cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial(); // Ä¿¼­ ¿ÀºêÁ§Æ®ÀÇ Material ÂüÁ¶
-	cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // ¹İÅõ¸í Ç¥½Ã
-	cursorObjectMaterial->SetAtlasGrid(tileCols, tileRows); // Å¸ÀÏ¼Â Atlas Á¤º¸ ¼³Á¤
-	cursorObjectMaterial->SetAtlasIndex(paintTileIndex); // ÇöÀç ¼±ÅÃµÈ Å¸ÀÏ Ç¥½Ã
+	cursorObjectMaterial = cursorObject->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial(); // ì»¤ì„œ ì˜¤ë¸Œì íŠ¸ì˜ Material ì°¸ì¡°
+	cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // ë°˜íˆ¬ëª… í‘œì‹œ
+	cursorObjectMaterial->SetAtlasGrid(tileCols, tileRows); // íƒ€ì¼ì…‹ Atlas ì •ë³´ ì„¤ì •
+	cursorObjectMaterial->SetAtlasIndex(paintTileIndex); // í˜„ì¬ ì„ íƒëœ íƒ€ì¼ í‘œì‹œ
 	AddObject(cursorObject);
 
 	Camera::main->AddComponent(std::make_shared<CameraController>());
@@ -71,26 +71,27 @@ void TileMapEditorScene::Update()
 {
 	__super::Update();
 
-	// ¸¶¿ì½º ÀÔ·ÂÀ» Ã³¸®ÇÏ¿© Å¸ÀÏ¸Ê ÆíÁı (±×¸®µå °è»ê, Ä¿¼­ ½º³À, Å¸ÀÏ ÆäÀÎÆÃ)
+	// ë§ˆìš°ìŠ¤ ì…ë ¥ì„ ì²˜ë¦¬í•˜ì—¬ íƒ€ì¼ë§µ í¸ì§‘ (ê·¸ë¦¬ë“œ ê³„ì‚°, ì»¤ì„œ ìŠ¤ëƒ…, íƒ€ì¼ í˜ì¸íŒ…)
 	HandleMouseInput();
-	// TileMap Editor UI ¹× µğ¹ö±× Ã¢ ·»´õ¸µ
+	// TileMap Editor UI ë° ë””ë²„ê·¸ ì°½ ë Œë”ë§
 	DrawEditorUI();
-	// Ã¼ÀÎ »ı¼º Àü, ÀÔ·ÂµÈ Á¡µéÀ» È­¸é¿¡ ¹Ì¸®º¸±â·Î ·»´õ¸µ
+	// ì²´ì¸ ìƒì„± ì „, ì…ë ¥ëœ ì ë“¤ì„ í™”ë©´ì— ë¯¸ë¦¬ë³´ê¸°ë¡œ ë Œë”ë§
 	DrawChainPreview();
 
-	// Å×½ºÆ®¿ë ÇÃ·¹ÀÌ¾î »ı¼º (»èÁ¦ ¿¹Á¤)
+	// í…ŒìŠ¤íŠ¸ìš© í”Œë ˆì´ì–´ ìƒì„± (ì‚­ì œ ì˜ˆì •)
 	PhysicsManager::GetInstance().Update();
+
 	if (InputManager::GetInstance().GetKeyDown(VK_P))
 	{
 		if (player == nullptr)
 		{
-			// È­¸é Áß¾Ó À§Ä¡¿¡ Player °´Ã¼ »ı¼º
+			// í™”ë©´ ì¤‘ì•™ ìœ„ì¹˜ì— Player ê°ì²´ ìƒì„±
 			player = std::make_shared<Player>(
 				DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
 				DirectX::SimpleMath::Vector2(scale),
 				rotation
 			);
-			// Player°¡ °ü¸®ÇÏ´Â ½ÇÁ¦ °ÔÀÓ Object¸¦ ¾À¿¡ µî·Ï
+			// Playerê°€ ê´€ë¦¬í•˜ëŠ” ì‹¤ì œ ê²Œì„ Objectë¥¼ ì”¬ì— ë“±ë¡
 			AddObject(player->GetPlayer());
 
 			worldPlayer = player->GetPlayer();
@@ -100,7 +101,7 @@ void TileMapEditorScene::Update()
 
 void TileMapEditorScene::Render()
 {
-	// TileMap Instancing ·»´õ¸µ
+	// TileMap Instancing ë Œë”ë§
 	if (tileMap)
 		tileMap->Render();
 
@@ -109,27 +110,27 @@ void TileMapEditorScene::Render()
 
 void TileMapEditorScene::HandleMouseInput()
 {
-	// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏ ÀÎµ¦½º¸¦ Ä¿¼­¿¡ ¹İ¿µ
+	// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ ì¸ë±ìŠ¤ë¥¼ ì»¤ì„œì— ë°˜ì˜
 	cursorObjectMaterial->SetAtlasIndex(paintTileIndex);
-	// ¸¶¿ì½ºÀÇ È­¸é ÁÂÇ¥ °¡Á®¿À±â
+	// ë§ˆìš°ìŠ¤ì˜ í™”ë©´ ì¢Œí‘œ ê°€ì ¸ì˜¤ê¸°
 	mouseScreenPos = InputManager::GetInstance().GetMousePos();
 
-	// È­¸é ÁÂÇ¥ -> ¿ùµå ÁÂÇ¥ º¯È¯ (Ä«¸Ş¶ó ±âÁØ)
+	// í™”ë©´ ì¢Œí‘œ -> ì›”ë“œ ì¢Œí‘œ ë³€í™˜ (ì¹´ë©”ë¼ ê¸°ì¤€)
 	if (Camera::main)
 		mouseWorldPos = Camera::main->ScreenToWorld(mouseScreenPos);
 
-	// ImGui UI À§¿¡ ¸¶¿ì½º°¡ ¿Ã¶ó°¡ ÀÖ´Â °æ¿ì Å¸ÀÏ¸Ê ÆíÁı ÀÔ·ÂÀÌ µ¿½Ã¿¡ ¹ß»ıÇÏÁö ¾Êµµ·Ï ¸¶¿ì½º ÀÔ·ÂÀ» Â÷´Ü
+	// ImGui UI ìœ„ì— ë§ˆìš°ìŠ¤ê°€ ì˜¬ë¼ê°€ ìˆëŠ” ê²½ìš° íƒ€ì¼ë§µ í¸ì§‘ ì…ë ¥ì´ ë™ì‹œì— ë°œìƒí•˜ì§€ ì•Šë„ë¡ ë§ˆìš°ìŠ¤ ì…ë ¥ì„ ì°¨ë‹¨
 	if (ImGuiManager::GetInstance().WantCaptureMouse() == false)
 	{
-		// ÇöÀç ¸ğµå¿¡ µû¶ó ÀÔ·Â Ã³¸® ºĞ±â
+		// í˜„ì¬ ëª¨ë“œì— ë”°ë¼ ì…ë ¥ ì²˜ë¦¬ ë¶„ê¸°
 		if (currentMode == EditorMode::Tile)
 		{
-			cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // ¹İÅõ¸í Ç¥½Ã
+			cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.5f }); // ë°˜íˆ¬ëª… í‘œì‹œ
 			HandleTileInput();
 		}
 		else if (currentMode == EditorMode::Chain)
 		{
-			cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f }); // Åõ¸í Ç¥½Ã
+			cursorObjectMaterial->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f }); // íˆ¬ëª… í‘œì‹œ
 			HandleChainInput();
 		}
 	}
@@ -137,46 +138,46 @@ void TileMapEditorScene::HandleMouseInput()
 
 void TileMapEditorScene::HandleTileInput()
 {
-	// ¿ùµå ÁÂÇ¥ -> ±×¸®µå ÀÎµ¦½º·Î º¯È¯
+	// ì›”ë“œ ì¢Œí‘œ -> ê·¸ë¦¬ë“œ ì¸ë±ìŠ¤ë¡œ ë³€í™˜
 	currentGridIndex = tileMap->WorldToGrid(mouseWorldPos);
 
-	// ´Ù½Ã ±×¸®µå -> ¿ùµå Áß¾Ó ÁÂÇ¥·Î º¯È¯ (½º³À È¿°ú)
+	// ë‹¤ì‹œ ê·¸ë¦¬ë“œ -> ì›”ë“œ ì¤‘ì•™ ì¢Œí‘œë¡œ ë³€í™˜ (ìŠ¤ëƒ… íš¨ê³¼)
 	DirectX::SimpleMath::Vector2 snappedWorldPos = tileMap->GridToWorld((int)currentGridIndex.x, (int)currentGridIndex.y);
 
-	// Ä¿¼­¸¦ ÇØ´ç Å¸ÀÏ Áß¾ÓÀ¸·Î ÀÌµ¿
+	// ì»¤ì„œë¥¼ í•´ë‹¹ íƒ€ì¼ ì¤‘ì•™ìœ¼ë¡œ ì´ë™
 	cursorObject->GetTransform()->SetPosition(snappedWorldPos);
 
-	// ÁÂÅ¬¸¯ ½Ã ÇöÀç ±×¸®µå À§Ä¡¿¡ Å¸ÀÏ »ı¼º (textureIndex = paintTileIndex)
+	// ì¢Œí´ë¦­ ì‹œ í˜„ì¬ ê·¸ë¦¬ë“œ ìœ„ì¹˜ì— íƒ€ì¼ ìƒì„± (textureIndex = paintTileIndex)
 	if (InputManager::GetInstance().GetKeyPress(VK_LBUTTON))
 		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, paintTileIndex);
 
-	// ¿ìÅ¬¸¯ ½Ã Å¸ÀÏ Á¦°Å (textureIndex = -1)
+	// ìš°í´ë¦­ ì‹œ íƒ€ì¼ ì œê±° (textureIndex = -1)
 	if (InputManager::GetInstance().GetKeyPress(VK_RBUTTON))
 		tileMap->SetTile((int)currentGridIndex.x, (int)currentGridIndex.y, -1);
 }
 
 void TileMapEditorScene::HandleChainInput()
 {
-	// ÁÂÅ¬¸¯ ½Ã Á¡ Ãß°¡
+	// ì¢Œí´ë¦­ ì‹œ ì  ì¶”ê°€
 	if (InputManager::GetInstance().GetKeyDown(VK_LBUTTON))
 	{
 		chainPoints.push_back(mouseWorldPos);
 	}
 
-	// ¿ìÅ¬¸¯ ½Ã ¸¶Áö¸· Á¡ »èÁ¦
+	// ìš°í´ë¦­ ì‹œ ë§ˆì§€ë§‰ ì  ì‚­ì œ
 	if (InputManager::GetInstance().GetKeyDown(VK_RBUTTON))
 	{
 		if (!chainPoints.empty())
 			chainPoints.pop_back();
 	}
 
-	// Space·Î ChainObject »ı¼º
+	// Spaceë¡œ ChainObject ìƒì„±
 	if (InputManager::GetInstance().GetKeyDown(VK_SPACE))
 	{
 		CreateChainObject();
 	}
 
-	// BackSpace·Î ChainPoints ºñ¿ì±â
+	// BackSpaceë¡œ ChainPoints ë¹„ìš°ê¸°
 	if (InputManager::GetInstance().GetKeyDown(VK_BACK))
 	{
 		chainPoints.clear();
@@ -185,42 +186,42 @@ void TileMapEditorScene::HandleChainInput()
 
 void TileMapEditorScene::CreateChainObject()
 {
-	// ÃÖ¼Ò 2°³ ÀÌ»óÀÇ Á¡ÀÌ ÀÖ¾î¾ß Ã¼ÀÎ »ı¼º °¡´É
+	// ìµœì†Œ 2ê°œ ì´ìƒì˜ ì ì´ ìˆì–´ì•¼ ì²´ì¸ ìƒì„± ê°€ëŠ¥
 	if (chainPoints.size() < 2) return;
 
 	std::vector<DirectX::SimpleMath::Vector2> finalPoints;
 
 	{
-		// ½ÃÀÛ ÁöÁ¡ º¸Á¤¿ë Æ÷ÀÎÆ® Ãß°¡ (Ã¹ ¹øÂ° Á¡ ±âÁØ ¿Ü°ûÀ¸·Î È®Àå)
+		// ì‹œì‘ ì§€ì  ë³´ì •ìš© í¬ì¸íŠ¸ ì¶”ê°€ (ì²« ë²ˆì§¸ ì  ê¸°ì¤€ ì™¸ê³½ìœ¼ë¡œ í™•ì¥)
 		auto dir = chainPoints[0] - chainPoints[1];
 		dir.Normalize();
 
-		auto start = chainPoints[0] + dir * 10.0f; // º¸Á¤ ±æÀÌ
+		auto start = chainPoints[0] + dir * 10.0f; // ë³´ì • ê¸¸ì´
 		finalPoints.push_back(start);
 	}
 
-	// ½ÇÁ¦ ÀÔ·ÂµÈ Á¡µé Ãß°¡
+	// ì‹¤ì œ ì…ë ¥ëœ ì ë“¤ ì¶”ê°€
 	for (auto& p : chainPoints)
 	{
 		finalPoints.push_back(p);
 	}
 
 	{
-		// ³¡ ÁöÁ¡ º¸Á¤¿ë Æ÷ÀÎÆ® Ãß°¡ (¸¶Áö¸· Á¡ ±âÁØ ¿Ü°ûÀ¸·Î È®Àå)
+		// ë ì§€ì  ë³´ì •ìš© í¬ì¸íŠ¸ ì¶”ê°€ (ë§ˆì§€ë§‰ ì  ê¸°ì¤€ ì™¸ê³½ìœ¼ë¡œ í™•ì¥)
 		int last = chainPoints.size() - 1;
 		auto dir = chainPoints[last] - chainPoints[last - 1];
 		dir.Normalize();
 
-		auto end = chainPoints[last] + dir * 10.0f; // º¸Á¤ ±æÀÌ
+		auto end = chainPoints[last] + dir * 10.0f; // ë³´ì • ê¸¸ì´
 		finalPoints.push_back(end);
 	}
 
-	// Chain ¶óÀÎ ·»´õ¸µ¿ë ¿ÀºêÁ§Æ® »ı¼º
+	// Chain ë¼ì¸ ë Œë”ë§ìš© ì˜¤ë¸Œì íŠ¸ ìƒì„±
 	auto obj = ObjectFactory::CreateChainLine(finalPoints);
-	// Á¤ÀûÀÎ ¹°¸® ¹Ùµğ Ãß°¡
+	// ì •ì ì¸ ë¬¼ë¦¬ ë°”ë”” ì¶”ê°€
 	obj->AddComponent(std::make_shared<RigidBody>(BodyType::Static));
 
-	// ChainCollider ·¹ÀÌ¾î ¼³Á¤
+	// ChainCollider ë ˆì´ì–´ ì„¤ì •
 	auto chain = std::make_shared<ChainCollider>(finalPoints);
 	chain->SetCollisionLayer(CollisionLayer::Ground);
 	chain->SetCollisionMask(
@@ -230,43 +231,43 @@ void TileMapEditorScene::CreateChainObject()
 		CollisionLayer::Raycast
 	);
 
-	// ChainCollider Ãß°¡
+	// ChainCollider ì¶”ê°€
 	obj->AddComponent(chain);
 
-	// Scene¿¡ Ãß°¡ ¹× °ü¸® ¸®½ºÆ®¿¡ ÀúÀå
+	// Sceneì— ì¶”ê°€ ë° ê´€ë¦¬ ë¦¬ìŠ¤íŠ¸ì— ì €ì¥
 	AddObject(obj);
 	chainObjects.push_back(obj);
 
-	// ÀÔ·ÂµÈ Á¡ ÃÊ±âÈ­
+	// ì…ë ¥ëœ ì  ì´ˆê¸°í™”
 	chainPoints.clear();
 }
 
 void TileMapEditorScene::DrawChainPreview()
 {
-	// ÀÔ·ÂµÈ Á¡µéÀ» ¼±À¸·Î ¿¬°áÇÏ¿© ¹Ì¸®º¸±â ·»´õ¸µ
+	// ì…ë ¥ëœ ì ë“¤ì„ ì„ ìœ¼ë¡œ ì—°ê²°í•˜ì—¬ ë¯¸ë¦¬ë³´ê¸° ë Œë”ë§
 	if (chainPoints.size() >= 2)
 	{
 		auto drawList = ImGui::GetBackgroundDrawList();
 
 		for (size_t i = 0; i < chainPoints.size() - 1; ++i)
 		{
-			// ¿ùµå ÁÂÇ¥ -> ½ºÅ©¸° ÁÂÇ¥ º¯È¯
+			// ì›”ë“œ ì¢Œí‘œ -> ìŠ¤í¬ë¦° ì¢Œí‘œ ë³€í™˜
 			auto screen0 = Camera::main->WorldToScreen(chainPoints[i]);
 			auto screen1 = Camera::main->WorldToScreen(chainPoints[i + 1]);
 
-			// ImGui ÁÂÇ¥°è º¸Á¤ (YÃà ¹İÀü)
+			// ImGui ì¢Œí‘œê³„ ë³´ì • (Yì¶• ë°˜ì „)
 			screen0.y = gWinHeight - screen0.y;
 			screen1.y = gWinHeight - screen1.y;
 
 			ImVec2 p0 = ImVec2(screen0.x, screen0.y);
 			ImVec2 p1 = ImVec2(screen1.x, screen1.y);
 
-			// Á¡µé »çÀÌ¸¦ ¼±À¸·Î ¿¬°á
+			// ì ë“¤ ì‚¬ì´ë¥¼ ì„ ìœ¼ë¡œ ì—°ê²°
 			drawList->AddLine(p0, p1, IM_COL32(0, 255, 0, 255), 2.0f);
 		}
 	}
 
-	// ¸¶Áö¸· Á¡°ú ÇöÀç ¸¶¿ì½º¸¦ ¿¬°áÇÏ¿© ´ÙÀ½ ¼± ¹Ì¸®º¸±â
+	// ë§ˆì§€ë§‰ ì ê³¼ í˜„ì¬ ë§ˆìš°ìŠ¤ë¥¼ ì—°ê²°í•˜ì—¬ ë‹¤ìŒ ì„  ë¯¸ë¦¬ë³´ê¸°
 	if (!chainPoints.empty())
 	{
 		auto last = Camera::main->WorldToScreen(chainPoints.back());
@@ -288,16 +289,16 @@ void TileMapEditorScene::DrawEditorUI()
 {
 	ImGui::Begin("TileMap Editor Debug");
 
-	// Map ÀúÀå ¹öÆ°
+	// Map ì €ì¥ ë²„íŠ¼
 	if (ImGui::Button("Save Map"))
 	{
-		// Windows ÆÄÀÏ ÀúÀå ´ÙÀÌ¾ó·Î±× ½ÇÇà (XML È®ÀåÀÚ¸¸ º¸ÀÌµµ·Ï ÇÊÅÍ Àû¿ë)
+		// Windows íŒŒì¼ ì €ì¥ ë‹¤ì´ì–¼ë¡œê·¸ ì‹¤í–‰ (XML í™•ì¥ìë§Œ ë³´ì´ë„ë¡ í•„í„° ì ìš©)
 		std::wstring path = SaveFileDialog(L"XML Files (*.xml)\0*.xml\0");
 
-		// »ç¿ëÀÚ°¡ °æ·Î¸¦ ¼±ÅÃÇÑ °æ¿ì¿¡¸¸ ÀúÀå ½ÇÇà
+		// ì‚¬ìš©ìê°€ ê²½ë¡œë¥¼ ì„ íƒí•œ ê²½ìš°ì—ë§Œ ì €ì¥ ì‹¤í–‰
 		if (!path.empty())
 		{
-			// ÇöÀç chainObjects ¿¡ ÀÖ´Â Chain Á¤º¸ ÀúÀå
+			// í˜„ì¬ chainObjects ì— ìˆëŠ” Chain ì •ë³´ ì €ì¥
 			tileMap->SetChainData(chainObjects);
 			tileMap->Save(path);
 		}
@@ -305,16 +306,16 @@ void TileMapEditorScene::DrawEditorUI()
 
 	ImGui::SameLine();
 
-	// Map ºÒ·¯¿À±â ¹öÆ°
+	// Map ë¶ˆëŸ¬ì˜¤ê¸° ë²„íŠ¼
 	if (ImGui::Button("Load Map"))
 	{
-		// Windows ÆÄÀÏ ¿­±â ´ÙÀÌ¾ó·Î±× ½ÇÇà (XML ÆÄÀÏ¸¸ ¼±ÅÃ °¡´ÉÇÏµµ·Ï ÇÊÅÍ Àû¿ë)
+		// Windows íŒŒì¼ ì—´ê¸° ë‹¤ì´ì–¼ë¡œê·¸ ì‹¤í–‰ (XML íŒŒì¼ë§Œ ì„ íƒ ê°€ëŠ¥í•˜ë„ë¡ í•„í„° ì ìš©)
 		std::wstring path = OpenFileDialog(L"XML Files (*.xml)\0*.xml\0");
 
-		// °æ·Î°¡ ¼±ÅÃµÇ¸é TileMap ·Îµå
+		// ê²½ë¡œê°€ ì„ íƒë˜ë©´ TileMap ë¡œë“œ
 		if (!path.empty())
 		{
-			// ÇöÀç chainObjects ¿¡ ÀÖ´Â Chain Á¤º¸ Á¤¸®
+			// í˜„ì¬ chainObjects ì— ìˆëŠ” Chain ì •ë³´ ì •ë¦¬
 			chainObjects.clear();
 			tileMap->Load(path, this);
 		}
@@ -322,28 +323,28 @@ void TileMapEditorScene::DrawEditorUI()
 
 	ImGui::Separator();
 
-	// ÆíÁı ¸ğµå ¼±ÅÃ (Tile / Chain)
+	// í¸ì§‘ ëª¨ë“œ ì„ íƒ (Tile / Chain)
 	ImGui::Text("Edit Mode");
 
-	// Å¸ÀÏ ¹èÄ¡ ¸ğµå
+	// íƒ€ì¼ ë°°ì¹˜ ëª¨ë“œ
 	if (ImGui::RadioButton("Tile", currentMode == EditorMode::Tile))
 		currentMode = EditorMode::Tile;
 
 	ImGui::SameLine();
 
-	// Ã¼ÀÎ ¹èÄ¡ ¸ğµå
+	// ì²´ì¸ ë°°ì¹˜ ëª¨ë“œ
 	if (ImGui::RadioButton("Chain", currentMode == EditorMode::Chain))
 		currentMode = EditorMode::Chain;
 
 	ImGui::Separator();
 
-	// TileMap ÁÂÇ¥ º¯È¯ È®ÀÎ¿ë µğ¹ö±× Ã¢
+	// TileMap ì¢Œí‘œ ë³€í™˜ í™•ì¸ìš© ë””ë²„ê·¸ ì°½
 	ImGui::Text("Mouse Screen : %.1f, %.1f", mouseScreenPos.x, mouseScreenPos.y);
 	ImGui::Text("Mouse World : %.1f, %.1f", mouseWorldPos.x, mouseWorldPos.y);
 
 	ImGui::Separator();
 
-	// À¯È¿ ¹üÀ§ ¾ÈÀÌ¸é ÃÊ·Ï»ö, ¾Æ´Ï¸é »¡°£»ö Ç¥½Ã
+	// ìœ íš¨ ë²”ìœ„ ì•ˆì´ë©´ ì´ˆë¡ìƒ‰, ì•„ë‹ˆë©´ ë¹¨ê°„ìƒ‰ í‘œì‹œ
 	bool bValid = tileMap->IsValidGrid((int)currentGridIndex.x, (int)currentGridIndex.y);
 	if (bValid)
 		ImGui::TextColored(ImVec4(0, 1, 0, 1), "Grid Index  : [%d, %d]", (int)currentGridIndex.x, (int)currentGridIndex.y);
@@ -354,84 +355,84 @@ void TileMapEditorScene::DrawEditorUI()
 
 	if (currentMode == EditorMode::Tile)
 	{
-		// Å¸ÀÏ ¼±ÅÃ Ã¢
+		// íƒ€ì¼ ì„ íƒ ì°½
 		ImGui::Text("Tile Palette");
 
-		// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏ ¹Ì¸®º¸±â
+		// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ ë¯¸ë¦¬ë³´ê¸°
 		ImGui::Text("Selected Tile");
 
-		// Å¸ÀÏ ÆÈ·¹Æ®¿¡ »ç¿ëÇÒ ÅØ½ºÃ³ °¡Á®¿À±â
+		// íƒ€ì¼ íŒ”ë ˆíŠ¸ì— ì‚¬ìš©í•  í…ìŠ¤ì²˜ ê°€ì ¸ì˜¤ê¸°
 		auto texture = cursorObjectMaterial->GetTexture();
 		if (!texture) return;
 
-		// ImGui ImageButton¿¡¼­ »ç¿ëÇÒ ShaderResourceView Æ÷ÀÎÅÍ
+		// ImGui ImageButtonì—ì„œ ì‚¬ìš©í•  ShaderResourceView í¬ì¸í„°
 		auto srv = texture->GetSRV().Get();
 
-		// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏ ÀÎµ¦½º¸¦ Atlas ±×¸®µå ÁÂÇ¥·Î º¯È¯
+		// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ ì¸ë±ìŠ¤ë¥¼ Atlas ê·¸ë¦¬ë“œ ì¢Œí‘œë¡œ ë³€í™˜
 		UINT x = paintTileIndex % tileCols;
 		UINT y = paintTileIndex / tileCols;
 
-		// Atlas¿¡¼­ Å¸ÀÏ ÇÏ³ª°¡ Â÷ÁöÇÏ´Â UV Å©±â °è»ê
+		// Atlasì—ì„œ íƒ€ì¼ í•˜ë‚˜ê°€ ì°¨ì§€í•˜ëŠ” UV í¬ê¸° ê³„ì‚°
 		float uvWidth = 1.0f / tileCols;
 		float uvHeight = 1.0f / tileRows;
 
-		// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏÀÇ UV ½ÃÀÛ/³¡ ÁÂÇ¥
+		// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ì˜ UV ì‹œì‘/ë ì¢Œí‘œ
 		ImVec2 uv0 = { x * uvWidth, y * uvHeight };
 		ImVec2 uv1 = { uv0.x + uvWidth, uv0.y + uvHeight };
 
-		// AtlasÀÇ Æ¯Á¤ UV ¿µ¿ªÀ» Àß¶ó¼­ Image Ãâ·Â
+		// Atlasì˜ íŠ¹ì • UV ì˜ì—­ì„ ì˜ë¼ì„œ Image ì¶œë ¥
 		ImGui::Image((ImTextureID)srv, ImVec2(80, 80), uv0, uv1);
 
-		// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏ ÀÎµ¦½º
+		// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ ì¸ë±ìŠ¤
 		ImGui::Text("Index : %d", paintTileIndex);
 
 		ImGui::Separator();
 
-		// Å¸ÀÏ¼Â¿¡ Æ÷ÇÔµÈ ¸ğµç Å¸ÀÏÀ» ImageButton ÇüÅÂ·Î Ãâ·Â
+		// íƒ€ì¼ì…‹ì— í¬í•¨ëœ ëª¨ë“  íƒ€ì¼ì„ ImageButton í˜•íƒœë¡œ ì¶œë ¥
 		for (UINT i = 0; i < maxTilesInTileset; ++i)
 		{
-			// ÇöÀç Å¸ÀÏ ÀÎµ¦½º¸¦ Atlas ±×¸®µå ÁÂÇ¥·Î º¯È¯
+			// í˜„ì¬ íƒ€ì¼ ì¸ë±ìŠ¤ë¥¼ Atlas ê·¸ë¦¬ë“œ ì¢Œí‘œë¡œ ë³€í™˜
 			UINT x = i % tileCols;
 			UINT y = i / tileCols;
 
-			// Atlas¿¡¼­ Å¸ÀÏ ÇÏ³ª°¡ Â÷ÁöÇÏ´Â UV Å©±â °è»ê
+			// Atlasì—ì„œ íƒ€ì¼ í•˜ë‚˜ê°€ ì°¨ì§€í•˜ëŠ” UV í¬ê¸° ê³„ì‚°
 			float uvWidth = 1.0f / tileCols;
 			float uvHeight = 1.0f / tileRows;
 
-			// ÇöÀç Å¸ÀÏÀÇ UV ½ÃÀÛ/³¡ ÁÂÇ¥
+			// í˜„ì¬ íƒ€ì¼ì˜ UV ì‹œì‘/ë ì¢Œí‘œ
 			ImVec2 uv0 = { x * uvWidth, y * uvHeight };
 			ImVec2 uv1 = { uv0.x + uvWidth, uv0.y + uvHeight };
 
-			// ÇöÀç ¼±ÅÃµÈ Å¸ÀÏÀÎÁö ¿©ºÎ
+			// í˜„ì¬ ì„ íƒëœ íƒ€ì¼ì¸ì§€ ì—¬ë¶€
 			bool selected = (paintTileIndex == i);
 
-			// ¼±ÅÃµÈ Å¸ÀÏÀº ¹öÆ° »ö»ó°ú Å×µÎ¸®¸¦ º¯°æÇÏ¿© °­Á¶ Ç¥½Ã
+			// ì„ íƒëœ íƒ€ì¼ì€ ë²„íŠ¼ ìƒ‰ìƒê³¼ í…Œë‘ë¦¬ë¥¼ ë³€ê²½í•˜ì—¬ ê°•ì¡° í‘œì‹œ
 			if (selected)
 			{
 				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 1, 0, 1));
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 2.0f);
 			}
 
-			// µ¿ÀÏÇÑ ¹öÆ° ID Ãæµ¹À» ¹æÁöÇÏ±â À§ÇØ ÀÎµ¦½º¸¦ ID ½ºÅÃ¿¡ Ãß°¡
+			// ë™ì¼í•œ ë²„íŠ¼ ID ì¶©ëŒì„ ë°©ì§€í•˜ê¸° ìœ„í•´ ì¸ë±ìŠ¤ë¥¼ ID ìŠ¤íƒì— ì¶”ê°€
 			ImGui::PushID(i);
 
-			// AtlasÀÇ Æ¯Á¤ UV ¿µ¿ªÀ» Àß¶ó¼­ ImageButtonÀ¸·Î Ãâ·Â
+			// Atlasì˜ íŠ¹ì • UV ì˜ì—­ì„ ì˜ë¼ì„œ ImageButtonìœ¼ë¡œ ì¶œë ¥
 			if (ImGui::ImageButton("Tile", (ImTextureID)srv, ImVec2(40, 40), uv0, uv1))
 			{
-				// Å¬¸¯ ½Ã ÇØ´ç Å¸ÀÏÀ» ÇöÀç ÆäÀÎÆ® Å¸ÀÏ·Î ¼±ÅÃ
+				// í´ë¦­ ì‹œ í•´ë‹¹ íƒ€ì¼ì„ í˜„ì¬ í˜ì¸íŠ¸ íƒ€ì¼ë¡œ ì„ íƒ
 				paintTileIndex = i;
 			}
 
 			ImGui::PopID();
 
-			// ¼±ÅÃ °­Á¶ ½ºÅ¸ÀÏ º¹¿ø
+			// ì„ íƒ ê°•ì¡° ìŠ¤íƒ€ì¼ ë³µì›
 			if (selected)
 			{
 				ImGui::PopStyleColor();
 				ImGui::PopStyleVar();
 			}
 
-			// ÇÑ ÁÙ¿¡ tileCols °³¾¿ ¹èÄ¡
+			// í•œ ì¤„ì— tileCols ê°œì”© ë°°ì¹˜
 			if ((i + 1) % tileCols != 0)
 				ImGui::SameLine();
 		}
@@ -439,7 +440,7 @@ void TileMapEditorScene::DrawEditorUI()
 
 	else if (currentMode == EditorMode::Chain)
 	{
-		// Ã¼ÀÎ »ı¼º ¸ğµå ¾È³» UI
+		// ì²´ì¸ ìƒì„± ëª¨ë“œ ì•ˆë‚´ UI
 		ImGui::Text("Chain Mode");
 		ImGui::Text("Left Click : Add Point");
 		ImGui::Text("Right Click : Remove Point");

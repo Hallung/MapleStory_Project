@@ -7,6 +7,7 @@
 #include "Components/MeshRenderer.h"
 #include "Resources/Material.h"
 #include "Utilities/ObjectFactory.h"
+#include "Utilities/VirtualKey.h"
 
 namespace
 {
@@ -28,6 +29,9 @@ constexpr float halfValue = 0.5f;
 
 void ForestOfTrialsScene::Init()
 {
+	isCleared = false;
+	clearTime = 0.0;
+
 	float worldMapWidth = mapWidth * tileSize;
 	float worldMapHeight = mapHeight * tileSize;
 
@@ -57,6 +61,36 @@ void ForestOfTrialsScene::Init()
 	tileMap = std::make_shared<TileMap>(mapWidth, mapHeight, tileSize, L"_Textures/Map/MapleTile.png", tileCols, tileRows);
 	tileMap->Load(L"_XML/ForestOfTrials.xml", this);
 
+	{
+		auto guideImage = ObjectFactory::CreateSprite(
+			DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
+			DirectX::SimpleMath::Vector2(150.0f, 90.0f), 0.0f,
+			L"_Textures/MoveGuide.png"
+		);
+
+		AddObject(guideImage);
+	}
+
+	{
+		auto guideImage = ObjectFactory::CreateSprite(
+			DirectX::SimpleMath::Vector2(gWinWidth * halfValue + 200.0f, gWinHeight * halfValue),
+			DirectX::SimpleMath::Vector2(130.0f, 50.0f), 0.0f,
+			L"_Textures/AttackGuide.png"
+		);
+
+		AddObject(guideImage);
+	}
+
+	{
+		auto guideImage = ObjectFactory::CreateSprite(
+			DirectX::SimpleMath::Vector2(gWinWidth + 550.0f, gWinHeight * halfValue + 100.0f),
+			DirectX::SimpleMath::Vector2(60.0f, 60.0f), 0.0f,
+			L"_Textures/JumpGuide.png"
+		);
+
+		AddObject(guideImage);
+	}
+
 	auto player = std::make_shared<Player>(
 		DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
 		DirectX::SimpleMath::Vector2(scale),
@@ -66,6 +100,8 @@ void ForestOfTrialsScene::Init()
 	AddObject(player->GetPlayer());
 
 	worldPlayer = player->GetPlayer();
+
+	SoundManager::GetInstance().PlayBGM(L"_Sounds/BGM/FloralLife.wav");
 }
 
 void ForestOfTrialsScene::Destroy()
@@ -75,10 +111,24 @@ void ForestOfTrialsScene::Destroy()
 	backGroundImage1 = nullptr;
 	backGroundImage2 = nullptr;
 	backGroundImage3 = nullptr;
+	SoundManager::GetInstance().StopBGM();
 }
 
 void ForestOfTrialsScene::Update()
 {
+	if (!isCleared)
+	ImGuiManager::GetInstance().ShowPlayTime();
+
+	if (!isCleared && InputManager::GetInstance().GetKeyDown(VK_F))
+	{
+		isCleared = true;
+		clearTime = TimeManager::GetInstance().GetWorldTime();
+	}
+	else if (isCleared)
+	{
+		ImGuiManager::GetInstance().ShowClearTime(clearTime);
+	}
+
 	backGroundImage1->Update();
 	backGroundImage2->Update();
 	backGroundImage3->Update();

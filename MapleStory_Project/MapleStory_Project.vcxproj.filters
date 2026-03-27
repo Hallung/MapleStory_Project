@@ -149,6 +149,12 @@
     <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
     <ClCompile Include="Objects\StaticObjects\ClearEffect.cpp" />
     <ClCompile Include="Components\PlayEffect.cpp" />
+    <ClCompile Include="Managers\SoundManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\TitleScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -333,6 +339,12 @@
     <ClInclude Include="Objects\StaticObjects\Portal.h" />
     <ClInclude Include="Objects\StaticObjects\ClearEffect.h" />
     <ClInclude Include="Components\PlayEffect.h" />
+    <ClInclude Include="Managers\SoundManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\TitleScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

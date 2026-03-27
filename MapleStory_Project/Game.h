@@ -2,6 +2,14 @@
 
 class Scene;
 
+enum class SceneID
+{
+	Sandbox = 0,
+	Editor,
+	Title,
+	Forest
+};
+
 // 게임 전체 흐름을 관리하는 최상위 클래스
 class Game
 {
@@ -20,9 +28,12 @@ private:
 	// index : sceneList에 등록된 Scene 인덱스
 	//=======================================
 	void SwitchScene(size_t index);
+	void SwitchScene(SceneID id);
 
 	std::shared_ptr<class Camera> mainCamera; // 현재 게임에서 사용하는 Main Camera
 
 	std::vector<std::shared_ptr<Scene>> sceneList; // Scene 목록, Game이 소유하며 Scene 전환에 사용
 	std::shared_ptr<Scene> currentScene; //현재 실행 중인 Scene
+
+	SceneID currentSceneID = SceneID::Title;
 };
