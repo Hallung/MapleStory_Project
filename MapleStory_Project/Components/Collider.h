@@ -52,8 +52,7 @@ public:
 
 	bool CheckGrounded();
 
-	void SetIsAlive(bool alive) { isAlive = alive; }
-	bool GetIsAlive() const { return isAlive; }
+	bool IsFullyGrounded();
 
 protected:
 	// 실제 Shape 생성 함수, 각 Collider 타입에서 구현
@@ -86,6 +85,4 @@ protected:
 
 	// Collider 전용 Scale 값(기본값 (0,0)은 Transform Scale 사용을 의미)
 	DirectX::SimpleMath::Vector2 scale = { 0.0f,0.0f };
-
-	bool isAlive = true;
 };

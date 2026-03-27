@@ -1,7 +1,7 @@
 <Texture path="_Textures/OrangeMushroom.png">
-	<Clip name="Stand" x="10" y="370" w="185" h="80" count="2" loop="true" speed="0.4"/>
-	<Clip name="Die" x="10" y="10" w="280" h="80" count="3" loop="false" speed="0.2"/>
+	<Clip name="Stand" x="10" y="370" w="170" h="80" count="2" loop="true" speed="0.4"/>
+	<Clip name="Die" x="10" y="10" w="250" h="80" count="3" loop="false" speed="0.2"/>
 	<Clip name="Hit" x="10" y="100" w="80" h="80" count="1" loop="false" speed="0.3"/>
 	<Clip name="Jump" x="10" y="190" w="80" h="80" count="1" loop="false" speed="0.3"/>
-	<Clip name="Move" x="10" y="280" w="280" h="80" count="3" loop="true" speed="0.3"/>
+	<Clip name="Move" x="10" y="280" w="250" h="80" count="3" loop="true" speed="0.3"/>
 </Texture>
