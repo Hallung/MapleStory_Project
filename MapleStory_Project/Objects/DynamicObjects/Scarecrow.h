@@ -1,5 +1,5 @@
 #pragma once
-#include "Objects/DynamicObjects/Monster.h"
+#include "Monster.h"
 
 // 허수아비 몬스터 클래스
 class Scarecrow : public Monster

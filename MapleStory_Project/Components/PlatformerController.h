@@ -1,8 +1,6 @@
 #pragma once
 #include "Component.h"
 
-
-
 //=======================================
 // 2D 플렛폼 캐릭터 이동 컨트롤러 컴포넌트
 // 좌우 이동입력 처리 및 속도 적용
@@ -16,6 +14,8 @@ public:
 	// Component 이름을 "PlatformerController"로 설정
 	//===============================================
 	PlatformerController();
+
+	void Awake() override;
 
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;
@@ -32,6 +32,9 @@ private:
 
 	// 공격 시스템을 처리하는 함수
 	void Attack();
+
+	// 포탈을 사용하는 함수
+	void EnterPortal();
 
 	// 상태를 업데이트 하는 함수
 	void UpdateState();
@@ -58,4 +61,13 @@ private:
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
+
+private:
+	std::shared_ptr<class Animator> animator;
+	std::shared_ptr<Collider> playerCollider;
+	std::shared_ptr<Collider> attackCollider;
+	std::shared_ptr<class RigidBody> rigidBody;
+	std::shared_ptr<class PlayerAbility> playerAbility;
+	std::shared_ptr<class PlayerState> playerState;
+	std::shared_ptr<class HitEvents> hitEvents;
 };

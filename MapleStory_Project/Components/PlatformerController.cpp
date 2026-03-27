@@ -16,6 +16,19 @@ PlatformerController::PlatformerController()
 	: Component("PlatformerController")
 {
 }
+
+void PlatformerController::Awake()
+{
+	// Player가 가지고 있는 컴포넌트 정보를 캐싱
+	animator = GetOwner()->GetComponent<Animator>("Animator");
+	playerCollider = GetOwner()->GetComponent<Collider>("PlayerCollider");
+	attackCollider = GetOwner()->GetComponent<Collider>("AttackCollider");
+	rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
+	playerAbility = GetOwner()->GetComponent<PlayerAbility>("PlayerAbility");
+	playerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
+	hitEvents = GetOwner()->GetComponent<HitEvents>("HitEvents");
+}
+
 //===================================
 // 매 프레임 입력 기반 이동 처리
 // A/D 키 입력으로 좌우 방향 벡터 생성
@@ -30,6 +43,11 @@ void PlatformerController::Update()
 	UpdateState();
 
 	DirectX::SimpleMath::Vector2 dir;
+
+	if (InputManager::GetInstance().GetKeyPress(VK_UP))
+	{
+		EnterPortal();
+	}
 
 	if (InputManager::GetInstance().GetKeyPress(VK_LCONTROL))
 	{
@@ -46,8 +64,7 @@ void PlatformerController::Update()
 			// 현재 방향 설정
 			dir.x += 1.0f;
 
-			auto collider = GetOwner()->GetComponent<Collider>("AttackCollider");
-			DirectX::SimpleMath::Vector2 offset = collider->GetOffsetData();
+			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
 			auto transform = GetOwner()->GetTransform();
 			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 			float absScaleX = fabsf(scale.x);
@@ -59,7 +76,7 @@ void PlatformerController::Update()
 			if (offset.x < 0.0f)
 			{
 				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				collider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
 			}
 		}
 		// 왼쪽 이동 입력
@@ -68,8 +85,7 @@ void PlatformerController::Update()
 			// 현재 방향 설정
 			dir.x -= 1.0f;
 
-			auto collider = GetOwner()->GetComponent<Collider>("AttackCollider");
-			DirectX::SimpleMath::Vector2 offset = collider->GetOffsetData();
+			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
 			auto transform = owner->GetTransform();
 			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
 			float absScaleX = fabsf(scale.x);
@@ -81,16 +97,14 @@ void PlatformerController::Update()
 			if (offset.x > 0.0f)
 			{
 				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				collider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
 			}
 		}
-
+		
 		if (InputManager::GetInstance().GetKeyPress(VK_LMENU))
-		{
-			auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
-
+		{			
 			// Player 상태 확인 (이미 점프 중이면 중복 점프 방지)
-			if (ownerState->GetState() != Player::State::JUMPING && !isJump)
+			if (playerState->GetState() != Player::State::JUMPING && !isJump)
 				Jump();
 		}
 	}
@@ -114,9 +128,6 @@ void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 	// 수평 입력이 없으면 이동 없음
 	if (dir.x == 0.0f) return;
 
-	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
-	auto playerAbility = GetOwner()->GetComponent<PlayerAbility>("PlayerAbility");
-
 	// 현재 Box2D 속도 조회 (중력 포함)
 	b2Vec2 gravity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
 
@@ -139,8 +150,6 @@ void PlatformerController::Jump()
 {
 	const float jumpPower = 12.0f;	// 점프 시 가해질 임펄스 세기
 
-	auto rigidBody = GetOwner()->GetComponent<RigidBody>("RigidBody");
-
 	//========================================================
 	// 현재 수직 속도 제거
 	// (기존 낙하/상승 속도를 초기화하여 점프 높이 일정하게 유지)
@@ -159,10 +168,6 @@ void PlatformerController::Hit()
 {
 	const float pushPower = 8.0f;
 
-	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
-	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
-	auto ownerCollider = GetOwner()->GetComponent<Collider>("PlayerCollider");
-
 	// 무적 타이머 갱신
 	if (invincibleTimer > 10.0f)
 		invincibleTimer = 10.0f;	// 과도한 증가 방지
@@ -170,7 +175,7 @@ void PlatformerController::Hit()
 		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
 
 	// 몬스터와 충돌 중인지 확인
-	if (hitEvent->IsColliding(ownerCollider.get(), CollisionLayer::Monster))
+	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Monster))
 	{
 		// 무적 시간이 끝났을 때만 피격 처리
 		if (invincibleTimer >= invincibleCooldown)
@@ -183,7 +188,7 @@ void PlatformerController::Hit()
 			b2Body_SetLinearVelocity(rigidBody->GetBodyId(), velocity);
 
 			// 몬스터 위치 기반 넉백 방향 계산
-			b2Vec2 monsterPos = hitEvent->GetMonsterPosition();
+			b2Vec2 monsterPos = hitEvents->GetMonsterPosition();
 			b2Vec2 ownerPos = b2Body_GetPosition(rigidBody->GetBodyId());
 
 			// 플레이어 - 몬스터 방향 벡터
@@ -194,7 +199,7 @@ void PlatformerController::Hit()
 
 
 			// 위 + 좌우 방향 임펄스 적용
-			if (ownerState->GetState() == Player::State::JUMPING)
+			if (playerState->GetState() == Player::State::JUMPING)
 			{
 				b2Vec2 impulse(dir * pushPower, 0.0f);
 				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
@@ -213,11 +218,8 @@ void PlatformerController::Hit()
 
 void PlatformerController::Attack()
 {
-	auto animator = GetOwner()->GetComponent<Animator>("Animator");
-	auto hitEvent = GetOwner()->GetComponent<HitEvents>("HitEvents");
-	auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
 	// AttackCollider과 가장 가까운 충돌체의 정보를 저장
-	auto nearsetTarget = hitEvent->GetNearestTarget(attackCol.get(), CollisionLayer::Monster);
+	auto nearsetTarget = hitEvents->GetNearestTarget(attackCollider.get(), CollisionLayer::Monster);
 
 	// 애니메이션의 현재 인덱스 정보를 저장
 	UINT clipCurrentIndex = animator->GetCurrentFrameIndex();
@@ -249,14 +251,19 @@ void PlatformerController::Attack()
 	}
 }
 
+void PlatformerController::EnterPortal()
+{
+	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Portal))
+	{
+		
+	}
+}
+
 // 현재 플레이어 상황을 기반으로 최종 State를 하나의 규칙으로 결정
 void PlatformerController::UpdateState()
 {
-	auto collider = GetOwner()->GetComponent<Collider>("PlayerCollider");
-	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
-	
 	// 지면 충돌 확인
-	bool grounded = collider->CheckGrounded();
+	bool grounded = playerCollider->CheckGrounded();
 	
 	// 현재 상태 저장
 	Player::State newState;
@@ -297,30 +304,27 @@ void PlatformerController::UpdateState()
 	}
 
 	// 현재 상태가 newState와 다르면 newState 상태로 변경
-	if (ownerState->GetState() != newState)
+	if (playerState->GetState() != newState)
 	{
-		ownerState->SetState(newState);
+		playerState->SetState(newState);
 	}
 }
 
 // 현재 State에 따라 애니메이션 설정
 void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 {
-	auto animator = GetOwner()->GetComponent<Animator>("Animator");
-	auto ownerState = GetOwner()->GetComponent<PlayerState>("PlayerState");
-
 	// Animator가 존재하지 않으면 애니메이션 업데이트 불가
 	if (animator == nullptr) return;
 
 	//Player 상태가 Attack일 경우 Attack 애니메이션 재생
-	if (ownerState->GetState() == Player::State::ATTACKING)
+	if (playerState->GetState() == Player::State::ATTACKING)
 	{
 		animator->Play(L"Attack");
 	}
 	else
 	{
 		// Player 상태가 Jumping일 경우 Jump 애니메이션 재생
-		if (ownerState->GetState() == Player::State::JUMPING)
+		if (playerState->GetState() == Player::State::JUMPING)
 		{
 			animator->Play(L"Jump");
 		}
@@ -333,7 +337,7 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 			else
 			{
 				// 이동하지 않는 경우 상태 기반 애니메이션 선택
-				if (ownerState->GetState() == Player::State::HITTING)
+				if (playerState->GetState() == Player::State::HITTING)
 				{
 					// 피격 중
 					animator->Play(L"Hit");
@@ -355,14 +359,13 @@ void PlatformerController::UpdateAnimation(DirectX::SimpleMath::Vector2 dir)
 void PlatformerController::ApplyDamage(Collider* target)
 {
 	auto ability = target->GetOwner()->GetComponent<MonsterAbility>("MonsterAbility");
-	auto attackCol = GetOwner()->GetComponent<Collider>("AttackCollider");
-	auto ownerAbility = GetOwner()->GetComponent<PlayerAbility>("PlayerAbility");
+	
 	// 플레이어 공격력 가져오기
-	UINT damage = ownerAbility->GetAttackPower();
+	UINT damage = playerAbility->GetAttackPower();
 
 	// MonsterAbility가 존재할 경우 데미지 적용
 	if (ability)
-		ability->TakeDamage(attackCol.get(), damage);
+		ability->TakeDamage(attackCollider.get(), damage);
 }
 
 //=================================================
@@ -373,12 +376,10 @@ void PlatformerController::ApplyDamage(Collider* target)
 //=================================================
 void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 {
-	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
-
 	if (!isJump) return;	// 점프 상태가 아니면 공중 제어 불필요
 
 	// 현재 물리 속도 조회
-	b2Vec2 vel = b2Body_GetLinearVelocity(ownerRb->GetBodyId());
+	b2Vec2 vel = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
 
 	// 수평 입력이 없는 경우 -> 공중 감속 적용
 	if (abs(dir.x) < 0.01f)
@@ -391,5 +392,5 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 	}
 
 	// 수정된 속도를 Box2D Body에 적용
-	b2Body_SetLinearVelocity(ownerRb->GetBodyId(), vel);
+	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 }

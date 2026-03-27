@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Objects/Object.h"
 #include "Resources/Material.h"
 #include "Components/Animator.h"
 #include "Components/MeshRenderer.h"
@@ -15,7 +16,7 @@ namespace
 {
 constexpr float scaleX = 35.0f;
 constexpr float scaleY = 70.0f;
-constexpr DirectX::SimpleMath::Vector2 offset = { 30.0f, 0.0f };
+constexpr DirectX::SimpleMath::Vector2 offset = { 50.0f, 0.0f };
 }
 
 Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
@@ -53,7 +54,11 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	// Player가 충돌할 수 있는 레이어 설정
 	// Ground와 Monster 레이어와만 충돌하도록 마스크 지정
 	//=================================================
-	playerCol->SetCollisionMask(CollisionLayer::Ground | CollisionLayer::Monster);
+	playerCol->SetCollisionMask(
+		CollisionLayer::Ground | 
+		CollisionLayer::Monster |
+		CollisionLayer::Portal
+	);
 
 	// Player Object에 Collider 컴포넌트 추가
 	player->AddComponent(playerCol);
@@ -94,9 +99,4 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 	playerAnimator->Load(L"_Animations/Player1.xml");
 	// 초기 상태 설정
 	playerAnimator->Play(L"Stand");
-
-	// Player의 충돌 판정을 위한 HitEvents 추가
-	player->AddComponent(std::make_shared<HitEvents>());
-
-
 }

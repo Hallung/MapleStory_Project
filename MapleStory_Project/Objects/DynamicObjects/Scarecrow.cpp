@@ -7,6 +7,7 @@
 #include "Components/Animator.h"
 #include "Components/MonsterAbility.h"
 #include "Components/MonsterState.h"
+#include "Components/HitEvents.h"
 #include "Resources/Material.h"
 
 Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath, BodyType bodyType, const std::string& name)
@@ -54,7 +55,7 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	monsterCol->SetColliderScale(DirectX::SimpleMath::Vector2(10.0f, 86.0f));
 	// 충돌 레이어 : Monster
 	monsterCol->SetCollisionLayer(CollisionLayer::Monster);
-	// 충돌 대상 : Player, Ground
+	// 충돌 대상 : Ground
 	monsterCol->SetCollisionMask(static_cast<uint32_t>(CollisionLayer::Ground));
 	monster->AddComponent(monsterCol);
 
@@ -70,4 +71,6 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	// 기본 상태 : Stand 애니메이션 재생
 	monsterAni->Play(L"Stand");
 	monster->AddComponent(monsterAni);
+
+	monster->AddComponent(std::make_shared<HitEvents>());
 }
