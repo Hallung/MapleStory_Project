@@ -212,7 +212,6 @@ bool Collider::CheckGrounded()
 	// RayCast 시작 위치
 	DirectX::SimpleMath::Vector2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + totalDistance };
 
-
 	//=============================================================
 	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
 	// origin : Ray 시작 위치
@@ -231,6 +230,46 @@ bool Collider::CheckGrounded()
 	bool hit = false;
 
 	if (centerHit.hit || rightHit.hit || leftHit.hit) hit = true;
+	else hit = false;
+
+	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
+	// 충돌이 없으면 false (공중 상태)
+	return hit;
+}
+
+bool Collider::IsFullyGrounded()
+{
+	// Owner 객체의 Transform Scale 및 Position을 가져오기
+	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
+
+	// 객체 높이의 절반 (캐릭터 중심 기준으로 발 위치를 계산할 때 사용)
+	float halfHeight = scale.y * 0.5f;
+	float halfWidth = scale.x * 0.5f;
+
+	// Ray가 검사할 최대 거리
+	float totalDistance = 0.3f;
+
+	// RayCast 시작 위치
+	DirectX::SimpleMath::Vector2 origin = { ownerPosition.x , ownerPosition.y - halfHeight};
+
+	//=============================================================
+	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
+	// origin : Ray 시작 위치
+	// {0, -1} : 아래 방향 (Down)
+	// totalDistance : Ray 길이
+	// CollisionLayer::Ground : Ground 레이어만 충돌 검사
+	//=============================================================
+	RaycastHit centerHit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	DirectX::SimpleMath::Vector2 rightOrigin = { origin.x + halfWidth, origin.y };
+	RaycastHit rightHit = PhysicsManager::GetInstance().Raycast(rightOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	DirectX::SimpleMath::Vector2 leftOrigin = { origin.x - halfWidth, origin.y };
+	RaycastHit leftHit = PhysicsManager::GetInstance().Raycast(leftOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
+
+	bool hit = false;
+
+	if (centerHit.hit && rightHit.hit && leftHit.hit) hit = true;
 	else hit = false;
 
 	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
