@@ -54,6 +54,8 @@ private:
 	void SetIsFinised(bool finished) { isFinished = finished; }
 	bool GetIsFinished() const { return isFinished; }
 
+	void ResetData();
+
 private:
 	// 현재 무적 타이머
 	float invincibleTimer = 3.0f;

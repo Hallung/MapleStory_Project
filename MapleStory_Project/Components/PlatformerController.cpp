@@ -284,6 +284,7 @@ void PlatformerController::EnterPortal()
 	{
 		// TODO: 포탈 상호작용 시 필요한 동작은 여기서 진행
 
+		ResetData();
 		isFinished = true;
 	}
 }
@@ -422,4 +423,15 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 
 	// 수정된 속도를 Box2D Body에 적용
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
+}
+
+void PlatformerController::ResetData()
+{
+	float invincibleTimer = 3.0f;
+	bool isJump = false;
+	bool attackSignal = false;
+	bool canAttack = false;
+	bool playSound = false;
+	playerState->SetState(Player::State::STANDING);
+	animator->Play(L"Stand");
 }
