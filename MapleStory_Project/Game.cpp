@@ -74,7 +74,15 @@ void Game::Update()
 	{
 		if (InputManager::GetInstance().GetKeyDown(VK_RETURN))
 		{
-			SwitchScene(SceneID::Forest);
+			SwitchScene(currentScene->GetNextSceneID());
+		}
+	}
+
+	if (currentSceneID == SceneID::Forest && currentScene->GetRequestSceneChange() == true)
+	{
+		if (InputManager::GetInstance().GetKeyDown(VK_RETURN))
+		{
+			SwitchScene(currentScene->GetNextSceneID());
 		}
 	}
 
@@ -122,6 +130,7 @@ void Game::SwitchScene(size_t index)
 
 	currentScene = sceneList[index]; // Scene 변경
 	currentSceneID = static_cast<SceneID>(index); // SceneID 값 변경
+	currentScene->ResetRequestSceneChange(); // requestSceneChange 변수 초기화
 
 	mainCamera->Reset(); // 메인 카메라 포지션 및 줌 초기화
 	PhysicsManager::GetInstance().Init(); // Physics 시스템 초기화

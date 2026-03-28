@@ -185,6 +185,9 @@ void ImGuiManager::ShowClearTime(double time)
 	char text[64];
 	sprintf_s(text, "CLEAR TIME : %02d:%02d", minutes, seconds);
 
+	char text2[64];
+	sprintf_s(text2, "PRESS ENTER TO TITLE");
+
 	// 중앙 정렬 (텍스트 기준)
 	float textWidth = ImGui::CalcTextSize(text).x;
 	float windowWidth = ImGui::GetWindowSize().x;
@@ -192,6 +195,8 @@ void ImGuiManager::ShowClearTime(double time)
 
 	// 연두색 계열 색상으로 클리어 타임 출력
 	ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), text);
+	// 검은색 색상으로 안내 출력
+	ImGui::TextColored(ImVec4(0.0f, 0.0f, 0.0f, 1.0f), text2);
 
 	ImGui::End();
 }
