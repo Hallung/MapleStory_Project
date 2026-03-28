@@ -48,4 +48,6 @@ private:
 	std::shared_ptr<class HitEvents> hitEvents;
 
 	MonsterBlackboard blackboard;	// AI 공유 데이터
+
+	bool started = false;	// 업데이트 첫 프레임 동작 방지용
 };
