@@ -62,7 +62,9 @@ Scarecrow::Scarecrow(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath:
 	// State를 관리하는 컴포넌트 추가
 	monster->AddComponent(std::make_shared<MonsterState>());
 	// Ability를 관리하는 컴포넌트 추가
-	monster->AddComponent(std::make_shared<MonsterAbility>());
+	auto monsterAbility = std::make_shared<MonsterAbility>();
+	monsterAbility->SetSoundPath("_Sounds/SFX/ScarecrowHit.wav");
+	monster->AddComponent(monsterAbility);
 
 	// Animator 추가 (애니메이션 시스템)
 	auto monsterAni = std::make_shared<Animator>();

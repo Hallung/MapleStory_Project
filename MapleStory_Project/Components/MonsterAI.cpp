@@ -28,6 +28,13 @@ void MonsterAI::Awake()
 // 매 프레임 Behavior Tree 실행
 void MonsterAI::Update()
 {
+	// 첫 프레임 AI 금지(Transform 튀는 현상 방지)
+	if (!started)
+	{
+		started = true;
+		return;
+	}
+
 	// 피격 또는 사망 중에는 AI 정지
 	if (state->GetState() == Monster::State::HITTING ||
 		state->GetState() == Monster::State::DIE)

@@ -22,12 +22,16 @@ public:
 
 	void TakeDamage(Collider* other, UINT damage);	// 데미지 적용
 
+	void SetSoundPath(const std::string& path) { soundPath = path; }
+
 private:
 	UINT _hp = 100;				// 체력
 	UINT _attackPower = 10;		// 공격력
 	float _moveSpeed = 150.0f;	// 이동 속도
 
 	float lastSpeed = 0.0f;	// 속도 변경 전 값 저장
+
+	std::string soundPath = "";
 
 private:
 	std::shared_ptr<Collider> monsterCollider;

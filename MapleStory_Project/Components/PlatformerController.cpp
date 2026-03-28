@@ -36,6 +36,8 @@ void PlatformerController::Awake()
 //===================================
 void PlatformerController::Update()
 {
+	if (isFinished) return;
+
 	// 매 프레임 피격 판정 처리
 	Hit();
 
@@ -158,6 +160,8 @@ void PlatformerController::Jump()
 	vel.y = 0.0f;
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 
+	SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Jump.wav");
+
 	// 위 방향으로 임펄스 적용
 	b2Vec2 impulse(0.0f, jumpPower);
 	b2Body_ApplyLinearImpulseToCenter(rigidBody->GetBodyId(), impulse, true);
@@ -221,6 +225,8 @@ void PlatformerController::Attack()
 	// AttackCollider과 가장 가까운 충돌체의 정보를 저장
 	auto nearsetTarget = hitEvents->GetNearestTarget(attackCollider.get(), CollisionLayer::Monster);
 
+	auto transform = GetOwner()->GetTransform();
+
 	// 애니메이션의 현재 인덱스 정보를 저장
 	UINT clipCurrentIndex = animator->GetCurrentFrameIndex();
 	// 애니메이션 이름 정보를 저장
@@ -229,13 +235,31 @@ void PlatformerController::Attack()
 	// 애니메이션 이름이 Attack이고 현재 인덱스가 2 일때 실행
 	if (clipName == L"Attack" && clipCurrentIndex == 2)
 	{
+		if (!playSound)
+		{
+			SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Attack.wav");
+			playSound = true;
+		}
+
 		// 가까운 타겟이 있고 공격 가능 상태이면 실행
 		if (nearsetTarget && canAttack)
 		{
-			// 타겟에 데미지 주기
-			ApplyDamage(nearsetTarget);
-			// 타겟을 공격 했으면 해당 애니메이션이 끝날때 까지 공격 불가
-			canAttack = false;
+			float playerDir = transform->GetScale().x > 0 ? -1.0f : 1.0f;
+
+			DirectX::SimpleMath::Vector2 toTarget =
+				nearsetTarget->GetOwner()->GetTransform()->GetPosition()
+				- GetOwner()->GetTransform()->GetPosition();
+
+			float dot = toTarget.x * playerDir;
+
+			if (dot > 0)	// 앞쪽일 때만
+			{
+				// 타겟에 데미지 주기
+				ApplyDamage(nearsetTarget);
+
+				// 타겟을 공격 했으면 해당 애니메이션이 끝날때 까지 공격 불가
+				canAttack = false;
+			}
 		}
 
 		if (animator->IsFinished())
@@ -247,7 +271,10 @@ void PlatformerController::Attack()
 	else
 	{
 		// 위 조건이 아닐 경우 공격 가능 상태 유지
-		canAttack = true;
+		if (!canAttack)
+			canAttack = true;
+		if (playSound)
+			playSound = false;
 	}
 }
 
@@ -255,7 +282,10 @@ void PlatformerController::EnterPortal()
 {
 	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Portal))
 	{
-		
+		// TODO: 포탈 상호작용 시 필요한 동작은 여기서 진행
+
+		ResetData();
+		isFinished = true;
 	}
 }
 
@@ -393,4 +423,15 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 
 	// 수정된 속도를 Box2D Body에 적용
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
+}
+
+void PlatformerController::ResetData()
+{
+	float invincibleTimer = 3.0f;
+	bool isJump = false;
+	bool attackSignal = false;
+	bool canAttack = false;
+	bool playSound = false;
+	playerState->SetState(Player::State::STANDING);
+	animator->Play(L"Stand");
 }

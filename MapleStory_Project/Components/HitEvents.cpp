@@ -151,6 +151,10 @@ Collider* HitEvents::GetNearestTarget(Collider* self, CollisionLayer targetLayer
 				float dy = pos.y - ownerPos.y;
 				float distSq = dx * dx + dy * dy;
 
+				float attackRange = 1.5f;
+
+				if (distSq > attackRange * attackRange) continue;
+
 				// 현재까지 가장 가까운 대상인지 확인
 				if (distSq < minDistSq)
 				{

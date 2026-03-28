@@ -65,6 +65,7 @@ OrangeMushroom::OrangeMushroom(DirectX::SimpleMath::Vector2 position, DirectX::S
 	monster->AddComponent(std::make_shared<MonsterState>());
 	// Ability를 관리하는 컴포넌트 추가
 	auto monsterAbility = std::make_shared<MonsterAbility>();
+	monsterAbility->SetSoundPath("_Sounds/SFX/MushroomHit.wav");
 	monster->AddComponent(monsterAbility);
 
 	// Animator 추가 (애니메이션 시스템)

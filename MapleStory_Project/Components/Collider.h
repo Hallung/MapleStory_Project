@@ -52,7 +52,7 @@ public:
 
 	bool CheckGrounded();
 
-	bool IsFullyGrounded();
+	bool HasGroundAhead(float dir);
 
 protected:
 	// 실제 Shape 생성 함수, 각 Collider 타입에서 구현

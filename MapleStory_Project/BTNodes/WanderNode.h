@@ -22,12 +22,14 @@ public:
 	{
 		auto& blackboard = ai->GetBlackboard();
 
+		auto collider = ai->GetOwner()->GetComponent<Collider>("Collider");
+
 		// Move 상태가 아니면 실행 X
 		if (blackboard.wanderState != MonsterBlackboard::WanderState::Move) 
 			return BTState::Failure;
 
 		// 이동 시간 감소
-		blackboard.wanderTimer -= TimeManager::GetInstance().GetDeltaTime();
+		blackboard.wanderTimer -= deltaTime;
 
 		// 이동 애니메이션 상태 설정
 		auto state = ai->GetOwner()->GetComponent<MonsterState>("MonsterState");
@@ -45,6 +47,18 @@ public:
 			blackboard.wanderState = MonsterBlackboard::WanderState::Idle;
 
 			return BTState::Success;
+		}
+
+		if (!collider->HasGroundAhead(blackboard.wanderDirection) &&
+			!blackboard.recoveringFromEdge)
+		{
+			blackboard.wanderDirection *= -1.0f;
+			blackboard.recoveringFromEdge = true;
+		}
+		else if (collider->HasGroundAhead(blackboard.wanderDirection) &&
+			blackboard.recoveringFromEdge)
+		{
+			blackboard.recoveringFromEdge = false;
 		}
 
 		return BTState::Running;

@@ -17,6 +17,8 @@ struct MonsterBlackboard
 
 	float wanderDirection = 0.0f;	// 배회 이동 방향
 
+	bool recoveringFromEdge = false;
+
 	// 배회 상태 정의
 	enum class WanderState
 	{
@@ -48,4 +50,6 @@ private:
 	std::shared_ptr<class HitEvents> hitEvents;
 
 	MonsterBlackboard blackboard;	// AI 공유 데이터
+
+	bool started = false;	// 업데이트 첫 프레임 동작 방지용
 };

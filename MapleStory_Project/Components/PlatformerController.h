@@ -51,6 +51,11 @@ private:
 	// 공중 상태에서 플레이어의 수평 이동 감속 처리
 	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
 
+	void SetIsFinised(bool finished) { isFinished = finished; }
+	bool GetIsFinished() const { return isFinished; }
+
+	void ResetData();
+
 private:
 	// 현재 무적 타이머
 	float invincibleTimer = 3.0f;
@@ -61,6 +66,9 @@ private:
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
+	bool playSound = false;	// 공격 소리 여부
+
+	bool isFinished = false;
 
 private:
 	std::shared_ptr<class Animator> animator;
