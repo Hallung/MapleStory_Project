@@ -64,6 +64,7 @@ private:
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
+	bool playSound = false;	// 공격 소리 여부
 
 	bool isFinished = false;
 

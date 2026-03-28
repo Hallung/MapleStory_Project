@@ -42,6 +42,9 @@ void MonsterAbility::TakeDamage(Collider* other, UINT damage)
 	// 체력 감소 (0 이하 방지)
 	_hp = max(0, _hp - damage);
 
+	if (soundPath != "")
+		SoundManager::GetInstance().PlaySFX(soundPath);
+
 	auto hitEvent = other->GetOwner()->GetComponent<HitEvents>("HitEvents");
 
 	// Damage가 들어오면 공격을 준 Collider 저장

@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Portal.h"
+#include "Resources/Material.h"
 #include "Objects/Object.h"
 #include "Components/BoxCollider.h"
 #include "Components/Animator.h"
+#include "Components/MeshRenderer.h"
 #include "Utilities/ObjectFactory.h"
 #include "Utilities/CollisionLayer.h"
 
@@ -21,6 +23,9 @@ Portal::Portal(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 		rotation,
 		texturePath
 	);
+
+	portal->GetComponent<MeshRenderer>("MeshRenderer")
+		->GetMaterial()->SetColor(DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.95f));
 
 	auto portalRb = std::make_shared<RigidBody>();
 	portalRb->SetFixedRotation(true);

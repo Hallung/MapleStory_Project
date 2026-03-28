@@ -160,6 +160,8 @@ void PlatformerController::Jump()
 	vel.y = 0.0f;
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 
+	SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Jump.wav");
+
 	// 위 방향으로 임펄스 적용
 	b2Vec2 impulse(0.0f, jumpPower);
 	b2Body_ApplyLinearImpulseToCenter(rigidBody->GetBodyId(), impulse, true);
@@ -231,11 +233,18 @@ void PlatformerController::Attack()
 	// 애니메이션 이름이 Attack이고 현재 인덱스가 2 일때 실행
 	if (clipName == L"Attack" && clipCurrentIndex == 2)
 	{
+		if (!playSound)
+		{
+			SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Attack.wav");
+			playSound = true;
+		}
+
 		// 가까운 타겟이 있고 공격 가능 상태이면 실행
 		if (nearsetTarget && canAttack)
 		{
 			// 타겟에 데미지 주기
 			ApplyDamage(nearsetTarget);
+
 			// 타겟을 공격 했으면 해당 애니메이션이 끝날때 까지 공격 불가
 			canAttack = false;
 		}
@@ -250,6 +259,7 @@ void PlatformerController::Attack()
 	{
 		// 위 조건이 아닐 경우 공격 가능 상태 유지
 		canAttack = true;
+		playSound = false;
 	}
 }
 
@@ -257,7 +267,9 @@ void PlatformerController::EnterPortal()
 {
 	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Portal))
 	{
-		
+		// TODO: 포탈 상호작용 시 필요한 동작은 여기서 진행
+
+		isFinished = true;
 	}
 }
 
