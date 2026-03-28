@@ -3,6 +3,7 @@
 #include "Objects/Object.h"
 #include "Components/Component.h"
 #include "Components/Animator.h"
+#include "Game.h"
 
 //===========================================
 // Scene 베이스 클래스
@@ -84,6 +85,10 @@ public:
 	}
 
 	SceneType GetSceneType() const { return currentSceneType; }
+	bool GetRequestSceneChange() const { return requestSceneChange; }
+	SceneID GetNextSceneID() const { return nextSceneID; }
+
+	void ResetRequestSceneChange() { requestSceneChange = false; }
 
 protected:
 	//==========================
@@ -97,4 +102,9 @@ protected:
 
 	// 현재 Scene의 타입 (기본값은 Standard)
 	SceneType currentSceneType = SceneType::Standard;
+
+	// Scene에서 Game에 씬 전환을 요청했는지 여부
+	bool requestSceneChange = false;
+	// 요청된 Scene 전환 대상
+	SceneID nextSceneID;
 };

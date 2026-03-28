@@ -32,6 +32,8 @@ void TitleScene::Init()
 	pressEnterTextMaterial = pressEnterText->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial();
 	AddObject(pressEnterText);
 
+	nextSceneID = SceneID::Forest;
+
 	SoundManager::GetInstance().PlayBGM("_Sounds/BGM/Title.wav");
 }
 
