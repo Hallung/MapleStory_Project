@@ -225,6 +225,8 @@ void PlatformerController::Attack()
 	// AttackCollider과 가장 가까운 충돌체의 정보를 저장
 	auto nearsetTarget = hitEvents->GetNearestTarget(attackCollider.get(), CollisionLayer::Monster);
 
+	auto transform = GetOwner()->GetTransform();
+
 	// 애니메이션의 현재 인덱스 정보를 저장
 	UINT clipCurrentIndex = animator->GetCurrentFrameIndex();
 	// 애니메이션 이름 정보를 저장
@@ -242,11 +244,22 @@ void PlatformerController::Attack()
 		// 가까운 타겟이 있고 공격 가능 상태이면 실행
 		if (nearsetTarget && canAttack)
 		{
-			// 타겟에 데미지 주기
-			ApplyDamage(nearsetTarget);
+			float playerDir = transform->GetScale().x > 0 ? -1.0f : 1.0f;
 
-			// 타겟을 공격 했으면 해당 애니메이션이 끝날때 까지 공격 불가
-			canAttack = false;
+			DirectX::SimpleMath::Vector2 toTarget =
+				nearsetTarget->GetOwner()->GetTransform()->GetPosition()
+				- GetOwner()->GetTransform()->GetPosition();
+
+			float dot = toTarget.x * playerDir;
+
+			if (dot > 0)	// 앞쪽일 때만
+			{
+				// 타겟에 데미지 주기
+				ApplyDamage(nearsetTarget);
+
+				// 타겟을 공격 했으면 해당 애니메이션이 끝날때 까지 공격 불가
+				canAttack = false;
+			}
 		}
 
 		if (animator->IsFinished())
@@ -258,8 +271,10 @@ void PlatformerController::Attack()
 	else
 	{
 		// 위 조건이 아닐 경우 공격 가능 상태 유지
-		canAttack = true;
-		playSound = false;
+		if (!canAttack)
+			canAttack = true;
+		if (playSound)
+			playSound = false;
 	}
 }
 
