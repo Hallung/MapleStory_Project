@@ -8,9 +8,9 @@ public:
 
 	void Awake() override;
 
-	void Update() override;
-
 	void Play();
+
+	void Stop();
 
 private:
 	std::shared_ptr<class Animator> animator;
