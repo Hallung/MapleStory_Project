@@ -36,6 +36,8 @@ void PlatformerController::Awake()
 //===================================
 void PlatformerController::Update()
 {
+	if (isFinished) return;
+
 	// 매 프레임 피격 판정 처리
 	Hit();
 
