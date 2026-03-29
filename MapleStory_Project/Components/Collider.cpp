@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include "HitEvents.h"
+#include "PlatformerController.h"
 
 namespace
 {
@@ -120,7 +121,7 @@ void Collider::RefreshShape()
 	else
 	{
 		shapeDef.density = 1.0f;
-		shapeDef.material.friction = 0.5f;
+		shapeDef.material.friction = 1.0f;
 		shapeDef.material.restitution = 0.0f;
 	}
 
@@ -199,6 +200,16 @@ void Collider::ApplyFilter() const
 // 플레이어 (또는 이 Collider를 가진 객체)가 지면에 닿아 있는지 확인하는 함수
 bool Collider::CheckGrounded()
 {
+	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
+	auto checkGround = GetOwner()->GetComponent<PlatformerController>("PlatformerController");
+
+	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
+
+	if (velocityY <= 0.0f && !checkGround->GetCheckGround())
+		checkGround->SetCheckGround(true);
+
+	if (!checkGround->GetCheckGround()) return false;
+
 	// Owner 객체의 Transform Scale 및 Position을 가져오기
 	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
 
