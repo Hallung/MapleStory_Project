@@ -14,11 +14,17 @@ class ChasePlayerNode : public BTNode
 public:
 	ChasePlayerNode(MonsterAI* ai) : ai(ai) {}
 
+	enum class RecoveryType
+	{
+		None,
+		Edge,
+		Overlap
+	};
+
 	BTState Tick(float deltaTime) override
 	{
 		// 현재 어그로 대상 획득
 		auto aggro = ai->GetOwner()->GetComponent<MonsterAggro>("MonsterAggro");
-
 		auto collider = ai->GetOwner()->GetComponent<Collider>("Collider");
 
 		// 타겟이 없으면 추격 불가 = 다른 행동으로 전환
@@ -32,39 +38,60 @@ public:
 		Transform* target = aggro->GetTarget();
 		auto myTransform = ai->GetOwner()->GetTransform();
 
+		float dist = target->GetPosition().x - myTransform->GetPosition().x;
+
+		auto currentPos = myTransform->GetPosition();
+
 		// 타겟 위치 기준 좌/우 방향 계산
-		float playerDir = (target->GetPosition().x - myTransform->GetPosition().x) > 0 ? 1.0f : -1.0f;
+		float playerDir = dist > 0 ? 1.0f : -1.0f;
 
-		float actualDir = 0.0f;
-
-		if (!collider->HasGroundAhead(playerDir) &&
-			!recoveringFromEdge)
+		if (recovery != RecoveryType::None)
 		{
-			recoveringFromEdge = true;
-			chaseDir = -playerDir;
+			float moved = abs(currentPos.x - recoveryStartPos.x);
 
-			recoveryStartPos = ai->GetOwner()->GetTransform()->GetPosition();
+			if (moved >= recoveryDistance)
+			{
+				recovery = RecoveryType::None;
+			}
+			else
+			{
+				if (!collider->HasGroundAhead(recoveryDir))
+				{
+					recovery = RecoveryType::None;
+					movement->Stop();
+					return BTState::Running;
+				}
+
+				movement->Move(recoveryDir);
+				state->SetState(Monster::State::CHASE);
+				return BTState::Running;
+			}
 		}
 
-		auto currentPos = ai->GetOwner()->GetTransform()->GetPosition();
-
-		float moved = abs(currentPos.x - recoveryStartPos.x);
-
-		if (moved > 50.0f)
-			recoveringFromEdge = false;
-
-		if (recoveringFromEdge)
+		if (!collider->HasGroundAhead(playerDir))
 		{
-			actualDir = chaseDir;
-		}
-		else
-		{
-			actualDir = playerDir;
+			recovery = RecoveryType::Edge;
+			recoveryDir = -playerDir;
+			recoveryStartPos = currentPos;
+
+			return BTState::Running;
 		}
 
+		float absDist = abs(dist);
+
+		const float overlapThreshold = 10.0f;
+
+		if (absDist < overlapThreshold)
+		{
+			recovery = RecoveryType::Overlap;
+			recoveryDir = playerDir;
+			recoveryStartPos = currentPos;
+
+			return BTState::Running;
+		}
 
 		// 해당 방향으로 이동
-		movement->Move(actualDir);		
+		movement->Move(playerDir);		
 
 		// 몬스터 상태를 추격 상태로 변경
 		state->SetState(Monster::State::CHASE);
@@ -76,8 +103,9 @@ public:
 private:
 	MonsterAI* ai;
 
-	float chaseDir = 0.0f;
-	bool recoveringFromEdge = false;
-
+	float recoveryDir = 0.0f;
+	float recoveryDistance = 50.0f;
 	DirectX::SimpleMath::Vector2 recoveryStartPos;
+
+	RecoveryType recovery = RecoveryType::None;
 };
