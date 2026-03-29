@@ -121,7 +121,7 @@ void Collider::RefreshShape()
 	else
 	{
 		shapeDef.density = 1.0f;
-		shapeDef.material.friction = 0.5f;
+		shapeDef.material.friction = 1.0f;
 		shapeDef.material.restitution = 0.0f;
 	}
 
