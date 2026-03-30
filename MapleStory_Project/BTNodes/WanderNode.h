@@ -22,6 +22,7 @@ public:
 	{
 		auto& blackboard = ai->GetBlackboard();
 
+		// 지면 체크에 사용할 Collider
 		auto collider = ai->GetOwner()->GetComponent<Collider>("Collider");
 
 		// Move 상태가 아니면 실행 X
@@ -49,6 +50,7 @@ public:
 			return BTState::Success;
 		}
 
+		// 앞쪽에 땅이 없을 경우 반대 방향으로 이동
 		if (!collider->HasGroundAhead(blackboard.wanderDirection) &&
 			!blackboard.recoveringFromEdge)
 		{

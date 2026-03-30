@@ -20,14 +20,12 @@ public:
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;
 
-	void SetCheckGround(bool checkGrounded) { checkGround = checkGrounded; }
-	bool GetCheckGround() const { return checkGround; }
-
+	// PlatformerController 업데이트 방지 상태 설정/반환
 	void SetIsFinised(bool finished) { isFinished = finished; }
 	bool GetIsFinished() const { return isFinished; }
 
 private:
-	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 워치 갱신
+	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 위치 갱신
 	void Move(DirectX::SimpleMath::Vector2 dir);
 
 	// 점프 처리 (Y축 방향)에 jumpPower만큼 Impulse
@@ -57,7 +55,7 @@ private:
 	// 공중 상태에서 플레이어의 수평 이동 감속 처리
 	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
 
-	void ResetData();
+	void ResetData();	// 데이터 초기화 함수
 
 private:
 	// 현재 무적 타이머
@@ -66,15 +64,15 @@ private:
 	const float invincibleCooldown = 2.0f;
 
 	bool isJump = false;	// 공중에 있는지 확인
-	bool checkGround = true;
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
 	bool playSound = false;	// 공격 소리 여부
 
-	bool isFinished = false;
+	bool isFinished = false;	// 더이상 업테이트를 막기 위한 변수
 
 private:
+	// 데이터 캐싱
 	std::shared_ptr<class Animator> animator;
 	std::shared_ptr<Collider> playerCollider;
 	std::shared_ptr<Collider> attackCollider;

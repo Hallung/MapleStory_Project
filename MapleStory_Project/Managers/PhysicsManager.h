@@ -64,7 +64,7 @@ public:
 	// 가장 가까운 충돌 객체를 탐색하는 함수
 	//==================================================
 	RaycastHit Raycast(
-		const DirectX::SimpleMath::Vector2& origin,	// Ray 시작 위치 (Screen 좌표)
+		const b2Vec2& origin,	// Ray 시작 위치 (Screen 좌표)
 		const DirectX::SimpleMath::Vector2& dir,	// Ray 방향 벡터
 		float distance,								// Ray 길이
 		uint32_t layerMask							// 충돌 검사할 레이어 마스크

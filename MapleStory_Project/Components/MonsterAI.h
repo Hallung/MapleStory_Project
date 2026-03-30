@@ -17,7 +17,7 @@ struct MonsterBlackboard
 
 	float wanderDirection = 0.0f;	// 배회 이동 방향
 
-	bool recoveringFromEdge = false;
+	bool recoveringFromEdge = false;	// 절벽 판별
 
 	// 배회 상태 정의
 	enum class WanderState

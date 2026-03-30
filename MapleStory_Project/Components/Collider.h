@@ -38,6 +38,7 @@ public:
 	void SetCollisionLayer(CollisionLayer layer); // 이 Collider가 속할 CollisionLayer 를 설정
 	void SetCollisionMask(uint32_t mask); // 이 Collider가 충돌을 허용할 레이어 Mask 설정
 
+	// Layer/Mask 설정
 	CollisionLayer GetCollisionLayer() const { return layer; }
 	uint32_t GetCollisionMask() const { return mask; }
 
@@ -50,8 +51,8 @@ public:
 	void SetColliderScale(DirectX::SimpleMath::Vector2 scale) { this->scale = scale; }
 	DirectX::SimpleMath::Vector2 GetColliderScale() const { return scale; }	// 현재 설정된 Collider Scale 반환
 
+	// 지면 확인
 	bool CheckGrounded();
-
 	bool HasGroundAhead(float dir);
 
 protected:
@@ -62,7 +63,7 @@ protected:
 		DirectX::SimpleMath::Vector2 scale) = 0;
 
 	void RefreshShape(); // 현재 Transform 상태를 기반으로 Shape를 재생성
-	void DestroyShapes();
+	void DestroyShapes();	// 모든 Box2D Shape 제거
 
 	// Shape 제거 시 Overlap 되어있는 Collider들에게 Collision Exit 이벤트를 전달하기 위한 Callback 함수
 	static bool NotifyExitCallback(b2ShapeId otherShapeId, void* context);

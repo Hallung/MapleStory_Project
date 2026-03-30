@@ -5,6 +5,7 @@
 #include "RigidBody.h"
 #include "HitEvents.h"
 #include "PlatformerController.h"
+#include "Utilities/PhysicsUtils.h"
 
 namespace
 {
@@ -200,28 +201,27 @@ void Collider::ApplyFilter() const
 // 플레이어 (또는 이 Collider를 가진 객체)가 지면에 닿아 있는지 확인하는 함수
 bool Collider::CheckGrounded()
 {
+	// Owner가 가진 Rigidbody 컴포넌트 가져오기
 	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
-	auto checkGround = GetOwner()->GetComponent<PlatformerController>("PlatformerController");
+	// 현재 물리 월드 상의 객체 중심 위치
+	auto ownerPosition = b2Body_GetPosition(ownerRb->GetBodyId());
 
-	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
+	//=========================================================
+	// Collider의 AABB 정보를 통해 현재 월드 크기 계산
+	// 캐릭터 중심 기준에서 발 위치 및 좌우 Ray 시작점 계산에 사용
+	//=========================================================
+	b2AABB aabb = b2Shape_GetAABB(shapeIds.front());
+	float halfHeight = (aabb.upperBound.y - aabb.lowerBound.y) * 0.5f;
+	float halfWidth = (aabb.upperBound.x - aabb.lowerBound.x) * 0.5f;
 
-	if (velocityY <= 0.0f && !checkGround->GetCheckGround())
-		checkGround->SetCheckGround(true);
+	// Ray가 아래 방향으로 검사할 최대 길이
+	float totalDistance = 0.3f;
 
-	if (!checkGround->GetCheckGround()) return false;
-
-	// Owner 객체의 Transform Scale 및 Position을 가져오기
-	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
-
-	// 객체 높이의 절반 (캐릭터 중심 기준으로 발 위치를 계산할 때 사용)
-	float halfHeight = scale.y * 0.5f;
-	float halfWidth = scale.x * 0.5f;
-
-	// Ray가 검사할 최대 거리
-	float totalDistance = 0.2f;
+	// Collider 내부에서 시작하지 않도록 살짝 위로 올리는 여유값
+	float skin = 0.03f;
 
 	// RayCast 시작 위치
-	DirectX::SimpleMath::Vector2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + totalDistance };
+	b2Vec2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + skin};
 
 	//=============================================================
 	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
@@ -232,43 +232,71 @@ bool Collider::CheckGrounded()
 	//=============================================================
 	RaycastHit centerHit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
-	DirectX::SimpleMath::Vector2 rightOrigin = { origin.x + halfWidth, origin.y };
+	// 오른쪽 Ray
+	b2Vec2 rightOrigin = { origin.x + halfWidth , origin.y };
 	RaycastHit rightHit = PhysicsManager::GetInstance().Raycast(rightOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
-	DirectX::SimpleMath::Vector2 leftOrigin = { origin.x - halfWidth, origin.y };
+	// 왼쪽 Ray
+	b2Vec2 leftOrigin = { origin.x - halfWidth , origin.y };
 	RaycastHit leftHit = PhysicsManager::GetInstance().Raycast(leftOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
+	// 세 개의 Ray 중 하나라도 충돌하면 Ground 접촉
 	bool hit = false;
-
 	if (centerHit.hit || rightHit.hit || leftHit.hit) hit = true;
 	else hit = false;
 
-	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
-	// 충돌이 없으면 false (공중 상태)
-	return hit;
+	// 현재 Y축 속도
+	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
+
+	// 너무 빠른 속도로 이동 중이면 착지로 인정하지 않음
+	const float landingVelocityThreshold = 1.4f;
+	bool validLanding = velocityY <= landingVelocityThreshold;
+
+	// 충돌한 지면의 노멀값 확인 (경사 판정)
+	float groundNormalY = 0.0f;
+	if (centerHit.hit) groundNormalY = centerHit.normal.y;
+	else if (rightHit.hit) groundNormalY = rightHit.normal.y;
+	else if (leftHit.hit) groundNormalY = leftHit.normal.y;
+
+	//======================================
+	// 최종 Ground 판정 조건
+	// 1. Ray 충돌 존재
+	// 2. 착지 가능한 속도
+	// 3. 충분히 위쪽으로 향한 지면(normal.y)
+	//======================================
+	return hit && validLanding && groundNormalY > 0.6f;
 }
 
+// dir 방향으로 이동했을 때 캐릭터 앞쪽에 지면이 존재하는지 검사하는 함수
 bool Collider::HasGroundAhead(float dir)
 {
-	DirectX::SimpleMath::Vector2 ownerPos = 
-		GetOwner()->GetTransform()->GetPosition();
+	// Rigidbody 및 현재 위치 획득
+	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
+	b2Vec2 ownerPos = b2Body_GetPosition(ownerRb->GetBodyId());
 
-	float halfHeight = scale.y * 0.5f;
-	float halfWidth = scale.x * 0.5f;
+	// Collider 크기 계산
+	b2AABB aabb = b2Shape_GetAABB(shapeIds.front());
+	float halfHeight = (aabb.upperBound.y - aabb.lowerBound.y) * 0.5f;
+	float halfWidth = (aabb.upperBound.x - aabb.lowerBound.x) * 0.5f;
 
-	float forwardOffset = halfWidth + 5.0f;
+	// 캐릭터 앞쪽으로 Ray를 시작하기 위한 오프셋
+	float forwardOffset = halfWidth + 0.05f;
 
-	DirectX::SimpleMath::Vector2 origin =
+	// 캐릭터 진행 방향 앞쪽 위치
+	b2Vec2 origin =
 	{
 		ownerPos.x + dir * forwardOffset,
 		ownerPos.y
 	};
 
-	float checkDistance = halfHeight + 0.2f;
+	// 아래 방향으로 검사할 거리
+	float checkDistance = halfHeight + 0.5f;
 
+	// 앞쪽 아래로 Raycast로 지면 존재 여부 확인
 	RaycastHit hit = PhysicsManager::GetInstance().Raycast(
 		origin, { 0, -1 }, checkDistance, (uint32_t)CollisionLayer::Ground
 	);
-
+	
+	// 지면이 존재하면 true
 	return hit.hit;
 }
