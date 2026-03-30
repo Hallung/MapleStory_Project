@@ -160,6 +160,7 @@ void PlatformerController::Jump()
 	vel.y = 0.0f;
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 
+	// 점프 소리 재생
 	SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Jump.wav");
 
 	// 위 방향으로 임펄스 적용
@@ -235,6 +236,7 @@ void PlatformerController::Attack()
 	// 애니메이션 이름이 Attack이고 현재 인덱스가 2 일때 실행
 	if (clipName == L"Attack" && clipCurrentIndex == 2)
 	{
+		// 사운드가 재생중이 아니면 재생
 		if (!playSound)
 		{
 			SoundManager::GetInstance().PlaySFX("_Sounds/SFX/Attack.wav");
@@ -273,6 +275,7 @@ void PlatformerController::Attack()
 		// 위 조건이 아닐 경우 공격 가능 상태 유지
 		if (!canAttack)
 			canAttack = true;
+		// 위 조건이 아닐 경우 다시 재생 가능
 		if (playSound)
 			playSound = false;
 	}
@@ -425,6 +428,7 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 }
 
+// 모든 데이터를 초기화하는 함수
 void PlatformerController::ResetData()
 {
 	float invincibleTimer = 3.0f;
