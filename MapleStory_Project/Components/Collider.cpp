@@ -5,6 +5,7 @@
 #include "RigidBody.h"
 #include "HitEvents.h"
 #include "PlatformerController.h"
+#include "Utilities/PhysicsUtils.h"
 
 namespace
 {
@@ -201,27 +202,21 @@ void Collider::ApplyFilter() const
 bool Collider::CheckGrounded()
 {
 	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
-	auto checkGround = GetOwner()->GetComponent<PlatformerController>("PlatformerController");
 
-	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
-
-	if (velocityY <= 0.0f && !checkGround->GetCheckGround())
-		checkGround->SetCheckGround(true);
-
-	if (!checkGround->GetCheckGround()) return false;
-
-	// Owner 객체의 Transform Scale 및 Position을 가져오기
-	auto ownerPosition = GetOwner()->GetTransform()->GetPosition();
+	auto ownerPosition = b2Body_GetPosition(ownerRb->GetBodyId());
 
 	// 객체 높이의 절반 (캐릭터 중심 기준으로 발 위치를 계산할 때 사용)
-	float halfHeight = scale.y * 0.5f;
-	float halfWidth = scale.x * 0.5f;
+	b2AABB aabb = b2Shape_GetAABB(shapeIds.front());
+	float halfHeight = (aabb.upperBound.y - aabb.lowerBound.y) * 0.5f;
+	float halfWidth = (aabb.upperBound.x - aabb.lowerBound.x) * 0.5f;
 
 	// Ray가 검사할 최대 거리
-	float totalDistance = 0.2f;
+	float totalDistance = 0.3f;
+
+	float skin = 0.03f;
 
 	// RayCast 시작 위치
-	DirectX::SimpleMath::Vector2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + totalDistance };
+	b2Vec2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + skin};
 
 	//=============================================================
 	// PhysicsManager의 Raycast를 호출하여 아래 방향으로 Ray를 발사
@@ -232,10 +227,10 @@ bool Collider::CheckGrounded()
 	//=============================================================
 	RaycastHit centerHit = PhysicsManager::GetInstance().Raycast(origin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
-	DirectX::SimpleMath::Vector2 rightOrigin = { origin.x + halfWidth, origin.y };
+	b2Vec2 rightOrigin = { origin.x + halfWidth , origin.y };
 	RaycastHit rightHit = PhysicsManager::GetInstance().Raycast(rightOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
-	DirectX::SimpleMath::Vector2 leftOrigin = { origin.x - halfWidth, origin.y };
+	b2Vec2 leftOrigin = { origin.x - halfWidth , origin.y };
 	RaycastHit leftHit = PhysicsManager::GetInstance().Raycast(leftOrigin, { 0, -1 }, totalDistance, (uint32_t)CollisionLayer::Ground);
 
 	bool hit = false;
@@ -243,22 +238,33 @@ bool Collider::CheckGrounded()
 	if (centerHit.hit || rightHit.hit || leftHit.hit) hit = true;
 	else hit = false;
 
+	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
+
+	const float landingVelocityThreshold = 1.4f;
+
+	bool validLanding = velocityY <= landingVelocityThreshold;
+
+	float groundNormalY = 0.0f;
+	if (centerHit.hit) groundNormalY = centerHit.normal.y;
+	else if (rightHit.hit) groundNormalY = rightHit.normal.y;
+	else if (leftHit.hit) groundNormalY = leftHit.normal.y;
+
 	// Ray가 Ground Collider와 충돌했다면 true (지면에 닿아 있음)
 	// 충돌이 없으면 false (공중 상태)
-	return hit;
+	return hit && validLanding && groundNormalY > 0.6f;
 }
 
 bool Collider::HasGroundAhead(float dir)
 {
-	DirectX::SimpleMath::Vector2 ownerPos = 
-		GetOwner()->GetTransform()->GetPosition();
+	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
+	b2Vec2 ownerPos = b2Body_GetPosition(ownerRb->GetBodyId());
 
 	float halfHeight = scale.y * 0.5f;
 	float halfWidth = scale.x * 0.5f;
 
 	float forwardOffset = halfWidth + 5.0f;
 
-	DirectX::SimpleMath::Vector2 origin =
+	b2Vec2 origin =
 	{
 		ownerPos.x + dir * forwardOffset,
 		ownerPos.y

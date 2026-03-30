@@ -72,7 +72,7 @@ void PhysicsManager::SetGravity(DirectX::SimpleMath::Vector2 gravity)
 		b2World_SetGravity(worldId, { gravity.x, gravity.y });
 }
 
-RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, const DirectX::SimpleMath::Vector2& dir, float distance, uint32_t layerMask)
+RaycastHit PhysicsManager::Raycast(const b2Vec2& origin, const DirectX::SimpleMath::Vector2& dir, float distance, uint32_t layerMask)
 {
 	RaycastHit hit;
 	hit.hit = false;	// 기본값: 충돌 없음
@@ -80,9 +80,6 @@ RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, c
 	// Ray 방향 정규화(방향 벡터 크기를 1로 만들어 distance와 정확히 곱해지도록 함)
 	DirectX::SimpleMath::Vector2 ndir = dir;
 	ndir.Normalize();
-
-	// Screen 좌표 → Box2D World 좌표 변환
-	b2Vec2 p1 = PhysicsUtils::ScreenToWorld(origin);
 
 	// Ray 이동 벡터 계산
 	b2Vec2 translation = { ndir.x * distance, ndir.y * distance };
@@ -95,7 +92,7 @@ RaycastHit PhysicsManager::Raycast(const DirectX::SimpleMath::Vector2& origin, c
 	filter.maskBits = layerMask;
 	
 	// Box2D Raycast 실행
-	b2RayResult result = b2World_CastRayClosest(worldId, p1, translation, filter);
+	b2RayResult result = b2World_CastRayClosest(worldId, origin, translation, filter);
 	
 	// Ray가 무언가에 충돌한 경우
 	if (result.hit)

@@ -20,14 +20,11 @@ public:
 	// 매 프레임 입력 기반 이동 및 애니메이션 업데이트
 	void Update() override;
 
-	void SetCheckGround(bool checkGrounded) { checkGround = checkGrounded; }
-	bool GetCheckGround() const { return checkGround; }
-
 	void SetIsFinised(bool finished) { isFinished = finished; }
 	bool GetIsFinished() const { return isFinished; }
 
 private:
-	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 워치 갱신
+	// 이동 처리 (방향 벡터(dir)에 이동 속도를 곱해 위치 갱신
 	void Move(DirectX::SimpleMath::Vector2 dir);
 
 	// 점프 처리 (Y축 방향)에 jumpPower만큼 Impulse
@@ -66,7 +63,6 @@ private:
 	const float invincibleCooldown = 2.0f;
 
 	bool isJump = false;	// 공중에 있는지 확인
-	bool checkGround = true;
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부

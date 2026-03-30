@@ -152,8 +152,6 @@ void PlatformerController::Jump()
 {
 	const float jumpPower = 12.0f;	// 점프 시 가해질 임펄스 세기
 
-	checkGround = false;
-
 	//========================================================
 	// 현재 수직 속도 제거
 	// (기존 낙하/상승 속도를 초기화하여 점프 높이 일정하게 유지)
