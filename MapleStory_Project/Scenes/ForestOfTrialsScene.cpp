@@ -10,6 +10,7 @@
 #include "Components/Transform.h"
 #include "Components/MeshRenderer.h"
 #include "Components/PlayEffect.h"
+#include "Components/PlatformerController.h"
 #include "Resources/Material.h"
 #include "Utilities/ObjectFactory.h"
 #include "Utilities/VirtualKey.h"
@@ -49,7 +50,7 @@ void ForestOfTrialsScene::Init()
 	SpawnMonsters();
 
 	auto player = std::make_shared<Player>(
-		DirectX::SimpleMath::Vector2(tileSize * 10.0f, tileSize * 4.0f),
+		DirectX::SimpleMath::Vector2(tileSize * 10.0f, tileSize * 40.0f),
 		DirectX::SimpleMath::Vector2(scale),
 		rotation
 	);
@@ -63,8 +64,6 @@ void ForestOfTrialsScene::Init()
 		DirectX::SimpleMath::Vector2(scale.x, scale.y + 40.0f),
 		rotation
 	);
-
-	portal->GetPortal()->GetComponent<MeshRenderer>("MeshRenderer")->GetMaterial()->SetColor(DirectX::SimpleMath::Color(1.0f, 1.0f, 1.0f, 0.95f));
 
 	AddObject(portal->GetPortal());
 
@@ -90,21 +89,16 @@ void ForestOfTrialsScene::Destroy()
 
 void ForestOfTrialsScene::Update()
 {
+	bool isFinished = worldPlayer->GetComponent<PlatformerController>("PlatformerController")->GetIsFinished();
+
 	if (!isCleared)
 	ImGuiManager::GetInstance().ShowPlayTime();
 
-	if (!isCleared && InputManager::GetInstance().GetKeyDown(VK_F))
+	if (!isCleared && isFinished)
 	{
 		isCleared = true;
 		clearTime = TimeManager::GetInstance().GetWorldTime();
-
-		DirectX::SimpleMath::Vector2 clearPos = 
-			Camera::main->GetTransform()->GetPosition() + DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.7f);
-
-		playEffect->GetOwner()->GetTransform()->SetPosition(clearPos);
 		playEffect->Play();
-
-		// TODO : Player 입력 막기
 	}
 	else if (isCleared)
 	{

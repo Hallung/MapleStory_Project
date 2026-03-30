@@ -16,7 +16,7 @@ void PlayEffect::Play()
 
 	DirectX::SimpleMath::Vector2 position =
 		Camera::main->GetTransform()->GetPosition() +
-		DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.6f);
+		DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.7f);
 
 	transform->SetPosition(position);
 

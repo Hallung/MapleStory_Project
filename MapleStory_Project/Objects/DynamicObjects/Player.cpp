@@ -24,7 +24,7 @@ Player::Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vecto
 {
 	// Sprite Objet 생성 (렌더 가능한 기본 Player 형태)
 	player = ObjectFactory::CreateSprite(
-			DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.5f),
+			DirectX::SimpleMath::Vector2(position),
 			DirectX::SimpleMath::Vector2(scale),
 			rotation,
 			texturePath
