@@ -259,10 +259,11 @@ bool Collider::HasGroundAhead(float dir)
 	auto ownerRb = GetOwner()->GetComponent<RigidBody>("RigidBody");
 	b2Vec2 ownerPos = b2Body_GetPosition(ownerRb->GetBodyId());
 
-	float halfHeight = scale.y * 0.5f;
-	float halfWidth = scale.x * 0.5f;
+	b2AABB aabb = b2Shape_GetAABB(shapeIds.front());
+	float halfHeight = (aabb.upperBound.y - aabb.lowerBound.y) * 0.5f;
+	float halfWidth = (aabb.upperBound.x - aabb.lowerBound.x) * 0.5f;
 
-	float forwardOffset = halfWidth + 5.0f;
+	float forwardOffset = halfWidth + 0.05f;
 
 	b2Vec2 origin =
 	{
@@ -270,11 +271,11 @@ bool Collider::HasGroundAhead(float dir)
 		ownerPos.y
 	};
 
-	float checkDistance = halfHeight + 0.2f;
+	float checkDistance = halfHeight + 0.5f;
 
 	RaycastHit hit = PhysicsManager::GetInstance().Raycast(
 		origin, { 0, -1 }, checkDistance, (uint32_t)CollisionLayer::Ground
 	);
-
+	
 	return hit.hit;
 }
