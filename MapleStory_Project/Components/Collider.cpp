@@ -248,7 +248,7 @@ bool Collider::CheckGrounded()
 	float velocityY = b2Body_GetLinearVelocity(ownerRb->GetBodyId()).y;
 
 	// 너무 빠른 속도로 이동 중이면 착지로 인정하지 않음
-	const float landingVelocityThreshold = 0.01f;
+	const float landingVelocityThreshold = 1.4f;
 
 	bool validLanding = velocityY <= landingVelocityThreshold;
 
