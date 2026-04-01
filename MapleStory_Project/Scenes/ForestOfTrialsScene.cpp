@@ -50,7 +50,7 @@ void ForestOfTrialsScene::Init()
 	SpawnMonsters();
 
 	auto player = std::make_shared<Player>(
-		DirectX::SimpleMath::Vector2(tileSize * 10.0f, tileSize * 40.0f),
+		DirectX::SimpleMath::Vector2(tileSize * 10.0f, tileSize * 4.0f),
 		DirectX::SimpleMath::Vector2(scale),
 		rotation
 	);
