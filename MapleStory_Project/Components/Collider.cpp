@@ -213,12 +213,11 @@ bool Collider::CheckGrounded()
 	b2AABB aabb = b2Shape_GetAABB(shapeIds.front());
 	float halfHeight = (aabb.upperBound.y - aabb.lowerBound.y) * 0.5f;
 	float halfWidth = (aabb.upperBound.x - aabb.lowerBound.x) * 0.5f;
-
 	// Ray가 아래 방향으로 검사할 최대 길이
 	float totalDistance = 0.3f;
 
 	// Collider 내부에서 시작하지 않도록 살짝 위로 올리는 여유값
-	float skin = 0.03f;
+	float skin = 0.1f;
 
 	// RayCast 시작 위치
 	b2Vec2 origin = { ownerPosition.x , ownerPosition.y - halfHeight + skin};
@@ -250,6 +249,7 @@ bool Collider::CheckGrounded()
 
 	// 너무 빠른 속도로 이동 중이면 착지로 인정하지 않음
 	const float landingVelocityThreshold = 1.4f;
+
 	bool validLanding = velocityY <= landingVelocityThreshold;
 
 	// 충돌한 지면의 노멀값 확인 (경사 판정)
