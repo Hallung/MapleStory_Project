@@ -155,6 +155,7 @@
     <ClCompile Include="Scenes\TitleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\PathManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="Scenes\TitleScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Managers\PathManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

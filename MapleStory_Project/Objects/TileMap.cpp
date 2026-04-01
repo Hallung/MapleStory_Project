@@ -190,6 +190,8 @@ void TileMap::SetChainData(const std::vector<std::shared_ptr<Object>>& chainObje
 // 현재 타일맵 상태를 XML 파일로 저장, 맵 크기 정보와 배치된 타일 정보만 기록
 void TileMap::Save(const std::wstring& path)
 {
+	std::wstring fullXmlPath = PathManager::GetFullPathW(path);
+
 	tinyxml2::XMLDocument doc;
 
 	// 루트 노드 Map 생성
@@ -250,17 +252,19 @@ void TileMap::Save(const std::wstring& path)
 	root->InsertEndChild(chainsNode);
 
 	// 유니코드(한글 등) 경로 대응을 위해 std::filesystem으로 경로 처리
-	std::filesystem::path savePath(path);
+	std::filesystem::path savePath(fullXmlPath);
 	doc.SaveFile(savePath.string().c_str());
 }
 
 // XML 파일로부터 타일맵 데이터를 불러옴, 기존 타일 데이터는 초기화 후 새로 구성
 void TileMap::Load(const std::wstring& path, Scene* scene)
 {
+	std::wstring fullXmlPath = PathManager::GetFullPathW(path);
+
 	tinyxml2::XMLDocument doc;
 
 	// 유니코드(한글 등) 경로 대응을 위해 std::filesystem으로 경로 처리
-	std::filesystem::path loadPath(path);
+	std::filesystem::path loadPath(fullXmlPath);
 
 	// 파일 로드 실패 시 더 이상 진행하지 않음 (파일이 없거나 XML 형식이 잘못된 경우)
 	if (doc.LoadFile(loadPath.string().c_str()) != tinyxml2::XML_SUCCESS) return;

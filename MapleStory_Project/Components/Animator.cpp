@@ -24,19 +24,21 @@ std::unordered_map<std::wstring, std::vector<std::shared_ptr<AnimationClip>>> ca
 //===========================================
 const std::vector<std::shared_ptr<AnimationClip>>& Load(const std::wstring& xmlPath)
 {
+	std::wstring fullXmlPath = PathManager::GetFullPathW(xmlPath);
+
 	// 캐시 조회
-	auto it = cache.find(xmlPath);
+	auto it = cache.find(fullXmlPath);
 	if (it != cache.end()) return it->second;
 
 	// 새 클립 목록 생성
-	auto& newClips = cache[xmlPath];
+	auto& newClips = cache[fullXmlPath];
 
 	tinyxml2::XMLDocument document;
 
 	// wchar -> char 경로 변환 (tinyxml2는 char 경로 사용)
 	std::string path;
-	path.reserve(xmlPath.length());
-	for (wchar_t wc : xmlPath)
+	path.reserve(fullXmlPath.length());
+	for (wchar_t wc : fullXmlPath)
 		path.push_back(static_cast<char>(wc));
 
 	//==========================================
@@ -118,8 +120,9 @@ const std::vector<std::shared_ptr<AnimationClip>>& Load(const std::wstring& xmlP
 AnimationClip::AnimationClip(const std::wstring& name, const std::wstring& texturePath, UINT frameCount, DirectX::SimpleMath::Vector2 startPos, DirectX::SimpleMath::Vector2 endPos, float playRate, bool bLoop, bool bReverse)
 	:name(name), texturePath(texturePath), playRate(playRate), bLoop(bLoop), bReverse(bReverse)
 {
+	std::wstring fullPath = PathManager::GetFullPathW(texturePath);
 	// 애니메이션에 사용할 스프라이트 시트 텍스처 로드
-	texture = TextureManager::GetInstance().LoadTexture(texturePath);
+	texture = TextureManager::GetInstance().LoadTexture(fullPath);
 
 	// 전체 이미지 크기
 	const DirectX::SimpleMath::Vector2 imageSize = texture->GetSize();

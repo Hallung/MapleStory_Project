@@ -24,6 +24,9 @@ Game::~Game()
 // 게임 초기화
 void Game::Init()
 {
+	// Path 경로 지정
+	PathManager::Init();
+
 	// ImGui 시스템 초기화
 	ImGuiManager::GetInstance().Init();
 

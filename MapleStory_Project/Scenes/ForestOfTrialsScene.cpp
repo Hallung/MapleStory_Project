@@ -58,6 +58,7 @@ void ForestOfTrialsScene::Init()
 	AddObject(player->GetPlayer());
 
 	worldPlayer = player->GetPlayer();
+	platformerController = worldPlayer->GetComponent<PlatformerController>("PlatformerController");
 
 	auto portal = std::make_shared<Portal>(
 		DirectX::SimpleMath::Vector2(100.0f, worldMapHeight - tileSize),
@@ -80,6 +81,7 @@ void ForestOfTrialsScene::Destroy()
 {
 	objects.clear();
 	worldPlayer = nullptr;
+	platformerController = nullptr;
 	backGroundImage1 = nullptr;
 	backGroundImage2 = nullptr;
 	backGroundImage3 = nullptr;
@@ -89,7 +91,7 @@ void ForestOfTrialsScene::Destroy()
 
 void ForestOfTrialsScene::Update()
 {
-	bool isFinished = worldPlayer->GetComponent<PlatformerController>("PlatformerController")->GetIsFinished();
+	bool isFinished = platformerController->GetIsFinished();
 
 	if (!isCleared)
 	ImGuiManager::GetInstance().ShowPlayTime();

@@ -25,6 +25,8 @@ Texture::Texture(std::wstring filePath)
 
 	HRESULT hr;
 
+	std::wstring fullPath = PathManager::GetFullPathW(path);
+
 	//==============================================
 	// DDS 로드 
 	// GPU 친화적 포맷 (압축/큐브맵/mipmap 내장 기능)
@@ -33,7 +35,7 @@ Texture::Texture(std::wstring filePath)
 	//==============================================
 	if (extension == L"DDS")
 	{
-		hr = DirectX::LoadFromDDSFile(path.c_str(), DirectX::DDS_FLAGS_NONE, &metaData, image);
+		hr = DirectX::LoadFromDDSFile(fullPath.c_str(), DirectX::DDS_FLAGS_NONE, &metaData, image);
 		CHECK(hr);
 	}
 	//==========================================
@@ -44,7 +46,7 @@ Texture::Texture(std::wstring filePath)
 	//==========================================
 	else if (extension == L"TGA")
 	{
-		hr = DirectX::LoadFromTGAFile(path.c_str(), &metaData, image);
+		hr = DirectX::LoadFromTGAFile(fullPath.c_str(), &metaData, image);
 		CHECK(hr);
 	}
 	//===================================
@@ -58,7 +60,7 @@ Texture::Texture(std::wstring filePath)
 		DirectX::ScratchImage tempImage;
 
 		// 원본 이미지 로드
-		hr = DirectX::LoadFromWICFile(path.c_str(), DirectX::WIC_FLAGS_NONE, &metaData, tempImage);
+		hr = DirectX::LoadFromWICFile(fullPath.c_str(), DirectX::WIC_FLAGS_NONE, &metaData, tempImage);
 		CHECK(hr);
 
 		// mipmap 생성 (원본(tempImage)->mipmap 포함 image 생성)

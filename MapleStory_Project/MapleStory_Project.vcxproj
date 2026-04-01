@@ -198,6 +198,7 @@
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Managers\ImGuiManager.cpp" />
+    <ClCompile Include="Managers\PathManager.cpp" />
     <ClCompile Include="Managers\ShaderManager.cpp" />
     <ClCompile Include="Managers\SoundManager.cpp" />
     <ClCompile Include="Managers\TextureManager.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Components\RigidBody.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Managers\ImGuiManager.h" />
+    <ClInclude Include="Managers\PathManager.h" />
     <ClInclude Include="Managers\ShaderManager.h" />
     <ClInclude Include="Managers\SoundManager.h" />
     <ClInclude Include="Managers\TextureManager.h" />
