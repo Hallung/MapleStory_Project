@@ -7,6 +7,12 @@ void InstanceBuffer::Create(UINT maxCount, UINT stride)
 	this->maxCount = maxCount;
 	this->stride = stride;
 
+	if (buffer)
+	{
+		buffer->Release();
+		buffer = nullptr;
+	}
+
 	D3D11_BUFFER_DESC desc{};
 	desc.Usage = D3D11_USAGE_DYNAMIC; // CPU에서 매 프레임 데이터를 갱신하기 위한 Dynamic 버퍼
 	desc.ByteWidth = stride * maxCount; // 버퍼 전체 크기

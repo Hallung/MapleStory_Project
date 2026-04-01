@@ -20,6 +20,7 @@ private:
 	std::shared_ptr<Object> backGroundImage3;
 	std::shared_ptr<class TileMap> tileMap;
 	std::shared_ptr<class PlayEffect> playEffect;
+	std::shared_ptr<class PlatformerController> platformerController;
 
 	bool isCleared = false;
 	double clearTime = 0.0;

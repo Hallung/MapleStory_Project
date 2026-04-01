@@ -69,3 +69,4 @@ extern float gWinHeight;
 #include "Managers/TextureManager.h"
 #include "Managers/ImGuiManager.h"
 #include "Managers/SoundManager.h"
+#include "Managers/PathManager.h"

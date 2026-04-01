@@ -2,6 +2,7 @@
 #include "Renders/IA/InputLayout.h"
 #include "Renders/Shaders/VertexShader.h"
 #include "Renders/Shaders/PixelShader.h"
+#include "Resources/VertexType.h"
 #include "ShaderManager.h"
 
 // =================================================
@@ -9,6 +10,16 @@
 // GetInstance()에서 내부 static instance 생성 시 호출
 // =================================================
 ShaderManager::ShaderManager() {}
+
+// Color / SpriteInstancing 쉐이더 초기 등록 함수
+void ShaderManager::Preload()
+{
+	GetShader(L"_Shaders/Color.hlsl", Color::descs);
+
+	std::vector<D3D11_INPUT_ELEMENT_DESC> combinedDescs = VertexTexture::descs;
+	combinedDescs.insert(combinedDescs.end(), VertexInstancing::descs.begin(), VertexInstancing::descs.end());
+	GetShader(L"_Shaders/SpriteInstancing.hlsl", combinedDescs);
+}
 
 //================================================
 // 셰이더 요청

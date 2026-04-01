@@ -19,7 +19,7 @@ void PlayEffect::Play()
 	// 카메라 기준 화면 위치 계산
 	DirectX::SimpleMath::Vector2 position =
 		Camera::main->GetTransform()->GetPosition() +
-		DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.6f);
+		DirectX::SimpleMath::Vector2(gWinWidth * 0.5f, gWinHeight * 0.7f);
 
 	// Transform 위치 갱신
 	transform->SetPosition(position);

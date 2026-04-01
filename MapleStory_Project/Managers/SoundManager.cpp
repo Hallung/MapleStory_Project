@@ -22,7 +22,9 @@ void SoundManager::Update()
 // 루프 없이 단발성으로 재생
 void SoundManager::PlaySFX(const std::string& path)
 {
-	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, path, false);
+	std::string fullPath = PathManager::GetFullPathS(path);
+
+	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, fullPath, false);
 
 	FMOD::Channel* channel = nullptr;
 	system->playSound(sound, nullptr, false, &channel);
@@ -32,7 +34,9 @@ void SoundManager::PlaySFX(const std::string& path)
 // 루프 옵션으로 재생되며 bgmChannel에 저장
 void SoundManager::PlayBGM(const std::string& path)
 {
-	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, path, true);
+	std::string fullPath = PathManager::GetFullPathS(path);
+
+	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, fullPath, true);
 
 	system->playSound(sound, nullptr, false, &bgmChannel);
 }
@@ -51,21 +55,23 @@ void SoundManager::StopBGM()
 // loop 여부에 따라 루프 설정 적용
 FMOD::Sound* SoundManager::GetOrCreateSound(FMOD::System* system, std::unordered_map<std::string, FMOD::Sound*>& map, const std::string& path, bool loop)
 {
+	std::string fullPath = PathManager::GetFullPathS(path);
+
 	// 이미 로드된 사운드가 존재하면 반환
-	if (map.find(path) != map.end())
-		return map[path];
+	if (map.find(fullPath) != map.end())
+		return map[fullPath];
 
 	FMOD::Sound* sound = nullptr;
 
 	// 사운드 생성 (루프 여부에 따라 옵션 설정)
 	system->createSound(
-		path.c_str(),
+		fullPath.c_str(),
 		loop ? FMOD_LOOP_NORMAL : FMOD_DEFAULT,
 		nullptr,
 		&sound
 	);
 
 	// 생성된 사운드를 캐싱
-	map[path] = sound;
+	map[fullPath] = sound;
 	return sound;
 }

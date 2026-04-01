@@ -25,11 +25,8 @@ constexpr UINT maxTilesInTileset = tileCols * tileRows;
 // 테스트용 맵 크기
 constexpr UINT mapWidth = 30;
 constexpr UINT mapHeight = 40;
-}
 
-// 테스트용 플레이어 정보 (삭제 예정)
-namespace
-{
+// 테스트용 플레이어 정보
 constexpr DirectX::SimpleMath::Vector2 scale = { 120.0f, 120.0f };
 constexpr float offsetPos = 200.0f;
 constexpr float rotation = 0.0f;
@@ -62,7 +59,6 @@ void TileMapEditorScene::Destroy()
 	cursorObject = nullptr;
 	chainPoints.clear();
 	chainObjects.clear();
-	player = nullptr;
 	worldPlayer = nullptr;
 	Camera::main->RemoveComponent<CameraController>();
 }
@@ -78,15 +74,15 @@ void TileMapEditorScene::Update()
 	// 체인 생성 전, 입력된 점들을 화면에 미리보기로 렌더링
 	DrawChainPreview();
 
-	// 테스트용 플레이어 생성 (삭제 예정)
+	// 테스트용 플레이어 생성
 	PhysicsManager::GetInstance().Update();
 
 	if (InputManager::GetInstance().GetKeyDown(VK_P))
 	{
-		if (player == nullptr)
+		if (worldPlayer == nullptr)
 		{
 			// 화면 중앙 위치에 Player 객체 생성
-			player = std::make_shared<Player>(
+			auto player = std::make_shared<Player>(
 				DirectX::SimpleMath::Vector2(gWinWidth * halfValue, gWinHeight * halfValue),
 				DirectX::SimpleMath::Vector2(scale),
 				rotation

@@ -24,11 +24,17 @@ Game::~Game()
 // 게임 초기화
 void Game::Init()
 {
+	// Path 경로 지정
+	PathManager::Init();
+
 	// ImGui 시스템 초기화
 	ImGuiManager::GetInstance().Init();
 
 	// 랜덤 생성기 초기화 (seed 설정)
 	Random::Init();
+
+	// 쉐이더 초기 등록
+	ShaderManager::GetInstance().Preload();
 
 	// SandboxScene 생성 및 Scene 목록에 추가
 	sceneList.push_back(std::make_shared<SandboxScene>());
@@ -56,6 +62,7 @@ void Game::Update()
 	// ImGui 프레임 시작
 	ImGuiManager::GetInstance().Update();
 
+#ifdef _DEBUG
 	// Scene 전환
 	if (InputManager::GetInstance().GetKeyDown(VK_F1))
 	{
@@ -69,6 +76,7 @@ void Game::Update()
 	{
 		SwitchScene(2); // TitleScene
 	}
+#endif
 
 	if (currentSceneID == SceneID::Title)
 	{
