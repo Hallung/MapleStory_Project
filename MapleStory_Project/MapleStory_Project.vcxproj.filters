@@ -142,20 +142,36 @@
     <ClCompile Include="Components\PlayerState.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Components\MonsterAggro.cpp" />
-    <ClCompile Include="Components\MonsterAI.cpp" />
-    <ClCompile Include="Components\MonsterMovement.cpp" />
-    <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp" />
-    <ClCompile Include="Objects\StaticObjects\Portal.cpp" />
-    <ClCompile Include="Objects\StaticObjects\ClearEffect.cpp" />
-    <ClCompile Include="Components\PlayEffect.cpp" />
     <ClCompile Include="Managers\SoundManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\TitleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\PathManager.cpp" />
+    <ClCompile Include="Objects\StaticObjects\ClearEffect.cpp">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\StaticObjects\Portal.cpp">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MonsterAggro.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MonsterAI.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MonsterMovement.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PlayEffect.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp">
+      <Filter>Objects\DynamicObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\PathManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -327,26 +343,54 @@
     <ClInclude Include="Components\PlayerState.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="BTNodes\BTNode.h" />
-    <ClInclude Include="BTNodes\ChasePlayerNode.h" />
-    <ClInclude Include="BTNodes\IdleNode.h" />
-    <ClInclude Include="BTNodes\Selector.h" />
-    <ClInclude Include="BTNodes\Sequence.h" />
-    <ClInclude Include="BTNodes\WanderNode.h" />
-    <ClInclude Include="Components\MonsterAggro.h" />
-    <ClInclude Include="Components\MonsterAI.h" />
-    <ClInclude Include="Components\MonsterMovement.h" />
-    <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h" />
-    <ClInclude Include="Objects\StaticObjects\Portal.h" />
-    <ClInclude Include="Objects\StaticObjects\ClearEffect.h" />
-    <ClInclude Include="Components\PlayEffect.h" />
     <ClInclude Include="Managers\SoundManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\TitleScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Managers\PathManager.h" />
+    <ClInclude Include="BTNodes\BTNode.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodes\IdleNode.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodes\Sequence.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodes\Selector.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodes\WanderNode.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodes\ChasePlayerNode.h">
+      <Filter>BTNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\StaticObjects\ClearEffect.h">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\StaticObjects\Portal.h">
+      <Filter>Objects\StaticObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MonsterAggro.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MonsterAI.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MonsterMovement.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PlayEffect.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h">
+      <Filter>Objects\DynamicObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\PathManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -392,6 +436,9 @@
     </Filter>
     <Filter Include="Objects\StaticObjects">
       <UniqueIdentifier>{8ed71f78-4f87-426a-8483-5ca4d0f03fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BTNodes">
+      <UniqueIdentifier>{0b14e65c-bdfe-4359-adf2-1eee189c6bca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
