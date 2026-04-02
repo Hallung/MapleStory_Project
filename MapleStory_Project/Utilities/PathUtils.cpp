@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "PathManager.h"
+#include "PathUtils.h"
 
 // static 멤버 변수 정의 (실제 메모리 할당)
-std::filesystem::path PathManager::assetRoot;
+std::filesystem::path PathUtils::assetRoot;
 
 // 실행 파일 위치를 기준으로 프로젝트 루트 경로 설정
-void PathManager::Init()
+void PathUtils::Init()
 {
     wchar_t buffer[MAX_PATH];
 
@@ -46,19 +46,19 @@ void PathManager::Init()
 }
 
 // wstring 상대 경로 -> path 변환
-std::filesystem::path PathManager::GetFullPath(const std::wstring& relativePath)
+std::filesystem::path PathUtils::GetFullPath(const std::wstring& relativePath)
 {
     return GetFullPathW(relativePath);
 }
 
 // string 상대 경로 -> path 변환
-std::filesystem::path PathManager::GetFullPath(const std::string& relativePath)
+std::filesystem::path PathUtils::GetFullPath(const std::string& relativePath)
 {
     return GetFullPathS(relativePath);
 }
 
 // wstring 상대 경로 -> 절대 경로(wstring)
-std::wstring PathManager::GetFullPathW(const std::wstring& relativePath)
+std::wstring PathUtils::GetFullPathW(const std::wstring& relativePath)
 {
     std::filesystem::path base(assetRoot);
     // base 경로 + 상대 경로 결합
@@ -68,7 +68,7 @@ std::wstring PathManager::GetFullPathW(const std::wstring& relativePath)
 }
 
 // string 상대 경로 -> 절대 경로(string)
-std::string PathManager::GetFullPathS(const std::string& relativePath)
+std::string PathUtils::GetFullPathS(const std::string& relativePath)
 {
     std::filesystem::path base(assetRoot);
     // base 경로 + 상대 경로 결합

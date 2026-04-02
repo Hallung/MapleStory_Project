@@ -7,10 +7,14 @@
 void CameraController::Update()
 {
     // 카메라 오너 및 Transform 참조
-    auto camera = dynamic_cast<Camera*>(GetOwner());
-    if (!camera) return;
+    if (!camera || !transform)
+    {
+        camera = dynamic_cast<Camera*>(GetOwner());
+        if (!camera) return;
 
-    auto transform = camera->GetTransform();
+        transform = camera->GetTransform();
+        if (!transform) return;
+    }
 
     // 현재 마우스 위치
     DirectX::SimpleMath::Vector2 mouse = InputManager::GetInstance().GetMousePos();

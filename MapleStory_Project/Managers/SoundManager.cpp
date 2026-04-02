@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SoundManager.h"
+#include "Utilities/PathUtils.h"
 
 SoundManager::SoundManager() {}
 
@@ -22,7 +23,7 @@ void SoundManager::Update()
 // 루프 없이 단발성으로 재생
 void SoundManager::PlaySFX(const std::string& path)
 {
-	std::string fullPath = PathManager::GetFullPathS(path);
+	std::string fullPath = PathUtils::GetFullPathS(path);
 
 	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, fullPath, false);
 
@@ -34,7 +35,7 @@ void SoundManager::PlaySFX(const std::string& path)
 // 루프 옵션으로 재생되며 bgmChannel에 저장
 void SoundManager::PlayBGM(const std::string& path)
 {
-	std::string fullPath = PathManager::GetFullPathS(path);
+	std::string fullPath = PathUtils::GetFullPathS(path);
 
 	FMOD::Sound* sound = GetOrCreateSound(system, soundMap, fullPath, true);
 
@@ -55,7 +56,7 @@ void SoundManager::StopBGM()
 // loop 여부에 따라 루프 설정 적용
 FMOD::Sound* SoundManager::GetOrCreateSound(FMOD::System* system, std::unordered_map<std::string, FMOD::Sound*>& map, const std::string& path, bool loop)
 {
-	std::string fullPath = PathManager::GetFullPathS(path);
+	std::string fullPath = PathUtils::GetFullPathS(path);
 
 	// 이미 로드된 사운드가 존재하면 반환
 	if (map.find(fullPath) != map.end())

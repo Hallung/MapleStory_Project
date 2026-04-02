@@ -3,6 +3,7 @@
 #include "Scenes/SceneList.h"
 #include "Objects/Camera.h"
 #include "Utilities/Random.h"
+#include "Utilities/PathUtils.h"
 
 Game::Game()
 {
@@ -25,7 +26,7 @@ Game::~Game()
 void Game::Init()
 {
 	// Path 경로 지정
-	PathManager::Init();
+	PathUtils::Init();
 
 	// ImGui 시스템 초기화
 	ImGuiManager::GetInstance().Init();
