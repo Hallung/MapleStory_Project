@@ -311,8 +311,8 @@ void TileMapEditorScene::DrawEditorUI()
 		// 경로가 선택되면 TileMap 로드
 		if (!path.empty())
 		{
-			// 현재 chainObjects 에 있는 Chain 정보 정리
-			chainObjects.clear();
+			// 현재 Scene 정리
+			ResetScene();
 			tileMap->Load(path, this);
 		}
 	}
@@ -445,4 +445,10 @@ void TileMapEditorScene::DrawEditorUI()
 	}
 
 	ImGui::End();
+}
+
+void TileMapEditorScene::ResetScene()
+{
+	Destroy();
+	Init();
 }

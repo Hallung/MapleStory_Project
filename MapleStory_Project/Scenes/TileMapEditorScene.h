@@ -30,6 +30,8 @@ private:
 	void DrawChainPreview();
 	// TileMap Editor 전용 ImGui UI 렌더링
 	void DrawEditorUI();
+	// Scene 초기화 함수
+	void ResetScene();
 
 private:
 	// 테스트용 TileMap

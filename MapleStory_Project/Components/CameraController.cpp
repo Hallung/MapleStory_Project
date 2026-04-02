@@ -78,3 +78,9 @@ void CameraController::Update()
         InputManager::GetInstance().ResetMouseWheel();
     }
 }
+
+void CameraController::OnDestroy()
+{
+    camera = nullptr;
+    transform = nullptr;
+}

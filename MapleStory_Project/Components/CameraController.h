@@ -9,6 +9,7 @@ public:
 		: Component("CameraController"), panSpeed(panSpeed), zoomSpeed(zoomSpeed), prevMousePos(0.0f), camera(nullptr), transform(nullptr) {}
 
 	void Update() override;
+	void OnDestroy() override;
 
 private:
 	float panSpeed = 1.0f; // 카메라 평행 이동 속도
