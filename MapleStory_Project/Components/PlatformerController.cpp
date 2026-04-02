@@ -60,46 +60,49 @@ void PlatformerController::Update()
 	}
 	else if (!attackSignal)
 	{
-		// 오른쪽 이동 입력
-		if (InputManager::GetInstance().GetKeyPress(VK_RIGHT))
+		if (!isHit)
 		{
-			// 현재 방향 설정
-			dir.x += 1.0f;
+			// 오른쪽 이동 입력
+			if (InputManager::GetInstance().GetKeyPress(VK_RIGHT))
+			{
+				// 현재 방향 설정
+				dir.x += 1.0f;
 
-			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
-			auto transform = GetOwner()->GetTransform();
-			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-			float absScaleX = fabsf(scale.x);
-			if (scale.x > 0.0f)
-			{
-				// 스케일을 바꿔 캐릭터 뒤집기
-				transform->SetScale({ -absScaleX, scale.y });
+				DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
+				auto transform = GetOwner()->GetTransform();
+				DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+				float absScaleX = fabsf(scale.x);
+				if (scale.x > 0.0f)
+				{
+					// 스케일을 바꿔 캐릭터 뒤집기
+					transform->SetScale({ -absScaleX, scale.y });
+				}
+				if (offset.x < 0.0f)
+				{
+					// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
+					attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				}
 			}
-			if (offset.x < 0.0f)
+			// 왼쪽 이동 입력
+			if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
 			{
-				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
-			}
-		}
-		// 왼쪽 이동 입력
-		if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
-		{
-			// 현재 방향 설정
-			dir.x -= 1.0f;
+				// 현재 방향 설정
+				dir.x -= 1.0f;
 
-			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
-			auto transform = owner->GetTransform();
-			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-			float absScaleX = fabsf(scale.x);
-			if (scale.x < 0.0f)
-			{
-				// 스케일을 바꿔 캐릭터 뒤집기
-				transform->SetScale({ absScaleX, scale.y });	
-			}
-			if (offset.x > 0.0f)
-			{
-				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
+				auto transform = owner->GetTransform();
+				DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+				float absScaleX = fabsf(scale.x);
+				if (scale.x < 0.0f)
+				{
+					// 스케일을 바꿔 캐릭터 뒤집기
+					transform->SetScale({ absScaleX, scale.y });
+				}
+				if (offset.x > 0.0f)
+				{
+					// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
+					attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				}
 			}
 		}
 		
@@ -121,6 +124,8 @@ void PlatformerController::Update()
 
 	// 매 프레임 점프 상태와 dir에 따라 공중 감속 설정
 	ApplyAirControl(dir);
+
+	ApplyHitDamping();
 }
 
 
@@ -128,7 +133,7 @@ void PlatformerController::Update()
 void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 {
 	// 수평 입력이 없거나 피격 시 이동 없음
-	if (dir.x == 0.0f || isHit) return;
+	if (dir.x == 0.0f) return;
 
 	// 현재 Box2D 속도 조회 (중력 포함)
 	b2Vec2 gravity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
@@ -177,17 +182,8 @@ void PlatformerController::Hit()
 	if (invincibleTimer < 10.0f)
 		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
 
-	if (!playerCollider->CheckGrounded())
-	{
-		// 공중이면 지면에 닿으면 히트 해제
-		if (playerCollider->CheckGrounded())
-			isHit = false;
-	}
-	else if (invincibleTimer > 0.25f)
-	{
-		// 지면에 있으면 0.25초 후에 히드 해제
+	if (invincibleTimer >= 0.25f)
 		isHit = false;
-	}
 		
 
 	// 몬스터와 충돌 중인지 확인
@@ -441,6 +437,24 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 	}
 
 	// 수정된 속도를 Box2D Body에 적용
+	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
+}
+
+void PlatformerController::ApplyHitDamping()
+{
+	if (!isHit) return;
+
+	b2Vec2 vel = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
+
+	float damping = playerCollider->CheckGrounded() ? 3.0f : 1.0f;
+	float dt = TimeManager::GetInstance().GetDeltaTime();
+
+	vel.x -= vel.x * damping * dt;
+
+	// 너무 작으면 정지
+	if (fabs(vel.x) < 0.1f)
+		vel.x = 0.0f;
+
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 }
 

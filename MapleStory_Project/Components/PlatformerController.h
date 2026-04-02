@@ -55,6 +55,9 @@ private:
 	// 공중 상태에서 플레이어의 수평 이동 감속 처리
 	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
 
+
+	void ApplyHitDamping();
+
 	void ResetData();	// 데이터 초기화 함수
 
 private:
