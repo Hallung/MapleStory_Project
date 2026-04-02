@@ -60,46 +60,49 @@ void PlatformerController::Update()
 	}
 	else if (!attackSignal)
 	{
-		// 오른쪽 이동 입력
-		if (InputManager::GetInstance().GetKeyPress(VK_RIGHT))
+		if (!isHit)
 		{
-			// 현재 방향 설정
-			dir.x += 1.0f;
+			// 오른쪽 이동 입력
+			if (InputManager::GetInstance().GetKeyPress(VK_RIGHT))
+			{
+				// 현재 방향 설정
+				dir.x += 1.0f;
 
-			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
-			auto transform = GetOwner()->GetTransform();
-			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-			float absScaleX = fabsf(scale.x);
-			if (scale.x > 0.0f)
-			{
-				// 스케일을 바꿔 캐릭터 뒤집기
-				transform->SetScale({ -absScaleX, scale.y });
+				DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
+				auto transform = GetOwner()->GetTransform();
+				DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+				float absScaleX = fabsf(scale.x);
+				if (scale.x > 0.0f)
+				{
+					// 스케일을 바꿔 캐릭터 뒤집기
+					transform->SetScale({ -absScaleX, scale.y });
+				}
+				if (offset.x < 0.0f)
+				{
+					// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
+					attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				}
 			}
-			if (offset.x < 0.0f)
+			// 왼쪽 이동 입력
+			if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
 			{
-				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
-			}
-		}
-		// 왼쪽 이동 입력
-		if (InputManager::GetInstance().GetKeyPress(VK_LEFT))
-		{
-			// 현재 방향 설정
-			dir.x -= 1.0f;
+				// 현재 방향 설정
+				dir.x -= 1.0f;
 
-			DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
-			auto transform = owner->GetTransform();
-			DirectX::SimpleMath::Vector2 scale = transform->GetScale();
-			float absScaleX = fabsf(scale.x);
-			if (scale.x < 0.0f)
-			{
-				// 스케일을 바꿔 캐릭터 뒤집기
-				transform->SetScale({ absScaleX, scale.y });	
-			}
-			if (offset.x > 0.0f)
-			{
-				// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
-				attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				DirectX::SimpleMath::Vector2 offset = attackCollider->GetOffsetData();
+				auto transform = owner->GetTransform();
+				DirectX::SimpleMath::Vector2 scale = transform->GetScale();
+				float absScaleX = fabsf(scale.x);
+				if (scale.x < 0.0f)
+				{
+					// 스케일을 바꿔 캐릭터 뒤집기
+					transform->SetScale({ absScaleX, scale.y });
+				}
+				if (offset.x > 0.0f)
+				{
+					// 캐릭터의 앞에 AttackCollider가 올 수 있도록 Offset 재설정
+					attackCollider->SetOffset(DirectX::SimpleMath::Vector2(-offset.x, offset.y));
+				}
 			}
 		}
 		
@@ -121,13 +124,15 @@ void PlatformerController::Update()
 
 	// 매 프레임 점프 상태와 dir에 따라 공중 감속 설정
 	ApplyAirControl(dir);
+
+	ApplyHitDamping();
 }
 
 
 // 물리 기반 이동
 void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 {
-	// 수평 입력이 없으면 이동 없음
+	// 수평 입력이 없거나 피격 시 이동 없음
 	if (dir.x == 0.0f) return;
 
 	// 현재 Box2D 속도 조회 (중력 포함)
@@ -174,10 +179,12 @@ void PlatformerController::Hit()
 	const float pushPower = 8.0f;
 
 	// 무적 타이머 갱신
-	if (invincibleTimer > 10.0f)
-		invincibleTimer = 10.0f;	// 과도한 증가 방지
-	else
+	if (invincibleTimer < 10.0f)
 		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
+
+	if (invincibleTimer >= 0.25f)
+		isHit = false;
+		
 
 	// 몬스터와 충돌 중인지 확인
 	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Monster))
@@ -202,11 +209,13 @@ void PlatformerController::Hit()
 			// 좌/우 넉백 방향 결정
 			float dir = (dirVec > 0) ? 1.0f : -1.0f;
 
+			// 공중에 있을 때 X 값 보정
+			float airMultiplier = 0.5f;
 
 			// 위 + 좌우 방향 임펄스 적용
 			if (playerState->GetState() == Player::State::JUMPING)
 			{
-				b2Vec2 impulse(dir * pushPower, 0.0f);
+				b2Vec2 impulse(dir * pushPower * airMultiplier, 0.0f);
 				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
 			}
 			else
@@ -214,6 +223,9 @@ void PlatformerController::Hit()
 				b2Vec2 impulse(dir * pushPower, pushPower - 5.0f);
 				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
 			}
+
+			// 히트 상태 확인
+			isHit = true;
 			
 			// 무적 시간 (타이머 초기화)
 			invincibleTimer = 0.0f;
@@ -425,6 +437,25 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 	}
 
 	// 수정된 속도를 Box2D Body에 적용
+	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
+}
+
+// Hit 중 X 속도 감쇠 함수
+void PlatformerController::ApplyHitDamping()
+{
+	if (!isHit) return;
+
+	b2Vec2 vel = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
+
+	float damping = playerCollider->CheckGrounded() ? 3.0f : 1.0f;
+	float dt = TimeManager::GetInstance().GetDeltaTime();
+
+	vel.x -= vel.x * damping * dt;
+
+	// 너무 작으면 정지
+	if (fabs(vel.x) < 0.1f)
+		vel.x = 0.0f;
+
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 }
 

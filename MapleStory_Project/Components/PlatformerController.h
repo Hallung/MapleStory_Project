@@ -55,6 +55,9 @@ private:
 	// 공중 상태에서 플레이어의 수평 이동 감속 처리
 	void ApplyAirControl(DirectX::SimpleMath::Vector2 dir);
 
+
+	void ApplyHitDamping();
+
 	void ResetData();	// 데이터 초기화 함수
 
 private:
@@ -64,6 +67,8 @@ private:
 	const float invincibleCooldown = 2.0f;
 
 	bool isJump = false;	// 공중에 있는지 확인
+
+	bool isHit = false;		// 피격 상태 확인
 
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
