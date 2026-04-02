@@ -65,6 +65,8 @@ private:
 
 	bool isJump = false;	// 공중에 있는지 확인
 
+	bool isHit = false;		// 피격 상태 확인
+
 	bool attackSignal = false;	// 공격 신호 여부
 	bool canAttack = false;	// 공격 가능 여부
 	bool playSound = false;	// 공격 소리 여부

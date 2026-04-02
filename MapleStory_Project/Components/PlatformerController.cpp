@@ -127,8 +127,8 @@ void PlatformerController::Update()
 // 물리 기반 이동
 void PlatformerController::Move(DirectX::SimpleMath::Vector2 dir)
 {
-	// 수평 입력이 없으면 이동 없음
-	if (dir.x == 0.0f) return;
+	// 수평 입력이 없거나 피격 시 이동 없음
+	if (dir.x == 0.0f || isHit) return;
 
 	// 현재 Box2D 속도 조회 (중력 포함)
 	b2Vec2 gravity = b2Body_GetLinearVelocity(rigidBody->GetBodyId());
@@ -174,10 +174,21 @@ void PlatformerController::Hit()
 	const float pushPower = 8.0f;
 
 	// 무적 타이머 갱신
-	if (invincibleTimer > 10.0f)
-		invincibleTimer = 10.0f;	// 과도한 증가 방지
-	else
+	if (invincibleTimer < 10.0f)
 		invincibleTimer += TimeManager::GetInstance().GetDeltaTime();
+
+	if (!playerCollider->CheckGrounded())
+	{
+		// 공중이면 지면에 닿으면 히트 해제
+		if (playerCollider->CheckGrounded())
+			isHit = false;
+	}
+	else if (invincibleTimer > 0.25f)
+	{
+		// 지면에 있으면 0.25초 후에 히드 해제
+		isHit = false;
+	}
+		
 
 	// 몬스터와 충돌 중인지 확인
 	if (hitEvents->IsColliding(playerCollider.get(), CollisionLayer::Monster))
@@ -202,11 +213,13 @@ void PlatformerController::Hit()
 			// 좌/우 넉백 방향 결정
 			float dir = (dirVec > 0) ? 1.0f : -1.0f;
 
+			// 공중에 있을 때 X 값 보정
+			float airMultiplier = 0.5f;
 
 			// 위 + 좌우 방향 임펄스 적용
 			if (playerState->GetState() == Player::State::JUMPING)
 			{
-				b2Vec2 impulse(dir * pushPower, 0.0f);
+				b2Vec2 impulse(dir * pushPower * airMultiplier, 0.0f);
 				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
 			}
 			else
@@ -214,6 +227,9 @@ void PlatformerController::Hit()
 				b2Vec2 impulse(dir * pushPower, pushPower - 5.0f);
 				b2Body_ApplyLinearImpulse(rigidBody->GetBodyId(), impulse, monsterPos, true);
 			}
+
+			// 히트 상태 확인
+			isHit = true;
 			
 			// 무적 시간 (타이머 초기화)
 			invincibleTimer = 0.0f;
