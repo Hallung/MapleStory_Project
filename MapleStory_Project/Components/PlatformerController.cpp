@@ -440,6 +440,7 @@ void PlatformerController::ApplyAirControl(DirectX::SimpleMath::Vector2 dir)
 	b2Body_SetLinearVelocity(rigidBody->GetBodyId(), vel);
 }
 
+// Hit 중 X 속도 감쇠 함수
 void PlatformerController::ApplyHitDamping()
 {
 	if (!isHit) return;
