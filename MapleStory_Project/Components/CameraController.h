@@ -5,13 +5,17 @@
 class CameraController : public Component
 {
 public:
-	CameraController(float panSpeed = 1.0f, float zoomSpeed = 0.1f) : Component("CameraController"), panSpeed(panSpeed), zoomSpeed(zoomSpeed) {}
+	CameraController(float panSpeed = 1.0f, float zoomSpeed = 0.1f) 
+		: Component("CameraController"), panSpeed(panSpeed), zoomSpeed(zoomSpeed), prevMousePos(0.0f), camera(nullptr), transform(nullptr) {}
 
 	void Update() override;
+	void OnDestroy() override;
 
 private:
 	float panSpeed = 1.0f; // 카메라 평행 이동 속도
 	float zoomSpeed = 0.1f; // 카메라 줌 속도
 
 	DirectX::SimpleMath::Vector2 prevMousePos; // 이전 프레임 마우스 위치
+	class Camera* camera; // 카메라 참조
+	class Transform* transform; // 트랜스폼 참조
 };

@@ -169,8 +169,8 @@
     <ClCompile Include="Objects\DynamicObjects\OrangeMushroom.cpp">
       <Filter>Objects\DynamicObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Managers\PathManager.cpp">
-      <Filter>Managers</Filter>
+    <ClCompile Include="Utilities\PathUtils.cpp">
+      <Filter>Utilites</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,8 +388,8 @@
     <ClInclude Include="Objects\DynamicObjects\OrangeMushroom.h">
       <Filter>Objects\DynamicObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Managers\PathManager.h">
-      <Filter>Managers</Filter>
+    <ClInclude Include="Utilities\PathUtils.h">
+      <Filter>Utilites</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

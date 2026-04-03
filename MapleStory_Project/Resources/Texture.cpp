@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Texture.h"
 #include <algorithm>
+#include "Utilities/PathUtils.h"
 
 //========================================================
 // 텍스처 로드 및 GPU SRV 생성
@@ -25,7 +26,7 @@ Texture::Texture(std::wstring filePath)
 
 	HRESULT hr;
 
-	std::wstring fullPath = PathManager::GetFullPathW(path);
+	std::wstring fullPath = PathUtils::GetFullPathW(path);
 
 	//==============================================
 	// DDS 로드 

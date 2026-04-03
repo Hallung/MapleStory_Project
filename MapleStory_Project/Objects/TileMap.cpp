@@ -10,6 +10,7 @@
 #include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Renders/IA/InstanceBuffer.h"
 #include "Utilities/ObjectFactory.h"
+#include "Utilities/PathUtils.h"
 #include "Resources/Mesh.h"
 #include "Resources/Material.h"
 #include "Resources/Texture.h"
@@ -190,7 +191,7 @@ void TileMap::SetChainData(const std::vector<std::shared_ptr<Object>>& chainObje
 // 현재 타일맵 상태를 XML 파일로 저장, 맵 크기 정보와 배치된 타일 정보만 기록
 void TileMap::Save(const std::wstring& path)
 {
-	std::wstring fullXmlPath = PathManager::GetFullPathW(path);
+	std::wstring fullXmlPath = PathUtils::GetFullPathW(path);
 
 	tinyxml2::XMLDocument doc;
 
@@ -259,7 +260,7 @@ void TileMap::Save(const std::wstring& path)
 // XML 파일로부터 타일맵 데이터를 불러옴, 기존 타일 데이터는 초기화 후 새로 구성
 void TileMap::Load(const std::wstring& path, Scene* scene)
 {
-	std::wstring fullXmlPath = PathManager::GetFullPathW(path);
+	std::wstring fullXmlPath = PathUtils::GetFullPathW(path);
 
 	tinyxml2::XMLDocument doc;
 

@@ -15,7 +15,7 @@ public:
 	// Sprite Object를 생성하고 Player 구성 컴포넌트 부착
 	//==================================================
 	//Player() {}	// 상태나 능력치를 가져올 때 사용할 기본 생성자
-	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/testPos.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
+	Player(DirectX::SimpleMath::Vector2 position, DirectX::SimpleMath::Vector2 scale, float rotation, const std::wstring& texturePath = L"_Textures/Player1.png", BodyType bodyType = BodyType::Dynamic, const std::string& name = "Player");
 	~Player() = default;
 
 	// Player 상태

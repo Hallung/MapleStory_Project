@@ -7,7 +7,7 @@
 // (Static 방식으로 전역에서 사용)
 //====================================================
 
-class PathManager
+class PathUtils
 {
 public:
     // 실행 파일 위치를 기준으로 assetRoot 경로 설정

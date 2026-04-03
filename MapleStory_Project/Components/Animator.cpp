@@ -5,6 +5,7 @@
 #include "Renders/ConstantBuffers/GlobalBuffers.h"
 #include "Resources/Texture.h"
 #include "Resources/Material.h"
+#include "Utilities/PathUtils.h"
 
 #include <tinyxml2.h>
 
@@ -24,7 +25,7 @@ std::unordered_map<std::wstring, std::vector<std::shared_ptr<AnimationClip>>> ca
 //===========================================
 const std::vector<std::shared_ptr<AnimationClip>>& Load(const std::wstring& xmlPath)
 {
-	std::wstring fullXmlPath = PathManager::GetFullPathW(xmlPath);
+	std::wstring fullXmlPath = PathUtils::GetFullPathW(xmlPath);
 
 	// 캐시 조회
 	auto it = cache.find(fullXmlPath);
@@ -120,7 +121,7 @@ const std::vector<std::shared_ptr<AnimationClip>>& Load(const std::wstring& xmlP
 AnimationClip::AnimationClip(const std::wstring& name, const std::wstring& texturePath, UINT frameCount, DirectX::SimpleMath::Vector2 startPos, DirectX::SimpleMath::Vector2 endPos, float playRate, bool bLoop, bool bReverse)
 	:name(name), texturePath(texturePath), playRate(playRate), bLoop(bLoop), bReverse(bReverse)
 {
-	std::wstring fullPath = PathManager::GetFullPathW(texturePath);
+	std::wstring fullPath = PathUtils::GetFullPathW(texturePath);
 	// 애니메이션에 사용할 스프라이트 시트 텍스처 로드
 	texture = TextureManager::GetInstance().LoadTexture(fullPath);
 
