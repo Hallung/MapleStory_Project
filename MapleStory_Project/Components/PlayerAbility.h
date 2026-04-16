@@ -29,5 +29,5 @@ private:
 	UINT _luk = 4;			// 행운
 
 private:
-	UINT _attackPower = 10;	// 최종 공격력 (데미지 계산에 사용)
+	UINT _attackPower = 30;	// 최종 공격력 (데미지 계산에 사용)
 };

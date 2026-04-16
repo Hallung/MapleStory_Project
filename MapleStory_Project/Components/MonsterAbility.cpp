@@ -40,7 +40,10 @@ void MonsterAbility::SetAttackPower(UINT power)
 void MonsterAbility::TakeDamage(Collider* other, UINT damage)
 {
 	// 체력 감소 (0 이하 방지)
-	_hp = max(0, _hp - damage);
+	if (_hp <= damage)
+		_hp = 0;
+	else
+		_hp = _hp - damage;
 
 	if (soundPath != "")
 		SoundManager::GetInstance().PlaySFX(soundPath);
