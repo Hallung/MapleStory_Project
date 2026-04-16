@@ -1,20 +1,20 @@
-- MapleStory Project -
+MapleStory Project
 
-커스텀 엔진 기반으로 제작한 2D 메이플 모작 프로젝트입니다.
+커스텀 엔진 기반으로 제작한 2D 메이플스토리 모작 프로젝트입니다.
 엔진 설계부터 에디터, 게임 플레이까지 직접 구현했습니다.
 
-- 팀 구성 -
+팀 구성
 박정빈(JB): Engine / System
 김휘재(HJ): Content / Gameplay
 
-- 기술 스택 -
+기술 스택
 * C++
 * DirectX
 * SimpleMath
 * ImGui
 * FMOD
 
-- 주요 구현 -
+주요 구현
 
 Engine (JB)
 * Component 기반 구조
@@ -54,10 +54,13 @@ Content (HJ)
 * 윈도우 및 그래픽 초기화
 * 협업 기반 디버깅 및 시스템 안정화
 
-- Links -
+Links
 
 * Repository
 https://github.com/Hallung/MapleStory_Project
 
 * Resource
 https://drive.google.com/file/d/1vbsDHMk6xF-P5qeCsBY7944m8W7r7hp6/view?usp=drive_link
+
+* YouTube
+https://youtu.be/Dj2aS_gCm6g
