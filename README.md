@@ -1,11 +1,12 @@
 MapleStory Project
 
 커스텀 엔진 기반으로 제작한 2D 메이플스토리 모작 프로젝트입니다.
+
 엔진 설계부터 에디터, 게임 플레이까지 직접 구현했습니다.
 
 팀 구성
-박정빈(JB): Engine / System
-김휘재(HJ): Content / Gameplay
+* 박정빈(JB): Engine / System
+* 김휘재(HJ): Content / Gameplay
 
 기술 스택
 * C++
